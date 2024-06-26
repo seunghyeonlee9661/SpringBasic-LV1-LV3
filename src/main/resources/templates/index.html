@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+<!--  헤드 공간  -->
+</head>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+
+<div>
+    <section>
+        <p>Login</p>
+        <form method="post" action="signin_check">
+            이메일 : <input type="email" name="email">
+            비밀번호 : <input type="password" name="password">
+            <input type="submit" value="로그인">
+        </form>
+    </section>
+</div>
+
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+
+<!--common script -->
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>
