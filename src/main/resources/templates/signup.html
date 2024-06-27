@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <!--  헤드 공간  -->
+</head>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+
+<div>
+    <form th:action="@{/signup}" th:object="${userCreateForm}" method="post">
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <div class="mb-3">
+            <input type="text" th:field="*{username}" class="form-control" placeholder="ID">
+        </div>
+        <div class="mb-3">
+            <input type="password" th:field="*{password}" class="form-control" placeholder="Password">
+        </div>
+        <div class="mb-3">
+            <input type="password" th:field="*{password_check}" class="form-control" placeholder="Password Check">
+        </div>
+        <div class="mb-3">
+            <input type="email" th:field="*{email}" class="form-control" placeholder="E-mail">
+        </div>
+        <button type="submit" class="btn btn-danger" style="width:100%">SignUp</button>
+    </form>
+</div>
+
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+
+<!--common script -->
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>

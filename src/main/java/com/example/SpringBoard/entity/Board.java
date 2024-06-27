@@ -1,4 +1,4 @@
-package com.example.SpringBoard.dto;
+package com.example.SpringBoard.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +18,7 @@ public class Board {
     @Column
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "text")
     private String text;
 
     @UpdateTimestamp

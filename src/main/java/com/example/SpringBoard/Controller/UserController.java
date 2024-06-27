@@ -1,45 +1,53 @@
 package com.example.SpringBoard.Controller;
+import com.example.SpringBoard.form.UserCreateForm;
+import com.example.SpringBoard.service.UserService;
+import org.springframework.dao.DataIntegrityViolationException;
 
-import com.example.SpringBoard.dto.User;
-import com.example.SpringBoard.dto.UserRepository;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
+@RequiredArgsConstructor
 @Controller
 public class UserController {
-    @Autowired
-    UserRepository userRepository;
+
+    private final UserService userService;
+
 
     @GetMapping("/login")
-    public String login(String userId, String userPw, HttpSession session, Model model) {
-        User user = userRepository.findById(userId);
-        if (user != null && user.getPassword().equals(userPw)) {
-            session.setAttribute("user", user);
-            return "redirect:/boards";
-        } else {
-            model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "loginform";
-        }
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute("user");
-        return "redirect:/";
+    public String login() {
+        return "login";
     }
 
     @GetMapping("/signup")
-    public String signup(String userId, String userPw, HttpSession session, Model model) {
-        User user = userRepository.findById(userId);
-        if (user != null && user.getPassword().equals(userPw)) {
-            session.setAttribute("user", user);
-            return "redirect:/boards";
-        } else {
-            model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "loginform";
+    public String signup(UserCreateForm userCreateForm) {
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "signup";
         }
+        if (!userCreateForm.getPassword().equals(userCreateForm.getPassword_check())) {
+            bindingResult.rejectValue("password", "passwordInCorrect","2개의 패스워드가 일치하지 않습니다.");
+            return "signup";
+        }
+        try {
+            userService.create(userCreateForm.getUsername(),
+                    userCreateForm.getEmail(), userCreateForm.getPassword());
+        }catch(DataIntegrityViolationException e) {
+            e.printStackTrace();
+            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+            return "signup";
+        }catch(Exception e) {
+            e.printStackTrace();
+            bindingResult.reject("signupFailed", e.getMessage());
+            return "signup";
+        }
+        return "redirect:/";
     }
 }
