@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <!-- 페이지 디자인을 위한 레이아웃 기능 -->
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!--헤드 -->
 <head th:fragment="head">
     <title>Board Project</title>
@@ -18,16 +17,14 @@
     <!-- 메뉴 -->
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            <a th:href="@{/}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <i class="bi bi-blockquote-left"></i>
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                <li><a th:href="@{/}" class="nav-link px-2" th:classappend="${menu} == 'home' ? 'text-secondary' : 'text-white'">Home</a></li>
+                <li><a th:href="@{/posts}" class="nav-link px-2" th:classappend="${menu} == 'posts' ? 'text-secondary' : 'text-white'">Post</a></li>
+                <li><a href="#" class="nav-link px-2" th:classappend="${menu} == 'price' ? 'text-secondary' : 'text-white'">Pricing</a></li>
             </ul>
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                 <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
@@ -35,6 +32,7 @@
             <div class="text-end">
                 <a class="btn btn-warning me-2" sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
                 <a class="btn btn-warning me-2" sec:authorize="isAnonymous()" th:href="@{/signup}">Signup</a>
+                <p class="me-2" sec:authorize="isAuthenticated()" th:text="${#authentication.name}"></p>
                 <a class="btn btn-warning me-2" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
             </div>
         </div>
