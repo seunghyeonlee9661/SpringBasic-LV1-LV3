@@ -1,14 +1,22 @@
 package com.example.SpringBoard.Controller;
 import com.example.SpringBoard.form.UserCreateForm;
 import com.example.SpringBoard.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -17,7 +25,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model, HttpServletRequest request) {
+        String referer  = request.getHeader("Referer");
+        System.out.println(referer);
         return "login";
     }
 
@@ -48,5 +58,13 @@ public class UserController {
             return "signup";
         }
         return "redirect:/";
+    }
+
+    private boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return false;
+        }
+        return authentication.isAuthenticated();
     }
 }

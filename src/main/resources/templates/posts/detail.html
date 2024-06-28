@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout :: head">
-<!--  헤드 공간  -->
+    <!--  헤드 공간  -->
 </head>
 <body>
 <!--  상단바 공간  -->
 <header th:replace="layout :: nav"></header>
+
+<div class="d-flex align-items-center py-4 bg-body-tertiary">
+    <h1 th:text="${post.title}"></h1><br>
+    <h4 th:text="${post.user.username}"></h4><br>
+    <h4 th:text="${post.date}"></h4><br>
+    <p th:text="${post.text}"></p>
+</div>
 
 <!-- footer -->
 <div th:replace="layout :: footer"></div>

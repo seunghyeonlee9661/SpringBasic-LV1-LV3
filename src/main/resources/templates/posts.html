@@ -6,25 +6,30 @@
 <body>
 <!--  상단바 공간  -->
 <header th:replace="layout :: nav"></header>
-
-<div>
-    <table>
-        <thead>
-        <tr>
-            <th>제목</th>
-            <th>작성일시</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="post : ${posts}">
-            <td th:text="${post.title}"></td>
-            <td th:text="${post.user.username}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <a class="btn btn-warning me-2" sec:authorize="isAuthenticated()" th:href="@{/posts/write}">Write</a>
+<div class="d-flex align-items-center py-4 bg-body-tertiary">
+    <div class="container my-5">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일시</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <td th:text="${post.id}"></td>
+                <td ><a th:href="@{|/posts/detail/${post.id}|}" th:text="${post.title}"></a></td>
+                <td th:text="${post.user.username}"></td>
+                <td th:text="${post.date}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-warning me-2" sec:authorize="isAuthenticated()" th:href="@{/posts/write}">Write</a>
+    </div>
 </div>
-
+<div class="b-example-divider"></div>
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
 
