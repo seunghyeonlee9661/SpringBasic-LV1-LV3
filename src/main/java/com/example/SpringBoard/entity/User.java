@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -28,6 +30,9 @@ public class User {
     @Column(unique = true,name="user_email", nullable = false, columnDefinition = "varchar(255)")
     @Email
     private String email;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Post> postList;
 
     public User() {
     }

@@ -17,7 +17,7 @@ public class Post {
     @Column(name="post_id",nullable = false, columnDefinition = "int")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name="user_name",referencedColumnName = "user_name")
     private User user;
 

@@ -37,12 +37,22 @@ public class PostService {
         return this.postRepository.findAll(pageable);
     }
 
-    public Post getQuestion(Integer id) {
+    public Post getPost(Integer id) {
         Optional<Post> post = this.postRepository.findById(id);
         if (post.isPresent()) {
             return post.get();
         } else {
             throw new DataNotFoundException("post not found");
         }
+    }
+
+    public void delete(Post post) {
+        this.postRepository.delete(post);
+    }
+
+    public void edit(Post post, String title, String text){
+        post.setTitle(title);
+        post.setText(text);
+        this.postRepository.save(post);
     }
 }
