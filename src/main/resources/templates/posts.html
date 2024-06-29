@@ -8,6 +8,41 @@
 <header th:replace="layout :: nav"></header>
 <div class="d-flex align-items-center py-4 bg-body-tertiary">
     <div class="container my-5">
+        <!-- 메뉴 기능 -->
+        <div class="hstack gap-3">
+            <!-- 드롭다운 검색창 -->
+            <div class="p-2">
+                <div class="input-group mb-3">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                    </ul>
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                </div>
+            </div>
+            <!-- 게시물 정렬 선택 -->
+            <div class="p-2">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="btnradio1">날짜순</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio2">조회순</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio3">좋아요순</label>
+                </div>
+            </div>
+            <!-- 게시물 작성 버튼 -->
+            <div class="p-2 ms-auto">
+                <a class="btn btn-warning me-2" sec:authorize="isAuthenticated()" th:href="@{/posts/write}">Write</a>
+            </div>
+        </div>
+        <!-- 게시글 목록 -->
         <table class="table">
             <thead>
             <tr>
@@ -18,7 +53,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="post : ${posts}">
+            <tr th:each="post : ${paging}">
                 <td th:text="${post.id}"></td>
                 <td ><a th:href="@{|/posts/detail/${post.id}|}" th:text="${post.title}"></a></td>
                 <td th:text="${post.user.username}"></td>
@@ -26,9 +61,32 @@
             </tr>
             </tbody>
         </table>
-        <a class="btn btn-warning me-2" sec:authorize="isAuthenticated()" th:href="@{/posts/write}">Write</a>
+        <!-- 페이지네이션 -->
+        <nav th:if="${!paging.isEmpty()}" aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{|?page=${paging.number-1}|}">
+                        <span>Previous</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                    th:classappend="${page == paging.number} ? 'active'"
+                    class="page-item">
+                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                </li>
+                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                        <span>Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
+
+<!-- 목록-->
 <div class="b-example-divider"></div>
 <!-- footer -->
 <div th:replace="layout :: footer"></div>

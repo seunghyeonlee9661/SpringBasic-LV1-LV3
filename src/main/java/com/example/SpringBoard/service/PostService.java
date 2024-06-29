@@ -5,6 +5,9 @@ import com.example.SpringBoard.entity.User;
 import com.example.SpringBoard.exceptions.DataNotFoundException;
 import com.example.SpringBoard.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -26,7 +29,13 @@ public class PostService {
     }
 
     public List<Post> findAll() {
+
         return this.postRepository.findAll();
+    }
+
+    public Page<Post> getPage(int page){
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.postRepository.findAll(pageable);
     }
 
     public Post getQuestion(Integer id) {

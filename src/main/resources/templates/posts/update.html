@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <!--  헤드 공간  -->
+</head>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+
+<div>
+    <form th:action="@{/posts/write}" th:object="${postWriteForm}" method="post">
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <div class="mb-3">
+            <input type="text" th:field="*{title}" class="form-control" placeholder="Title">
+        </div>
+        <div class="mb-3">
+            <textarea th:field="*{text}" class="form-control" row="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger" style="width:100%">Post!</button>
+    </form>
+</div>
+
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+
+<!--common script -->
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>
