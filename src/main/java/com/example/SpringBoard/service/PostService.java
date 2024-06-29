@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -32,8 +33,18 @@ public class PostService {
         return this.postRepository.findAll();
     }
 
-    public Page<Post> getPage(int page){
-        Pageable pageable = PageRequest.of(page, 10);
+    public Page<Post> getPage(int page,int sort){
+        Sort sorting = Sort.by("date").ascending();
+        switch (sort){
+            case 1:
+                sorting =  Sort.by("title").ascending();
+                break;
+            case 2:
+                sorting =  Sort.by("user").ascending();
+                break;
+        }
+        Pageable pageable = PageRequest.of(page, 10,sorting);
+
         return this.postRepository.findAll(pageable);
     }
 

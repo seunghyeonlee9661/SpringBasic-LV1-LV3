@@ -24,15 +24,10 @@
             </div>
             <!-- 게시물 정렬 선택 -->
             <div class="p-2">
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="btnradio1"><i class="bi bi-calendar-week"></i></label>
-
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio2"><i class="bi bi-eye-fill"></i></label>
-
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio3"><i class="bi bi-hand-thumbs-up-fill"></i></label>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-primary" th:classappend="${sort == 0} ? 'active' : ''" th:href="@{|?page=${paging.number}&&sort=0|}"><i class="bi bi-calendar-week"></i></a>
+                    <a href="#" class="btn btn-primary" th:classappend="${sort == 1} ? 'active' : ''" th:href="@{|?page=${paging.number}&&sort=1|}"><i class="bi bi-eye-fill"></i></a>
+                    <a href="#" class="btn btn-primary" th:classappend="${sort == 2} ? 'active' : ''" th:href="@{|?page=${paging.number}&&sort=2|}"><i class="bi bi-hand-thumbs-up-fill"></i></a>
                 </div>
             </div>
             <!-- 게시물 작성 버튼 -->
@@ -72,7 +67,7 @@
                     th:if="${page >= paging.number-5 and page <= paging.number+5}"
                     th:classappend="${page == paging.number} ? 'active'"
                     class="page-item">
-                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}&&sort=${sort}|}"></a>
                 </li>
                 <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
                     <a class="page-link" th:href="@{|?page=${paging.number+1}|}">

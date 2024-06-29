@@ -21,7 +21,6 @@ public class Post {
     @JoinColumn(name="user_name",referencedColumnName = "user_name")
     private User user;
 
-
     @Column(name="post_title",nullable = false, columnDefinition = "varchar(100)")
     private String title;
 

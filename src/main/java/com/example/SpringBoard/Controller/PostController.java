@@ -28,10 +28,11 @@ public class PostController {
     private final UserService userService;
 
     @GetMapping("")
-    public String boards(Model model,@RequestParam(value="page", defaultValue="0") int page) {
+    public String boards(Model model,@RequestParam(value="page", defaultValue="0") int page,@RequestParam(value="sort", defaultValue="0") int sort) {
         model.addAttribute("menu","posts");
-        Page<Post> paging = this.postService.getPage(page);
+        Page<Post> paging = this.postService.getPage(page,sort);
         model.addAttribute("paging", paging);
+        model.addAttribute("sort", sort);
         return "posts";
     }
 
