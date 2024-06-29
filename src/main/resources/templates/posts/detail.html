@@ -6,8 +6,7 @@
 <body>
 <!--  상단바 공간  -->
 <header th:replace="layout :: nav"></header>
-
-<div class="d-flex align-items-center py-4 bg-body-tertiary" style="position:relative;">
+<div class="d-flex py-4 bg-body-tertiary main" style="position:relative;">
     <div class="container my-5">
         <button type="button" onclick="javascript:history.back()" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill"></i></button>
         <div class="col">
@@ -24,6 +23,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- footer -->
 <div th:replace="layout :: footer"></div>

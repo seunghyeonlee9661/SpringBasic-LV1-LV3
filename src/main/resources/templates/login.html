@@ -7,7 +7,7 @@
 <!--  상단바 공간  -->
 <header th:replace="layout :: nav"></header>
 
-<div class="d-flex align-items-center py-4 bg-body-tertiary">
+<div class="d-flex align-items-center py-4 bg-body-tertiary main">
     <div class="form-signin w-100 m-auto">
         <form th:action="@{/login}" method="post">
             <div th:if="${param.error}">
