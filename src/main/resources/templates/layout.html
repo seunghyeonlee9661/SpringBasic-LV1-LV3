@@ -35,7 +35,9 @@
             <div class="text-end">
                 <a class="btn btn-warning me-2" sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
                 <a class="btn btn-warning me-2" sec:authorize="isAnonymous()" th:href="@{/signup}">Signup</a>
-                <p class="me-2" sec:authorize="isAuthenticated()" th:text="${#authentication.name}"></p>
+                <a class="me-2" sec:authorize="isAuthenticated()" th:href="@{/edit}">
+                    <i class="bi bi-person-fill" th:text="${#authentication.name}"></i>
+                </a>
                 <a class="btn btn-warning me-2" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
             </div>
         </div>

@@ -12,6 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @RequiredArgsConstructor
 @Controller
 public class UserController {
@@ -35,8 +38,16 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "signup";
         }
+        if (!Pattern.compile("^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$").matcher(userCreateForm.getUsername()).find()) {
+            bindingResult.rejectValue("username", "usernameWrong", "아이디는 영문, 숫자, '_'로 구성된 5~12자로 구성되어야 합니다.");
+            return "signup";
+        }
+        if (!Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$").matcher(userCreateForm.getPassword()).find()) {
+            bindingResult.rejectValue("password", "passwordWrong", "비밀번호는 영문+특수문자+숫자 8~20자로 구성되어야 합니다.");
+            return "signup";
+        }
         if (!userCreateForm.getPassword().equals(userCreateForm.getPassword_check())) {
-            bindingResult.rejectValue("password", "passwordInCorrect","2개의 패스워드가 일치하지 않습니다.");
+            bindingResult.rejectValue("password_check", "passwordIncorrect", "2개의 패스워드가 일치하지 않습니다.");
             return "signup";
         }
         try {

@@ -16,7 +16,9 @@
                 <h4 th:text="${post.user.username}"></h4>
             </div>
             <hr>
-            <p th:text="${post.text}"></p>
+            <div style="width:100%; word-break:break-all;">
+                <p th:text="${post.text}" style="width:100%; white-space: normal;"></p>
+            </div>
             <hr>
             <a class="btn btn-warning me-2" sec:authorize="isAuthenticated()" th:classappend="${#authentication.getPrincipal().getUsername() == post.user.username} ? '' : 'disabled'" th:href="@{|/posts/edit/${post.id}|}">Edit</a>
             <a class="btn btn-warning me-2 delete" sec:authorize="isAuthenticated()" th:classappend="${#authentication.getPrincipal().getUsername() == post.user.username} ? '' : 'disabled'" th:data-uri="@{|/posts/delete/${post.id}|}"  onclick="checkDelete(this);">Delete</a>
