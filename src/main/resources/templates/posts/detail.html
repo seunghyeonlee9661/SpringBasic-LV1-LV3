@@ -8,20 +8,20 @@
 <header th:replace="layout :: nav"></header>
 <div class="d-flex py-4 bg-body-tertiary main" style="position:relative;">
     <div class="container my-5">
-        <button type="button" onclick="javascript:history.back()" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill"></i></button>
         <div class="col">
-            <h1 class="display-5 link-body-emphasis mb-1" th:text="${post.title}"></h1><br>
-            <div class="row">
-                <p class="blog-post-meta" th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}"></p>
-                <h4 th:text="${post.user.username}"></h4>
+            <a type="button" th:href="@{/posts}" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill"></i></a>
+            <div class="hstack gap-3">
+                <h1 class="p-2 display-5 link-body-emphasis mb-1" th:text="${post.title}"></h1><br>
+                <p class="p-2 blog-post-meta" th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}"></p>
             </div>
+            <h4 th:text="${post.writer}"></h4>
             <hr>
             <div style="width:100%; word-break:break-all;">
                 <p th:text="${post.text}" style="width:100%; white-space: normal;"></p>
             </div>
             <hr>
-            <a class="btn btn-warning me-2" sec:authorize="isAuthenticated()" th:classappend="${#authentication.getPrincipal().getUsername() == post.user.username} ? '' : 'disabled'" th:href="@{|/posts/edit/${post.id}|}">Edit</a>
-            <a class="btn btn-warning me-2 delete" sec:authorize="isAuthenticated()" th:classappend="${#authentication.getPrincipal().getUsername() == post.user.username} ? '' : 'disabled'" th:data-uri="@{|/posts/delete/${post.id}|}"  onclick="checkDelete(this);">Delete</a>
+            <a class="btn btn-warning me-2" th:data-uri="@{|/posts/edit/${post.id}|}" onclick="checkPassword(this);">Edit</a>
+            <a class="btn btn-warning me-2 delete" th:data-uri="@{|/posts/delete/${post.id}|}"  onclick="checkPassword(this);">Delete</a>
         </div>
     </div>
 </div>
@@ -33,10 +33,13 @@
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>
 <script type='text/javascript'>
-    function checkDelete(e){
-        if(confirm("정말로 삭제하시겠습니까?")) {
-                location.href = e.dataset.uri;
-        };
+    function checkPassword(e){
+        var input = prompt("Password");
+        if(input == [[${post.password}]]){
+            location.href = e.dataset.uri;
+        }else{
+            alert("잘못된 비밀번호입니다.")
+        }
     }
 </script>
 </body>

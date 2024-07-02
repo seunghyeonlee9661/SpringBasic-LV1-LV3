@@ -11,6 +11,12 @@ public class PostWriteForm {
     @NotEmpty(message = "Input Title Please")
     private String title;
 
+    @NotEmpty(message = "Input writer Please")
+    private String writer;
+
     @NotEmpty(message = "Input Text Please")
     private String text;
+
+    @NotEmpty(message = "Input password Please")
+    private String password;
 }

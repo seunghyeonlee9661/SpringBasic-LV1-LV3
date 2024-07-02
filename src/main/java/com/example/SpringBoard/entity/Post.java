@@ -14,21 +14,23 @@ import java.time.LocalDateTime;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="post_id",nullable = false, columnDefinition = "int")
+    @Column(name="id",nullable = false, columnDefinition = "int")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name="user_name",referencedColumnName = "user_name")
-    private User user;
-
-    @Column(name="post_title",nullable = false, columnDefinition = "varchar(100)")
+    @Column(name="title",nullable = false, columnDefinition = "varchar(100)")
     private String title;
 
-    @Column(name="post_text",columnDefinition = "TEXT")
+    @Column(name="writer",nullable = false, columnDefinition = "varchar(50)")
+    private String writer;
+
+    @Column(name="password",nullable = false, columnDefinition = "varchar(255)")
+    private String password;
+
+    @Column(name="text",columnDefinition = "TEXT")
     private String text;
 
     @CreationTimestamp
-    @Column(name="post_date")
+    @Column(name="date")
     private LocalDateTime date;
 
     public Post() {
