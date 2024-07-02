@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout :: head">
+    <!--  헤드 공간  -->
+</head>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+
+<div class="d-flex align-items-center py-4 bg-body-tertiary main">
+    <div class="form-signin w-100 m-auto">
+        <form id="bookCreateForm" method="post">
+            <div ></div>
+            <div class="mb-3">
+                <input type="text" id="title" name="title" class="form-control" placeholder="title">
+            </div>
+            <div class="mb-3">
+                <input type="text" id="author" name="author" class="form-control" placeholder="author">
+            </div>
+            <div class="mb-3">
+                <input type="text" id="publisher" name="publisher" class="form-control" placeholder="publisher">
+            </div>
+            <div class="mb-3">
+                <input type="text" id="language" name="language" class="form-control" placeholder="language">
+            </div>
+        </form>
+        <button class="btn btn-danger" style="width:100%" onclick="addBook()">Add</button>
+    </div>
+</div>
+
+<!-- 목록-->
+<div class="b-example-divider"></div>
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+<script>
+    function addBook() {
+        let title = $('#title').val();
+        let author = $('#author').val();
+        let language = $('#language').val();
+        let publisher = $('#publisher').val();
+
+        let data = {
+            'title': title,
+            'author': author,
+            'language': language,
+            'publisher': publisher,
+        };
+        $.ajax({
+            url: '[[@{/books/add}]]', // 요기에
+            type : 'POST',
+            async : false,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response) {
+                console.log(response);
+                alert('도서가 추가되었습니다.');
+                window.location.href = '[[@{/books}]]';
+            },
+            error: function (xhr, status) {
+              alert(xhr + " : " + status);
+            }
+        });
+    }
+</script>
+<!--common script -->
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>

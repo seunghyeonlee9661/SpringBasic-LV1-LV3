@@ -1,5 +1,4 @@
 package com.example.SpringBoard.config;
-import com.example.SpringBoard.handler.CustomAuthSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,20 +22,34 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
-            .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                    .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-            .csrf((csrf) -> csrf
-                    .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
-            .headers((headers) -> headers
-                    .addHeaderWriter(new XFrameOptionsHeaderWriter(
-                            XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-            .formLogin((formLogin) -> formLogin
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/login"))
-                    .logout((logout) -> logout
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/")
-                    .invalidateHttpSession(true));
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers((headers) -> headers
+                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
+                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/login"))
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true));
+//        http
+//            .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+//                    .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+//            .csrf((csrf) -> csrf
+//                    .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
+//            .headers((headers) -> headers
+//                    .addHeaderWriter(new XFrameOptionsHeaderWriter(
+//                            XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+//            .formLogin((formLogin) -> formLogin
+//                    .loginPage("/login")
+//                    .defaultSuccessUrl("/login"))
+//                    .logout((logout) -> logout
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                    .logoutSuccessUrl("/")
+//                    .invalidateHttpSession(true));
         return http.build();
     }
 
