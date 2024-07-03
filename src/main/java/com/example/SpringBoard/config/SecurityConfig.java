@@ -15,6 +15,10 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/*
+Spring Security 설정을 위한 기능
+ */
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
@@ -24,7 +28,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) // CSRF 설정되어 있지 않음 !!! 주의 !!!
+//               .csrf((csrf) -> csrf
+//                     .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
@@ -35,38 +41,11 @@ public class SecurityConfig {
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true));
-//        http
-//            .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-//                    .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-//            .csrf((csrf) -> csrf
-//                    .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
-//            .headers((headers) -> headers
-//                    .addHeaderWriter(new XFrameOptionsHeaderWriter(
-//                            XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-//            .formLogin((formLogin) -> formLogin
-//                    .loginPage("/login")
-//                    .defaultSuccessUrl("/login"))
-//                    .logout((logout) -> logout
-//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                    .logoutSuccessUrl("/")
-//                    .invalidateHttpSession(true));
         return http.build();
     }
 
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-        handler.setUseReferer(true); // 리퍼러 사용 설정
-        return handler;
-    }
-
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
     }
 }

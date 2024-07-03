@@ -11,13 +11,17 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+/*
+이노베이션 캠프 LV-1 : 익명 게시판
+ */
+
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/posts")
 public class PostController {
-
     private final PostService postService;
 
+    /*게시물 목록 페이지 */
     @GetMapping("")
     public String boards(Model model,@RequestParam(value="page", defaultValue="0") int page,@RequestParam(value="sort", defaultValue="0") int sort,@RequestParam(value = "kw", defaultValue = "") String kw,@RequestParam(value = "option", defaultValue = "title") String option) {
         model.addAttribute("menu","posts");
@@ -29,12 +33,14 @@ public class PostController {
         return "posts/posts";
     }
 
+    /*게시물 작성 페이지 */
     @GetMapping("/write")
     public String write(Model model, PostWriteForm postWriteForm) {
         model.addAttribute("menu","posts");
         return "posts/write";
     }
 
+    /*게시물 작성 */
     @PostMapping("/write")
     public String write(@Valid PostWriteForm postWriteForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -44,6 +50,7 @@ public class PostController {
         return "redirect:/posts/detail/" + post.getId();
     }
 
+    /*게시물 상세보기 */
     @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
         Post post = this.postService.getPost(id);
@@ -52,6 +59,7 @@ public class PostController {
         return "posts/detail";
     }
 
+    /*게시물 수정 페이지 */
     @GetMapping(value = "/edit/{id}")
     public String edit(Model model, @PathVariable("id") Integer id, PostWriteForm postWriteForm) {
         Post post = this.postService.getPost(id);
@@ -63,6 +71,7 @@ public class PostController {
         return "posts/write";
     }
 
+    /*게시물 수정 */
     @PostMapping("/edit/{id}")
     public String edit(Model model,@Valid PostWriteForm postWriteForm, BindingResult bindingResult,@PathVariable("id") Integer id) {
         if (bindingResult.hasErrors()) {
@@ -74,6 +83,7 @@ public class PostController {
         return String.format("redirect:/posts/detail/%s",id);
     }
 
+    /*게시물 삭제 */
     @GetMapping("/delete/{id}")
     public String questionDelete(@PathVariable("id") Integer id) {
         Post post = this.postService.getPost(id);

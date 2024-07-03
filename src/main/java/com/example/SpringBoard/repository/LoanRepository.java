@@ -1,21 +1,21 @@
 package com.example.SpringBoard.repository;
 
-import com.example.SpringBoard.DTO.LoanResponseDTO;
-import com.example.SpringBoard.entity.Book;
 import com.example.SpringBoard.entity.Loan;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+/*
+이노베이션 캠프 LV-2 : 대출 내역 Repository
+ */
 
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Integer> {
     List<Loan> findByMemberIdOrderByLoanDateDesc(String memberId);
+    List<Loan> findByLoanDateBetween(Date startDate, Date endDate);
+    Optional<Loan> findTopByMemberIdOrderByReturnDateDesc(String memberId);
     Optional<Loan> findTopByBookIdOrderByLoanDateDesc(int bookid);
-
 }

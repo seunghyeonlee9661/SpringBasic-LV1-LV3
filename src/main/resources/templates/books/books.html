@@ -87,10 +87,21 @@
             </div>
             <div class="modal-body">
                 <!-- 검색창 -->
-                <div class="input-group p-2" style="max-width:300px;">
-                    <input type="text" class="form-control" id="searchLoan" placeholder="Search" >
-                    <button class="btn btn-secondary" type="button" id="btn_search" onclick="searchLoan()"><i class="bi bi-search"></i></button>
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group p-2" style="max-width:300px;">
+                            <input type="text" class="form-control" id="searchLoan" placeholder="Search" >
+                            <button class="btn btn-secondary" type="button" id="btn_search" onclick="searchLoan()"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group" role="group" aria-label="Sort Loans">
+                            <button type="button" class="btn btn-primary active" id="sortByLoanDate">Loaned</button>
+                            <button type="button" class="btn btn-primary" id="sortByReturnDate">All</button>
+                        </div>
+                    </div>
                 </div>
+
                 <!-- 결과창 -->
                 <div>
                     <table class="table">
@@ -120,6 +131,7 @@
 <div th:replace="layout :: footer"></div>
 
 <script>
+    // 페이지네이션 버튼 기능
     const page_elements = document.getElementsByClassName("page-link");
         Array.from(page_elements).forEach(function(element) {
         element.addEventListener('click', function() {
@@ -128,21 +140,43 @@
         });
     });
 
+    // 정렬 기능 버튼 활성화 및 불러오기
+    $('#sortByLoanDate').click(function() {
+        $(this).addClass('active');
+        $('#sortByReturnDate').removeClass('active');
+        searchLoan();
+    });
+
+    // 정렬 기능 버튼 활성화 및 불러오기
+    $('#sortByReturnDate').click(function() {
+        $(this).addClass('active');
+        $('#sortByLoanDate').removeClass('active');
+        searchLoan();
+    });
+
+    // 사용자 대출 내역 목록
     function searchLoan(){
         let id = $('#searchLoan').val();
-        console.log(id);
+
+        // 대출 내역 조건 설정
+        let sort;
+        if ($('#sortByReturnDate').hasClass('active')) { sort = true; } else { sort = false; }
 
         $.ajax({
             url: '[[@{/books/loan}]]', // 요기에
             type : 'POST',
             contentType: "application/json",
-            data: JSON.stringify({'id':id }),
+            data: JSON.stringify({
+                'id': id,
+                'sort': sort
+            }),
             success: function(response) {
                 // 응답 결과를 처리하여 모달 내부에 표시
                 let tableBody = $('#loanModal .table tbody');
                 tableBody.empty(); // 기존 내용을 지움
                 if (response.length > 0) {
                     response.forEach(function(loan) {
+                        // 날짜값 포맷 변경
                         let loanDate = new Date(loan.loanDate).toLocaleString('en-GB', {
                             year: 'numeric',
                             month: '2-digit',
@@ -150,7 +184,7 @@
                             hour: '2-digit',
                             minute: '2-digit',
                         });
-
+                        // 날짜값 포맷 변경
                         let returnDate = loan.returnDate
                             ? new Date(loan.returnDate).toLocaleString('en-GB', {
                                 year: 'numeric',
@@ -158,8 +192,8 @@
                                 day: '2-digit',
                                 hour: '2-digit',
                                 minute: '2-digit',
-                        })
-                        : 'Not Returned';
+                        }) : 'Not Returned';
+                        // 테이블 값 추가
                         let row = `<tr>
                             <td>${loan.id}</td>
                             <td>${loan.bookTitle}</td>
@@ -168,7 +202,7 @@
                         </tr>`;
                         tableBody.append(row);
                     });
-                } else {
+                } else { // 데이터가 하나도 없을 경우
                     let row = `<tr><td colspan="5">No loans found.</td></tr>`;
                     tableBody.append(row);
                 }

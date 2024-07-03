@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+이노베이션 캠프 LV-2 : 도서 Entity
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -43,6 +47,7 @@ public class Book {
     @Builder.Default
     private List<Loan> loan = new ArrayList<>();
 
+    @Transient
     private boolean loanable;
 
     public Book() {

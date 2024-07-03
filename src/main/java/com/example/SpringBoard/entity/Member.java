@@ -1,17 +1,17 @@
 package com.example.SpringBoard.entity;
-
-import com.example.SpringBoard.DTO.BookRequestDTO;
 import com.example.SpringBoard.DTO.MemberRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+/*
+이노베이션 캠프 LV-2 : 도서 회원 Entity
+ */
 
 @Getter
 @Setter

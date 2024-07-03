@@ -11,6 +11,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/*
+자원 파일 관리를 위한 설정
+ */
+
 @Configuration
 public class MVCConfiguration implements WebMvcConfigurer {
 

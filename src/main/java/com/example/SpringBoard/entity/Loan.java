@@ -1,6 +1,5 @@
 package com.example.SpringBoard.entity;
 
-import com.example.SpringBoard.DTO.BookRequestDTO;
 import com.example.SpringBoard.DTO.LoanRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,8 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
+
+/*
+이노베이션 캠프 LV-2 : 대출 Entity
+ */
 
 @Getter
 @Setter

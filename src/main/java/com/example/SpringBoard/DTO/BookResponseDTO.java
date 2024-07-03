@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class BookResponseDTO {
-    private int id;
-    private String title;
-    private String author;
-    private String language;
-    private String publisher;
-    private LocalDateTime registDate;
+    private final int id;
+    private final String title;
+    private final String author;
+    private final String language;
+    private final String publisher;
+    private final LocalDateTime registDate;
 
     public BookResponseDTO(Book book){
         this.id = book.getId();

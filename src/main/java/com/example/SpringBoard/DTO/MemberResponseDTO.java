@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 public class MemberResponseDTO {
-    private String id;
-    private String name;
-    private String gender;
-    private String phoneNumber;
-    private String address;
+    private final String id;
+    private final String name;
+    private final String gender;
+    private final String phoneNumber;
+    private final String address;
 
     public MemberResponseDTO(String id, String name, String gender, String phoneNumber, String address) {
         this.id = id;

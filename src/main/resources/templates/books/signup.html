@@ -8,52 +8,60 @@
 <header th:replace="layout :: nav"></header>
 
 <div class="d-flex align-items-center py-4 bg-body-tertiary main">
-    <div class="form-signin w-100 m-auto">
-        <form id="bookCreateForm" method="post">
+    <div class="form-signin w-100 m-auto" style="max-width:600px">
+        <form id="bookCreateForm" class="needs-validation" method="post" novalidate>
             <h4>Sign up</h4>
             <!-- 주민등록번호 -->
             <div class="mb-3 row">
+                <label for="id1" class="form-label">주민등록번호</label>
                 <div class="col">
-                    <input type="number" id="id1" name="id1" class="form-control" placeholder="주민등록번호"  maxlength="6" oninput="maxLengthCheck(this)">
+                    <input type="number" id="id1" name="id1" class="form-control" maxlength="6" oninput="maxLengthCheck(this)" required>
                 </div>
                 <div class="col">
-                    <input type="password" id="id2"  inputmode="numeric" name="id2" class="form-control input-number-password" maxlength="7" oninput="maxLengthCheck(this)">
+                    <input type="password" id="id2" inputmode="numeric" name="id2" class="form-control input-number-password" maxlength="7" oninput="maxLengthCheck(this)" required>
                 </div>
-           </div>
+            </div>
+            <hr>
             <!-- 이름 -->
             <div class="mb-3">
-                <input type="text" id="name" name="name" class="form-control" placeholder="name">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required>
             </div>
+            <hr>
             <!-- 성별 -->
             <div class="mb-3 row">
                 <div class="form-check col-6">
-                    <input class="form-check-input" type="radio" name="gender" id="female" value="M" >
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="M" required>
                     <label class="form-check-label" for="female">
                         남성
                     </label>
                 </div>
                 <div class="form-check col-6">
-                    <input class="form-check-input" type="radio" name="gender" id="male" value="F">
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="F" required>
                     <label class="form-check-label" for="male">
                         여성
                     </label>
                 </div>
             </div>
+            <hr>
             <!-- 전화번호 -->
             <div class="mb-3 row">
+                <label for="phone1" class="form-label">Phone</label>
                 <div class="col">
-                    <input type="number" id="phone1" name="phone1" class="form-control" maxlength="3" oninput="maxLengthCheck(this)">
+                    <input type="number" id="phone1" name="phone1" class="form-control" maxlength="3" oninput="maxLengthCheck(this)" required>
                 </div>
                 <div class="col">
-                    <input type="number" id="phone2" name="phone2" class="form-control" maxlength="4" oninput="maxLengthCheck(this)">
+                    <input type="number" id="phone2" name="phone2" class="form-control" maxlength="4" oninput="maxLengthCheck(this)" required>
                 </div>
                 <div class="col">
-                    <input type="number" id="phone3" name="phone3" class="form-control" maxlength="4" oninput="maxLengthCheck(this)">
+                    <input type="number" id="phone3" name="phone3" class="form-control" maxlength="4" oninput="maxLengthCheck(this)" required>
                 </div>
             </div>
+            <hr>
             <!-- 주소 -->
             <div class="mb-3">
-                <input type="text" id="address" name="address" class="form-control" placeholder="Address">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" id="address" name="address" class="form-control" placeholder="Address" required>
             </div>
         </form>
         <button class="btn btn-danger" style="width:100%" onclick="addMember()">Add</button>
@@ -65,43 +73,61 @@
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
 <script>
+    // 회원 추가 요청
     function addMember() {
-        let id = $('#id1').val() + $('#id2').val();
-        let name = $('#name').val();
-        let gender = $(":input:radio[name=gender]:checked").val();
-        let phoneNumber = $('#phone1').val() + $('#phone2').val() + $('#phone3').val();
-        let address = $('#address').val();
+        // Bootstrap 입력 검사 기능
+        var form = document.getElementById('bookCreateForm');
 
-        let data = {
-            'id': id,
-            'name': name,
-            'gender': gender,
-            'phoneNumber': phoneNumber,
-            'address': address,
-        };
-        console.log(data);
+        // 폼 유효성 검사
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        } else { // 유효성 검사를 통과한 경우에만 AJAX 요청을 보냄
+            let id = $('#id1').val() + $('#id2').val();
+            let name = $('#name').val();
+            let gender = $(":input:radio[name=gender]:checked").val();
+            let phoneNumber = $('#phone1').val() + $('#phone2').val() + $('#phone3').val();
+            let address = $('#address').val();
 
-        $.ajax({
-            url: '[[@{/books/signup}]]', // 요기에
-            type : 'POST',
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (response) {
-                console.log(response);
-                alert('사용자가 추가되었습니다.');
-                window.location.href = '[[@{/books}]]';
-            },
-            error: function (xhr, status) {
-              alert(xhr + " : " + status);
-            }
-        });
+            $.ajax({
+                url: '[[@{/books/signup}]]', // 요기에
+                type : 'POST',
+                contentType: "application/json",
+                data: JSON.stringify({
+                    'id': id,
+                    'name': name,
+                    'gender': gender,
+                    'phoneNumber': phoneNumber,
+                    'address': address,
+                };),
+                success: function (response) {
+                    alert('사용자가 추가되었습니다.');
+                    window.location.href = '[[@{/books}]]';
+                },
+                error: function (xhr, status) {
+                    if (xhr.status === 409) {
+                        alert('중복된 회원이 있습니다: ' + xhr.responseText);
+                    } else {
+                        alert('오류가 발생했습니다: ' + xhr.responseText);
+                    }
+                }
+            });
+        }
+        // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
+        form.classList.add('was-validated');
     }
 
-      function maxLengthCheck(object){
-    if (object.value.length > object.maxLength){
-      object.value = object.value.slice(0, object.maxLength);
+    // 폼 제출을 막고 addBook() 함수가 실행되도록 설정
+    document.getElementById('bookCreateForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        addBook();
+    });
+
+    function maxLengthCheck(object){
+        if (object.value.length > object.maxLength){
+            object.value = object.value.slice(0, object.maxLength);
+        }
     }
-  }
 </script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>

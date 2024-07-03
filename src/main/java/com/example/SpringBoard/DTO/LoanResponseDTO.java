@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class LoanResponseDTO {
-    private int id;
-    private int bookid;
-    private String bookTitle;
-    private String memberid;
-    private LocalDateTime loanDate;
-    private LocalDateTime returnDate;
+    private final int id;
+    private final int bookid;
+    private final String bookTitle;
+    private final String memberid;
+    private final LocalDateTime loanDate;
+    private final LocalDateTime returnDate;
 
     public LoanResponseDTO(int id, Book book, Member member, LocalDateTime loanDate, LocalDateTime returnDate) {
         this.id = id;
