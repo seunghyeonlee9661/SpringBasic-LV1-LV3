@@ -24,7 +24,7 @@ public class BookService {
     }
 
     public Page<Book> getBooks(int page) {// DB 조회
-        Pageable pageable = PageRequest.of(page, 10,Sort.by("registDate").descending());
+        Pageable pageable = PageRequest.of(page, 10,Sort.by("id").descending());
         return bookRepository.findAll(pageable);
     }
 
@@ -35,8 +35,7 @@ public class BookService {
     }
 
     public Book getBook(int id){
-        return bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
-        );
+        return bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("선택한 도서는 존재하지 않습니다."));
     }
 
 }

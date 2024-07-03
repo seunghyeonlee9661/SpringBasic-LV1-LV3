@@ -1,7 +1,9 @@
 package com.example.SpringBoard.DTO;
 
 import com.example.SpringBoard.entity.Member;
+import lombok.Getter;
 
+@Getter
 public class MemberResponseDTO {
     private String id;
     private String name;

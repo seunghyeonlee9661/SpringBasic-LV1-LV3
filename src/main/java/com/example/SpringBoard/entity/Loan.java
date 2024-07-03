@@ -1,5 +1,7 @@
 package com.example.SpringBoard.entity;
 
+import com.example.SpringBoard.DTO.BookRequestDTO;
+import com.example.SpringBoard.DTO.LoanRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "Loan")
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +38,13 @@ public class Loan {
     private LocalDateTime returnDate;
 
     public Loan() {
+    }
+
+    public Loan(LoanRequestDTO requestDto) {
+        this.id = requestDto.getId();
+        this.book = requestDto.getBook();
+        this.member = requestDto.getMember();
+        this.loanDate = requestDto.getLoanDate();
+        this.returnDate = requestDto.getReturnDate();
     }
 }

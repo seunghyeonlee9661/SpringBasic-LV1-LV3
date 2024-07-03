@@ -65,3 +65,7 @@
 a{
   text-decoration-line: none;
 }
+
+.input-number-password {
+    -webkit-text-security: disc;
+}

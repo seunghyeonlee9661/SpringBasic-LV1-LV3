@@ -9,8 +9,18 @@
 <div class="d-flex py-4 bg-body-tertiary main">
     <div class="container my-5">
         <!-- 메뉴 기능 -->
-        <div class="hstack gap-3">
+        <div class="hstack gap-0">
             <div class="p-2 ms-auto">
+                <a class="btn btn-warning me-2" th:href="@{/books/signup}">
+                    <i class="bi bi-person-fill-add"></i>
+                </a>
+            </div>
+            <div class="p-2">
+                <a class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#loanModal">
+                    <i class="bi bi-book-half"></i>
+                </a>
+            </div>
+            <div class="p-2">
                 <a class="btn btn-warning me-2" th:href="@{/books/add}">
                     <i class="bi bi-plus-circle-fill"></i>
                 </a>
@@ -21,10 +31,10 @@
             <thead>
             <tr>
                 <th style="width:10%">#</th>
-                <th style="width:15%">제목</th>
+                <th style="width:30%">제목</th>
                 <th style="width:15%">작가</th>
-                <th style="width:30%">언어</th>
-                <th style="width:20%">출판사</th>
+                <th style="width:10%">언어</th>
+                <th style="width:15%">출판사</th>
                 <th style="width:20%">등록일</th>
             </tr>
             </thead>
@@ -67,6 +77,41 @@
     <input type="hidden" id="page" name="page" th:value="${paging.number}">
 </form>
 
+<!-- 대출 목록 조회 모달 -->
+<div class="modal fade" id="loanModal" tabindex="-1" aria-labelledby="loanModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="loanModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 검색창 -->
+                <div class="input-group p-2" style="max-width:300px;">
+                    <input type="text" class="form-control" id="searchLoan" placeholder="Search" >
+                    <button class="btn btn-secondary" type="button" id="btn_search" onclick="searchLoan()"><i class="bi bi-search"></i></button>
+                </div>
+                <!-- 결과창 -->
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Book Title</th>
+                            <th>Loan Date</th>
+                            <th>Return Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- AJAX 성공 후 데이터가 여기에 추가됩니다 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <!-- 목록-->
@@ -82,6 +127,57 @@
             document.getElementById('searchForm').submit();
         });
     });
+
+    function searchLoan(){
+        let id = $('#searchLoan').val();
+        console.log(id);
+
+        $.ajax({
+            url: '[[@{/books/loan}]]', // 요기에
+            type : 'POST',
+            contentType: "application/json",
+            data: JSON.stringify({'id':id }),
+            success: function(response) {
+                // 응답 결과를 처리하여 모달 내부에 표시
+                let tableBody = $('#loanModal .table tbody');
+                tableBody.empty(); // 기존 내용을 지움
+                if (response.length > 0) {
+                    response.forEach(function(loan) {
+                        let loanDate = new Date(loan.loanDate).toLocaleString('en-GB', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        });
+
+                        let returnDate = loan.returnDate
+                            ? new Date(loan.returnDate).toLocaleString('en-GB', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                        })
+                        : 'Not Returned';
+                        let row = `<tr>
+                            <td>${loan.id}</td>
+                            <td>${loan.bookTitle}</td>
+                            <td>${loanDate}</td>
+                            <td>${returnDate}</td>
+                        </tr>`;
+                        tableBody.append(row);
+                    });
+                } else {
+                    let row = `<tr><td colspan="5">No loans found.</td></tr>`;
+                    tableBody.append(row);
+                }
+            },
+            error: function (xhr, status) {
+              alert(xhr + " : " + status);
+            }
+        });
+    }
 </script>
 
 <!--common script -->

@@ -1,17 +1,24 @@
 package com.example.SpringBoard.Controller;
 
-import com.example.SpringBoard.DTO.BookRequestDTO;
-import com.example.SpringBoard.DTO.BookResponseDTO;
+import com.example.SpringBoard.DTO.*;
 import com.example.SpringBoard.entity.Book;
-import com.example.SpringBoard.entity.Post;
+import com.example.SpringBoard.entity.Loan;
+import com.example.SpringBoard.entity.Member;
 import com.example.SpringBoard.form.PostWriteForm;
 import com.example.SpringBoard.service.BookService;
+import com.example.SpringBoard.service.LoanService;
+import com.example.SpringBoard.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,23 +26,20 @@ import org.springframework.web.servlet.ModelAndView;
 public class BookController {
 
     private final BookService bookService;
+    private final MemberService memberService;
+    private final LoanService loanService;
 
     @GetMapping("")
     public String boards(Model model,@RequestParam(value="page", defaultValue="0") int page) {
         model.addAttribute("menu","books");
         Page<Book> paging = this.bookService.getBooks(page);
         model.addAttribute("paging", paging);
-
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("books/books");
         return "books/books";
     }
 
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("menu","books");
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("books/add");
         return "books/add";
     }
 
@@ -45,46 +49,74 @@ public class BookController {
         return bookService.create(bookRequestDTO);
     }
 
-    @GetMapping("/detail/{id}")
-    public String detail(Model model,@PathVariable("id") Integer id) {
-        model.addAttribute("menu","books");
-        return "books/add";
-    }
-
-    @ResponseBody
-    @PostMapping("/detail/{id}/loan")
-    public String loan(@PathVariable("id") Integer id) {
-        return "books/add";
-    }
-
-    @ResponseBody
-    @PostMapping("/detail/{id}/return")
-    public String returnBook(@PathVariable("id") Integer id) {
-        return "books/add";
-    }
-
     @GetMapping("/signup")
     public String signup(Model model, PostWriteForm postWriteForm) {
         model.addAttribute("menu","books");
-        return "posts/signup";
+        return "books/signup";
     }
 
     @ResponseBody
     @PostMapping("/signup")
-    public String signup(PostWriteForm postWriteForm) {
-        return "posts/signup";
+    public MemberResponseDTO signup(@RequestBody MemberRequestDTO memberRequestDTO) {
+        return memberService.create(memberRequestDTO);
     }
 
-    @GetMapping("/loan")
-    public String loan(Model model, PostWriteForm postWriteForm) {
+    @GetMapping("/detail/{id}")
+    public String detail(Model model,@PathVariable("id") Integer id) {
+        Book book = this.bookService.getBook(id);
+        book.setLoanable(this.loanService.checkLoanable(id));
+        model.addAttribute("book", book);
         model.addAttribute("menu","books");
-        return "posts/signup";
+        return "books/detail";
+    }
+
+    @ResponseBody
+    @PostMapping("/detail/{id}/loan")
+    public Map<String, Object> loanBook(@PathVariable("id") Integer id,@RequestBody Map<String,String> param) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Optional<Member> member = memberService.getMember((String)param.get("member"));
+        if(member.isEmpty()){
+            resultMap.put("result","Wrong Member ID");
+        }else{
+            Book book = bookService.getBook(id);
+            if(book == null){
+                resultMap.put("result","Book does not exist");
+            }else{
+                if(loanService.create(new LoanRequestDTO((Member) member.get(),book))){
+                    resultMap.put("result","success");
+                }else{
+                    resultMap.put("result","Add Fail!");
+                }
+            }
+        }
+        return resultMap;
+    }
+
+    @ResponseBody
+    @PostMapping("/detail/{id}/return")
+    public Map<String, Object> returnBook(@PathVariable("id") Integer id, @RequestBody Map<String,String> param) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (loanService.setReturn(id)){
+            resultMap.put("result","success");
+        } else {
+            resultMap.put("result","Return Fail!");
+        }
+        return resultMap;
     }
 
     @ResponseBody
     @PostMapping("/loan")
-    public String search(PostWriteForm postWriteForm) {
-        return "posts/signup";
+    public List<LoanResponseDTO> search(Model model,@RequestBody Map<String,String> param) {
+        List<Loan> loans = this.loanService.getLoans((String)param.get("id"));
+//        for(Loan loan : loans){
+//            System.out.println(loan.getId());
+//            System.out.println(loan.getBook().getTitle());
+//            System.out.println(loan.getMember().getName());
+//            System.out.println(loan.getLoanDate());
+//            System.out.println(loan.getReturnDate());
+//            System.out.println("_____________________");
+//        }
+        return loans.stream().map(LoanResponseDTO::new).collect(Collectors.toList());
     }
 
 //

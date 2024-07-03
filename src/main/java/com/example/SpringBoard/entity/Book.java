@@ -17,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "Book")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +43,8 @@ public class Book {
     @Builder.Default
     private List<Loan> loan = new ArrayList<>();
 
+    private boolean loanable;
+
     public Book() {
     }
 
@@ -53,6 +54,5 @@ public class Book {
         this.language = requestDto.getLanguage();
         this.publisher = requestDto.getPublisher();
         this.registDate = requestDto.getRegistDate();
-
     }
 }

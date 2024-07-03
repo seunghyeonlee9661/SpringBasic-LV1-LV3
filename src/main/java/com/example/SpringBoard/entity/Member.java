@@ -1,5 +1,7 @@
 package com.example.SpringBoard.entity;
 
+import com.example.SpringBoard.DTO.BookRequestDTO;
+import com.example.SpringBoard.DTO.MemberRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "Member")
 public class Member {
     @Id
     @Column(name="id", nullable = false, columnDefinition = "varchar(50)")
@@ -39,5 +40,14 @@ public class Member {
     private List<Loan> loan = new ArrayList<>();
 
     public Member() {
+    }
+
+    public Member(MemberRequestDTO requestDto) {
+        this.id = requestDto.getId();
+        this.name = requestDto.getName();
+        this.gender = requestDto.getGender();
+        this.phoneNumber = requestDto.getPhoneNumber();
+        this.address = requestDto.getAddress();
+
     }
 }
