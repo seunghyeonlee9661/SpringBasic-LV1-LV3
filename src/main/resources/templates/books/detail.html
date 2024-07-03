@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout :: head">
+    <!--  헤드 공간  -->
+</head>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+<div class="d-flex py-4 bg-body-tertiary main" style="position:relative;">
+    <div class="container my-5">
+        <div class="col">
+            <!-- 뒤로가기 버튼-->
+            <a type="button" th:href="@{/books}" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill"></i></a>
+            <h1 class="p-2 display-5 link-body-emphasis mb-1" th:text="${book.title}"></h1>
+            <hr>
+            <div class="hstack gap-3">
+                <p class="p-2 blog-post-meta" th:text="${book.author}"></p>
+                <p class="p-2 blog-post-meta" th:text="${book.language}"></p>
+                <p class="p-2 blog-post-meta" th:text="${book.publisher}"></p>
+                <p class="p-2 blog-post-meta" th:text="${#temporals.format(book.registDate, 'yyyy-MM-dd HH:mm')}"></p>
+            </div>
+            <!-- 현재 대출 가능 상태에 따라 대출과 반납 버튼을 결정 -->
+            <a class="btn btn-warning me-2" th:data-uri="${book.loanable}?@{|/books/detail/${book.id}/loan|}:@{|/books/detail/${book.id}/return|}" th:text="${book.loanable}?'대출하기':'반납하기'" onclick="checkID(this);"></a>
+        </div>
+    </div>
+</div>
+
+
+<!-- 목록-->
+<div class="b-example-divider"></div>
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+<script>
+    // 주민등록번호를 입력받아 처리 과정을 진행
+    function checkID(e){
+        var member = prompt("주민등록번호를 입력해주세요");
+        $.ajax({
+            url: e.dataset.uri, // 요기에
+            type : 'POST',
+            contentType: "application/json",
+            data: JSON.stringify({'member': member }),
+            success: function(response) {
+                // 응답 결과 처리
+                if (response.result === 'success') {
+                    location.href = location.href;
+                } else {
+                    alert('Error: ' + response.result);
+                }
+            },
+            error: function(xhr, status, error) {
+                // AJAX 요청이 실패했을 때 처리
+                alert('AJAX request failed: ' + error);
+            }
+        });
+    }
+</script>
+<!--common script -->
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>

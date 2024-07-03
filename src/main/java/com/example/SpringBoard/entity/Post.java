@@ -6,6 +6,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+/*
+이노베이션 캠프 LV-1 : 게시물 Entity
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

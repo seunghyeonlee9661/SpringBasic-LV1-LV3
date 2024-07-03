@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+/*
+이노베이션 캠프 LV-1 : 게시물 작성 폼
+ */
+
 @Getter
 @Setter
 public class PostWriteForm {
