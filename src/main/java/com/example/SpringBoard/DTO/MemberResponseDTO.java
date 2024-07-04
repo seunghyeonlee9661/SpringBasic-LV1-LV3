@@ -5,14 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class MemberResponseDTO {
-    private final String id;
     private final String name;
     private final String gender;
     private final String phoneNumber;
     private final String address;
 
-    public MemberResponseDTO(String id, String name, String gender, String phoneNumber, String address) {
-        this.id = id;
+    public MemberResponseDTO(String name, String gender, String phoneNumber, String address) {
         this.name = name;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
@@ -20,7 +18,6 @@ public class MemberResponseDTO {
     }
 
     public MemberResponseDTO(Member member) {
-        this.id = member.getId();
         this.name = member.getName();
         this.gender = member.getGender();
         this.phoneNumber = member.getPhoneNumber();

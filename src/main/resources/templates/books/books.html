@@ -30,7 +30,8 @@
         <table class="table" style="table-layout: fixed">
             <thead>
             <tr>
-                <th style="width:10%">#</th>
+                <th style="width:5%">#</th>
+                <th style="width:5%"></th>
                 <th style="width:30%">제목</th>
                 <th style="width:15%">작가</th>
                 <th style="width:10%">언어</th>
@@ -41,6 +42,9 @@
             <tbody>
             <tr th:each="book : ${paging}">
                 <td th:text="${book.id}"></td>
+
+
+                <td ><span class="badge" th:classappend="${book.loanable}? 'text-bg-success' : 'text-bg-danger'" th:text="${book.loanable}? '가능' : '불가'"></span> </td>
                 <td ><a th:href="@{|/books/detail/${book.id}|}" th:text="${book.title}"></a></td>
                 <td th:text="${book.author}"></td>
                 <td th:text="${book.language}"></td>
@@ -87,7 +91,7 @@
             </div>
             <div class="modal-body">
                 <!-- 검색창 -->
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col">
                         <div class="input-group p-2" style="max-width:300px;">
                             <input type="text" class="form-control" id="searchLoan" placeholder="Search" >
@@ -95,22 +99,24 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="btn-group" role="group" aria-label="Sort Loans">
-                            <button type="button" class="btn btn-primary active" id="sortByLoanDate">Loaned</button>
-                            <button type="button" class="btn btn-primary" id="sortByReturnDate">All</button>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="loanSwitch">
+                            <label class="form-check-label" for="loanSwitch">반납한 도서 제외하기</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- 결과창 -->
                 <div>
-                    <table class="table">
+                    <table class="table" style="table-layout: fixed">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Book Title</th>
-                            <th>Loan Date</th>
-                            <th>Return Date</th>
+                            <th style="width:10%">이름</th>
+                            <th style="width:20%">전화번호</th>
+                            <th style="width:20%">제목</th>
+                            <th style="width:20%">저자</th>
+                            <th style="width:15%">대출일</th>
+                            <th style="width:15%">반납일</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -140,31 +146,21 @@
         });
     });
 
-    // 정렬 기능 버튼 활성화 및 불러오기
-    $('#sortByLoanDate').click(function() {
-        $(this).addClass('active');
-        $('#sortByReturnDate').removeClass('active');
-        searchLoan();
-    });
-
-    // 정렬 기능 버튼 활성화 및 불러오기
-    $('#sortByReturnDate').click(function() {
-        $(this).addClass('active');
-        $('#sortByLoanDate').removeClass('active');
+    // 스위치 상태에 따른 대출 내역 검색
+    $('#loanSwitch').change(function() {
         searchLoan();
     });
 
     // 사용자 대출 내역 목록
-    function searchLoan(){
+    function searchLoan() {
         let id = $('#searchLoan').val();
 
         // 대출 내역 조건 설정
-        let sort;
-        if ($('#sortByReturnDate').hasClass('active')) { sort = true; } else { sort = false; }
+        let sort = $('#loanSwitch').is(':checked'); // 스위치가 켜져 있으면 true, 꺼져 있으면 false
 
         $.ajax({
             url: '[[@{/books/loan}]]', // 요기에
-            type : 'POST',
+            type: 'POST',
             contentType: "application/json",
             data: JSON.stringify({
                 'id': id,
@@ -181,8 +177,6 @@
                             year: 'numeric',
                             month: '2-digit',
                             day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
                         });
                         // 날짜값 포맷 변경
                         let returnDate = loan.returnDate
@@ -190,13 +184,14 @@
                                 year: 'numeric',
                                 month: '2-digit',
                                 day: '2-digit',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                        }) : 'Not Returned';
+                        }) : '';
+                        let url = '/books/detail/' + loan.bookid;
                         // 테이블 값 추가
-                        let row = `<tr>
-                            <td>${loan.id}</td>
-                            <td>${loan.bookTitle}</td>
+                        let row = `<tr style="font-size: 80%;">
+                            <td>${loan.membername}</td>
+                            <td>${loan.memberphone}</td>
+                            <td><a href=${url}>${loan.bookTitle}</a></td>
+                            <td>${loan.bookahthor}</td>
                             <td>${loanDate}</td>
                             <td>${returnDate}</td>
                         </tr>`;
@@ -207,11 +202,13 @@
                     tableBody.append(row);
                 }
             },
-            error: function (xhr, status) {
-              alert(xhr + " : " + status);
+            error: function(xhr, status) {
+                alert(xhr + " : " + status);
             }
         });
     }
+
+    searchLoan();
 </script>
 
 <!--common script -->

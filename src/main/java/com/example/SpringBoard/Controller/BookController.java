@@ -44,6 +44,11 @@ public class BookController {
         model.addAttribute("menu","books");
         /* 페이지네이션을 위해 도서 목록을 받아옵니다. */
         Page<Book> paging = this.bookService.getBooks(page);
+        /* 가져온 각 페이지 요소에 대출 가능 여부 적용 */
+        paging.forEach(book -> {
+            boolean isLoanable = this.loanService.checkLoanable(book.getId());
+            book.setLoanable(isLoanable);
+        });
         model.addAttribute("paging", paging);
         return "books/books";
     }
@@ -100,25 +105,29 @@ public class BookController {
         String member_id = (String)param.get("member");
 
         /* member값이 존재하는지 확인 */
-        Optional<Member> member = memberService.getMember(member_id);
-        if(member.isEmpty()){
+        Member member = memberService.getMember(member_id);
+        if(member == null){
             resultMap.put("result","사용자가 존재하지 않습니다");
         }else{
-            /* 도서가 존재하는지 확인 */
-            Book book = bookService.getBook(id);
-            if(book == null){
-                resultMap.put("result", "도서가 존재하지 않습니다.");
+            if(loanService.checkLoanable(member_id)){
+                resultMap.put("result","미납 도서가 있어 대출이 불가능합니다.");
             }else{
-                /* 현재 패널티 상태인지 확인 / 날씨 값이 있으면 패널티 상태 */
-                LocalDate date = loanService.checkPanerty(member_id);
-                if(date != null){
-                    resultMap.put("result","페널티 기간입니다." + date);
+                /* 도서가 존재하는지 확인 */
+                Book book = bookService.getBook(id);
+                if(book == null){
+                    resultMap.put("result", "도서가 존재하지 않습니다.");
                 }else{
-                    /* 대출 내역을 생성 */
-                    if(loanService.create(new LoanRequestDTO((Member) member.get(),book))){
-                        resultMap.put("result","success");
+                    /* 현재 패널티 상태인지 확인 / 날씨 값이 있으면 패널티 상태 */
+                    LocalDate date = loanService.checkPanerty(member_id);
+                    if(date != null){
+                        resultMap.put("result","페널티 기간입니다." + date);
                     }else{
-                        resultMap.put("result","도서 대출 실패!");
+                        /* 대출 내역을 생성 */
+                        if(loanService.create(new LoanRequestDTO(member,book))){
+                            resultMap.put("result","success");
+                        }else{
+                            resultMap.put("result","도서 대출 실패!");
+                        }
                     }
                 }
             }
@@ -137,8 +146,8 @@ public class BookController {
         String member_id = (String)param.get("member");
 
         /* member값이 존재하는지 확인 */
-        Optional<Member> member = memberService.getMember(member_id);
-        if(member.isEmpty()){
+        Member member = memberService.getMember(member_id);
+        if(member == null){
             resultMap.put("result","사용자가 존재하지 않습니다");
         }else {
             /* 도서가 존재하는지 확인 */

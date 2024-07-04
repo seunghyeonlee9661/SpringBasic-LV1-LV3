@@ -53,7 +53,7 @@
                 <td th:text="${post.id}"></td>
                 <td ><a th:href="@{|/posts/detail/${post.id}|}" th:text="${post.title}"></a></td>
                 <td th:text="${post.writer}"></td>
-                <td style="width:40%; overflow:hidden; white-space:nowrap;text-overflow:ellipsis;" th:text="${post.text}"></td>
+                <td style="overflow:hidden; white-space:nowrap;text-overflow:ellipsis;" th:text="${post.text}"></td>
                 <td th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             </tbody>
