@@ -36,8 +36,7 @@ public class MemberService {
     }
 
     /* 회원 주민등로번호로 회원 정보 호출 */
-    public Optional<Member> getMember(String id){
-        return memberRepository.findById(Integer.valueOf(id));
+    public Member getMember(String id) {
+        return memberRepository.findById(id).orElse(null);
     }
-
 }

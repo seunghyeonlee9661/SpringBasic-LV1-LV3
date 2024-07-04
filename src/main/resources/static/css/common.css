@@ -69,3 +69,12 @@ a{
 .input-number-password {
     -webkit-text-security: disc;
 }
+
+td,
+th{
+overflow:hidden; white-space:nowrap;text-overflow:ellipsis;
+}
+
+.modal-dialog{
+  max-width: 80vw;
+}

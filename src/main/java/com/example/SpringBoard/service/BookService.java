@@ -28,7 +28,7 @@ public class BookService {
     /* 페이지에 해당하는 도서 목록 불러오기 */
     public Page<Book> getBooks(int page) {// DB 조회
         Pageable pageable = PageRequest.of(page, 10,Sort.by("id").descending());
-        return bookRepository.findAll(pageable);
+        return bookRepository.findAllByOrderByRegistDateAsc(pageable);
     }
 
     /* 도서 추가 */
