@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout :: head">
+    <!--  헤드 공간  -->
+</head>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+<div class="d-flex py-4 bg-body-tertiary main">
+    <div class="container my-5">
+        <!-- 메뉴 기능 -->
+        <div class="hstack gap-0">
+            <div class="p-2 ms-auto">
+                <a class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                </a>
+            </div>
+            <div class="p-2">
+                <a class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#signupModal">
+                    <i class="bi bi-person-plus-fill"></i>
+                </a>
+            </div>
+        </div>
+        <!-- 강의 목록 -->
+        <table class="table" style="table-layout: fixed">
+            <thead>
+            <tr>
+                <th >#</th>
+                <th >제목</th>
+                <th >가격</th>
+                <th >강사</th>
+                <th >등록일</th>
+            </tr>
+            </thead>
+            <tbody>
+<!--            <tr th:each="book : ${paging}">-->
+<!--                <td th:text="${book.id}"></td>-->
+<!--                <td ><span class="badge" th:classappend="${book.loanable}? 'text-bg-success' : 'text-bg-danger'" th:text="${book.loanable}? '가능' : '불가'"></span> </td>-->
+<!--                <td ><a th:href="@{|/books/detail/${book.id}|}" th:text="${book.title}"></a></td>-->
+<!--                <td th:text="${book.author}"></td>-->
+<!--                <td th:text="${book.language}"></td>-->
+<!--                <td th:text="${book.publisher}"></td>-->
+<!--                <td th:text="${#temporals.format(book.registDate, 'yyyy-MM-dd HH:mm')}"></td>-->
+<!--            </tr>-->
+            </tbody>
+        </table>
+
+<!--        &lt;!&ndash; 페이지네이션 &ndash;&gt;-->
+<!--        <nav th:if="${!paging.isEmpty()}" aria-label="Page navigation example">-->
+<!--            <ul class="pagination justify-content-center">-->
+<!--                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">-->
+<!--                    <a class="page-link"  href="javascript:void(0)" th:data-page="${paging.number-1}" >-->
+<!--                        <span>Previous</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"-->
+<!--                    th:if="${page >= paging.number-5 and page <= paging.number+5}"-->
+<!--                    th:classappend="${page == paging.number} ? 'active'"-->
+<!--                    class="page-item">-->
+<!--                    <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>-->
+<!--                </li>-->
+<!--                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">-->
+<!--                    <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">-->
+<!--                        <span>Next</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+    </div>
+</div>
+
+<!--<form th:action="@{/books}" method="get" id="searchForm">-->
+<!--    <input type="hidden" id="page" name="page" th:value="${paging.number}">-->
+<!--</form>-->
+
+<!-- 가입 모달 -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="signupModalLabel">Signup</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm" class="needs-validation" method="post" novalidate>
+                    <!-- 이메일 -->
+                    <div class="mb-3 row">
+                        <label for="signup_Email" class="form-label">이메일</label>
+                        <div class="col">
+                            <input type="email" id="signup_email" name="signup_email" class="form-control" required>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- 비밀번호 -->
+                    <div class="mb-3">
+                        <label for="signup_password" class="form-label">비밀번호</label>
+                        <input type="password" id="signup_password" name="signup_password" class="form-control" required>
+                    </div>
+                    <hr>
+                    <!-- 부서 -->
+                    <div class="mb-3">
+                        <label for="signup_department" class="form-label">부서</label>
+                        <select id="signup_department" name="signup_department" class="form-control" required>
+                            <option value="">...</option>
+                            <option value="curriculum">커리큘럼</option>
+                            <option value="marketing">마케팅</option>
+                            <option value="development">개발 </option>
+                        </select>
+                    </div>
+                    <!-- 권한 -->
+                    <div class="mb-3 row">
+                        <label for="signup_manager" class="form-label">권한</label>
+                        <div class="form-check col-6">
+                            <input class="form-check-input" type="radio" name="signup_role" id="signup_manager" value="MANAGER" required>
+                            <label class="form-check-label" for="signup_manager">
+                                MANAGER
+                            </label>
+                        </div>
+                        <div class="form-check col-6">
+                            <input class="form-check-input" type="radio" name="signup_role" id="signup_staff" value="STAFF " required>
+                            <label class="form-check-label" for="signup_staff">
+                                STAFF
+                            </label>
+                        </div>
+                    </div>
+                    <!-- 주소 -->
+                </form>
+                <button class="btn btn-danger" style="width:100%" onclick="signup()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 로그인 모달 -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm" class="needs-validation" method="post" novalidate>
+                    <!-- 이메일 -->
+                    <div class="mb-3 row">
+                        <div class="col">
+                            <label for="login_email" class="form-label">이메일</label>
+                            <input type="email" id="login_email" name="login_email" class="form-control" required>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- 비밀번호 -->
+                    <div class="mb-3">
+                        <label for="login_password" class="form-label">비밀번호</label>
+                        <input type="password" id="login_password" name="login_password" class="form-control" required>
+                    </div>
+                    <hr>
+                </form>
+                <button class="btn btn-danger" style="width:100%" onclick="login()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 목록-->
+<div class="b-example-divider"></div>
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+<!-- Swiper 초기화 코드 -->
+<script>
+
+    // 도서 추가 요청
+    function signup() {
+        // Bootstrap 입력 검사 기능
+        var form = document.getElementById('signupForm');
+        // 폼 유효성 검사
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        } else { // 유효성 검사를 통과한 경우에만 AJAX 요청을 보냄
+            let email = $('#signup_email').val();
+            let password = $('#signup_password').val();
+            let role = $(":input:radio[name=signup_role]:checked").val();
+            let department =$('#signup_department').val();
+
+            if(department == "marketing" && role == "MANAGER"){
+                alert("마케팅 부서는 관리자 권한을 받을 수 없습니다.");
+            }else{
+                // ajax 요청
+                $.ajax({
+                    url: '/lectures/signup',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        'email': email,
+                        'password': password,
+                        'role': role,
+                        'department': department
+                    }),
+                    success: function (response) {
+                        alert('회원가입이 완료되었습니다.');
+                        location.href = location.href;
+                    },
+                    error: function (xhr, status, error) {
+                       var errorMessage = xhr.responseText;
+                        alert(errorMessage);
+                    }
+                });
+            }
+        }
+        // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
+        form.classList.add('was-validated');
+    }
+
+    // 도서 추가 요청
+    function login() {
+        let email = $('#login_email').val();
+        let password = $('#login_password').val();
+        // ajax 요청
+        $.ajax({
+            url: '/lectures/login',
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify({
+                'email': email,
+                'password': password
+            }),
+            success: function (response) {
+                alert(response);
+                location.href = location.href;
+            },
+            error: function (xhr, status, error) {
+               var errorMessage = xhr.responseText;
+                alert(errorMessage);
+            }
+        });
+    }
+</script>
+<!--common script -->
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>

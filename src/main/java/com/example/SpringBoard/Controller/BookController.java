@@ -6,8 +6,6 @@ import com.example.SpringBoard.entity.Loan;
 import com.example.SpringBoard.entity.Member;
 import com.example.SpringBoard.form.PostWriteForm;
 import com.example.SpringBoard.service.BookService;
-import com.example.SpringBoard.service.LoanService;
-import com.example.SpringBoard.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,7 +16,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /*
@@ -35,8 +32,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
-    private final MemberService memberService;
-    private final LoanService loanService;
 
     /* 도서 목록 페이지 */
     @GetMapping("")
@@ -46,7 +41,7 @@ public class BookController {
         Page<Book> paging = this.bookService.getBooks(page);
         /* 가져온 각 페이지 요소에 대출 가능 여부 적용 */
         paging.forEach(book -> {
-            boolean isLoanable = this.loanService.checkLoanable(book.getId());
+            boolean isLoanable = this.bookService.checkLoanable(book.getId());
             book.setLoanable(isLoanable);
         });
         model.addAttribute("paging", paging);
@@ -79,7 +74,7 @@ public class BookController {
     @ResponseBody
     @PostMapping("/signup")
     public MemberResponseDTO signup(@RequestBody MemberRequestDTO memberRequestDTO) {
-        return memberService.create(memberRequestDTO);
+        return bookService.create(memberRequestDTO);
     }
 
     /* 도서 상세보기 */
@@ -88,7 +83,7 @@ public class BookController {
         /* 도서 데이터 검색 */
         Book book = this.bookService.getBook(id);
         /* 해당 도서가 대출 가능한지 확인 */
-        book.setLoanable(this.loanService.checkLoanable(id));
+        book.setLoanable(this.bookService.checkLoanable(id));
         /* 파라미터 전달 */
         model.addAttribute("menu","books");
         model.addAttribute("book", book);
@@ -105,11 +100,11 @@ public class BookController {
         String member_id = (String)param.get("member");
 
         /* member값이 존재하는지 확인 */
-        Member member = memberService.getMember(member_id);
+        Member member = bookService.getMember(member_id);
         if(member == null){
             resultMap.put("result","사용자가 존재하지 않습니다");
         }else{
-            if(loanService.checkLoanable(member_id)){
+            if(bookService.checkLoanable(member_id)){
                 resultMap.put("result","미납 도서가 있어 대출이 불가능합니다.");
             }else{
                 /* 도서가 존재하는지 확인 */
@@ -118,12 +113,12 @@ public class BookController {
                     resultMap.put("result", "도서가 존재하지 않습니다.");
                 }else{
                     /* 현재 패널티 상태인지 확인 / 날씨 값이 있으면 패널티 상태 */
-                    LocalDate date = loanService.checkPanerty(member_id);
+                    LocalDate date = bookService.checkPanerty(member_id);
                     if(date != null){
                         resultMap.put("result","페널티 기간입니다." + date);
                     }else{
                         /* 대출 내역을 생성 */
-                        if(loanService.create(new LoanRequestDTO(member,book))){
+                        if(bookService.create(new LoanRequestDTO(member,book))){
                             resultMap.put("result","success");
                         }else{
                             resultMap.put("result","도서 대출 실패!");
@@ -146,7 +141,7 @@ public class BookController {
         String member_id = (String)param.get("member");
 
         /* member값이 존재하는지 확인 */
-        Member member = memberService.getMember(member_id);
+        Member member = bookService.getMember(member_id);
         if(member == null){
             resultMap.put("result","사용자가 존재하지 않습니다");
         }else {
@@ -156,11 +151,11 @@ public class BookController {
                 resultMap.put("result", "도서가 존재하지 않습니다.");
             } else {
                 /* 대출 내역을 받아와서 해당 내역의 사용자와 요청자가 일치하는지 확인 */
-                if(this.loanService.checkLoan(book.getId(),member_id)){
+                if(this.bookService.checkLoan(book.getId(),member_id)){
                     resultMap.put("result","대출자가 아닙니다.");
                 }else{
                     /* 반납일을 저장합니다 */
-                    if (loanService.setReturn(id)){
+                    if (bookService.setReturn(id)){
                         resultMap.put("result","success");
                     } else {
                         resultMap.put("result","도서 반납 실패");
@@ -179,7 +174,7 @@ public class BookController {
         boolean sort = Boolean.parseBoolean(param.get("sort"));
 
         /* 도서 대출 목록을 가져옵니다 */
-        List<Loan> loans = this.loanService.getLoans((String)param.get("id"));
+        List<Loan> loans = this.bookService.getLoans((String)param.get("id"));
         if(sort){
             /* 대출 조건에 따라 Return Date가 null인 대출만 뽑습니다 */
             loans = loans.stream().filter(loan -> loan.getReturnDate() == null).toList();
