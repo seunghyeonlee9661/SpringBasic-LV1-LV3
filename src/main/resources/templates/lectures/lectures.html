@@ -9,16 +9,20 @@
 <div class="d-flex py-4 bg-body-tertiary main">
     <div class="container my-5">
         <!-- 메뉴 기능 -->
-        <div class="hstack gap-0">
-            <div class="p-2 ms-auto">
-                <a class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
-                    <i class="bi bi-box-arrow-in-right"></i>
-                </a>
+        <div class="hstack gap-0" id="login" style="display:none;">
+            <div class="p-2 ms-auto" >
+                <a class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="bi bi-box-arrow-in-right"></i></a>
             </div>
             <div class="p-2">
-                <a class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#signupModal">
-                    <i class="bi bi-person-plus-fill"></i>
-                </a>
+                <a class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#signupModal"><i class="bi bi-person-plus-fill"></i></a>
+            </div>
+        </div>
+        <div class="hstack gap-0" id="logout" style="display:none;">
+            <div class="p-2 ms-auto">
+                <a class="btn btn-secondary me-2" onclick="logout()"><i class="bi bi-box-arrow-left"></i></a>
+            </div>
+            <div class="p-2">
+                <a class="btn btn-secondary me-2" th:href="@{/books/edit}"><i class="bi bi-gear-fill"></i></a>
             </div>
         </div>
         <!-- 강의 목록 -->
@@ -237,6 +241,23 @@
                 alert(errorMessage);
             }
         });
+    }
+
+    $(document).ready(function () {
+        let auth = Cookies.get('Authorization');
+        console.log(auth);
+        if(auth === undefined){
+            $('#login').show();
+        }else{
+            $('#logout').show();
+        }
+    })
+
+    function logout() {
+        if(confirm("로그아웃 하시겠습니까?")){
+            Cookies.remove('Authorization', { path: '/' });
+            location.href = location.href;
+        }
     }
 </script>
 <!--common script -->
