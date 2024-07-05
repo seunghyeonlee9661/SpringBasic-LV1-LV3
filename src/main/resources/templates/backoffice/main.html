@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout :: head">
+    <!--  헤드 공간  -->
+</head>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+<div class="d-flex py-4 bg-body-tertiary main">
+    <div class="container my-5">
+                <div class="hstack gap-0">
+                    <div class="p-2 ms-auto">
+                        <a class="btn btn-secondary me-2" onclick="logout()"><i class="bi bi-box-arrow-left"></i></a>
+                    </div>
+                    <div class="p-2">
+                        <a class="btn btn-secondary me-2" th:href="@{/books/edit}"><i class="bi bi-gear-fill"></i></a>
+                    </div>
+                </div>
+    </div>
+</div>
+
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+<!-- Swiper 초기화 코드 -->
+<script>
+    function logout() {
+        if(confirm("로그아웃 하시겠습니까?")){
+            Cookies.remove('Authorization', { path: '/' });
+            location.href = location.href;
+        }
+    }
+</script>
+<!--common script -->
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>

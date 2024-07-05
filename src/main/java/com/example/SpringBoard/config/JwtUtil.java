@@ -1,6 +1,6 @@
 package com.example.SpringBoard.config;
 
-import com.example.SpringBoard.Enum.Role;
+import com.example.SpringBoard.Enum.backoffice.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;

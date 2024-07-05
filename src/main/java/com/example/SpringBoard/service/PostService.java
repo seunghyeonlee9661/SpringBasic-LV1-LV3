@@ -1,8 +1,8 @@
 package com.example.SpringBoard.service;
 
-import com.example.SpringBoard.entity.Post;
+import com.example.SpringBoard.entity.posts.Post;
 import com.example.SpringBoard.exceptions.DataNotFoundException;
-import com.example.SpringBoard.repository.PostRepository;
+import com.example.SpringBoard.repository.posts.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 /*
@@ -24,7 +23,7 @@ public class PostService {
     private final PasswordEncoder passwordEncoder;
 
     /* 게시물 생성 */
-    public Post create(String title,String writer, String password, String text){
+    public Post create(String title, String writer, String password, String text){
         Post post = new Post();
         post.setTitle(title);
         post.setWriter(writer);

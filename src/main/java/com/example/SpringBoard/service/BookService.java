@@ -1,14 +1,16 @@
 package com.example.SpringBoard.service;
-import com.example.SpringBoard.DTO.*;
-import com.example.SpringBoard.entity.Book;
-import com.example.SpringBoard.entity.Loan;
-import com.example.SpringBoard.entity.Member;
-import com.example.SpringBoard.entity.Post;
-import com.example.SpringBoard.exceptions.DataNotFoundException;
+import com.example.SpringBoard.DTO.books.MemberRequestDTO;
+import com.example.SpringBoard.DTO.books.MemberResponseDTO;
+import com.example.SpringBoard.DTO.books.BookRequestDTO;
+import com.example.SpringBoard.DTO.books.BookResponseDTO;
+import com.example.SpringBoard.DTO.books.LoanRequestDTO;
+import com.example.SpringBoard.entity.books.Book;
+import com.example.SpringBoard.entity.books.Loan;
+import com.example.SpringBoard.entity.books.Member;
 import com.example.SpringBoard.exceptions.DuplicateMemberException;
-import com.example.SpringBoard.repository.BookRepository;
-import com.example.SpringBoard.repository.LoanRepository;
-import com.example.SpringBoard.repository.MemberRepository;
+import com.example.SpringBoard.repository.books.BookRepository;
+import com.example.SpringBoard.repository.books.LoanRepository;
+import com.example.SpringBoard.repository.books.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -82,7 +84,7 @@ public class BookService {
 
     /* 대출 기록 생성 */
     public boolean create(LoanRequestDTO loanRequestDTO){
-        Loan loan = loanRepository.save(new Loan(loanRequestDTO));
+        Loan booksLoan = loanRepository.save(new Loan(loanRequestDTO));
         return true;
     }
 
@@ -90,9 +92,9 @@ public class BookService {
     public boolean setReturn(int id){
         Optional<Loan> loanOptional = loanRepository.findTopByBookIdOrderByLoanDateDesc(id);
         if (loanOptional.isPresent()) {
-            Loan loan = loanOptional.get();
-            loan.setReturnDate(LocalDateTime.now());
-            loanRepository.save(loan);
+            Loan booksLoan = loanOptional.get();
+            booksLoan.setReturnDate(LocalDateTime.now());
+            loanRepository.save(booksLoan);
             return true;
         }
         return  false;
@@ -103,10 +105,10 @@ public class BookService {
         /* 해당 대출 내역 확인 */
         Optional<Loan> loanOptional = loanRepository.findTopByMemberIdOrderByReturnDateDesc(id);
         if(loanOptional.isPresent()){
-            Loan loan = loanOptional.get();
+            Loan booksLoan = loanOptional.get();
             /* (최근 대출 내역 - 최근 반납 내역 >= 7) 이면서 (최근 대출 내역 - 오늘 <= 14(2주)) 일 경우 -> 패널티로 간주하고 대출 거절함 */
-            if(DAYS.between(loan.getLoanDate().toLocalDate(), loan.getReturnDate().toLocalDate()) >= 7 && DAYS.between(LocalDate.now(),loan.getReturnDate().toLocalDate()) <= 14){
-                return loan.getReturnDate().toLocalDate().plusDays(14);
+            if(DAYS.between(booksLoan.getLoanDate().toLocalDate(), booksLoan.getReturnDate().toLocalDate()) >= 7 && DAYS.between(LocalDate.now(), booksLoan.getReturnDate().toLocalDate()) <= 14){
+                return booksLoan.getReturnDate().toLocalDate().plusDays(14);
             }
         }
         return null;
@@ -123,8 +125,8 @@ public class BookService {
             throw new DuplicateMemberException("Member with this Phone Number already exists");
         }
         /* 데이터 입력 */
-        Member member = memberRepository.save(new Member(memberRequestDTO));
-        return new MemberResponseDTO(member);
+        Member booksMember = memberRepository.save(new Member(memberRequestDTO));
+        return new MemberResponseDTO(booksMember);
     }
 
     /* 회원 주민등로번호로 회원 정보 호출 */

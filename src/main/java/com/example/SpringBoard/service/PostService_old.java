@@ -1,9 +1,9 @@
 //package com.example.SpringBoard.service;
 //
-//import com.example.SpringBoard.entity.Post;
+//import com.example.SpringBoard.entity.posts.Post;
 //import com.example.SpringBoard.entity.User;
 //import com.example.SpringBoard.exceptions.DataNotFoundException;
-//import com.example.SpringBoard.repository.PostRepository;
+//import com.example.SpringBoard.repository.posts.PostRepository;
 //import jakarta.persistence.criteria.*;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.data.domain.Page;

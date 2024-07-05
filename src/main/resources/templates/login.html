@@ -9,7 +9,7 @@
 
 <div class="d-flex align-items-center py-4 bg-body-tertiary main">
     <div class="form-signin w-100 m-auto">
-        <form th:action="@{/login}" method="post">
+        <form th:action="@{/login}" method="POST">
             <div th:if="${param.error}">
                 <div class="alert alert-danger">
                     사용자ID 또는 비밀번호를 확인해 주세요.

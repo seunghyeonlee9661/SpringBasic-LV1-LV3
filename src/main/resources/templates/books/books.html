@@ -179,7 +179,7 @@
                             day: '2-digit',
                         });
                         // 날짜값 포맷 변경
-                        let returnDate = loan.returnDate
+                        let returnDate = booksLoan.returnDate
                             ? new Date(loan.returnDate).toLocaleString('en-GB', {
                                 year: 'numeric',
                                 month: '2-digit',
@@ -198,7 +198,7 @@
                         tableBody.append(row);
                     });
                 } else { // 데이터가 하나도 없을 경우
-                    let row = `<tr><td colspan="5">No loans found.</td></tr>`;
+                    let row = `<tr><td colspan="5">No booksLoans found.</td></tr>`;
                     tableBody.append(row);
                 }
             },
