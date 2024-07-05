@@ -9,6 +9,6 @@ public class LectureRequestDTO {
     private String title;
     private int price;
     private String introduction;
-    private Teacher teacher;
-    private LocalDateTime regist;
+    private String category;
+    private int teacher_id;
 }

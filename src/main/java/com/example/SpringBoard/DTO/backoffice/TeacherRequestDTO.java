@@ -3,7 +3,7 @@ import lombok.Getter;
 
 @Getter
 public class TeacherRequestDTO {
-    private int teacher_id;
+    private int id;
     private String name;
     private int year;
     private String company;

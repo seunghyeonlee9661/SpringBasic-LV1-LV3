@@ -21,8 +21,8 @@ import java.util.List;
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="teacher_id", nullable = false, columnDefinition = "int")
-    private int teacher_id;
+    @Column(name="id", nullable = false, columnDefinition = "int")
+    private int id;
 
     @Column(name="name", nullable = false, columnDefinition = "varchar(100)")
     private String name;

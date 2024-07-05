@@ -10,28 +10,6 @@
     <div class="container my-5">
         <!-- 메뉴 기능 -->
         <div class="hstack gap-3">
-<!--            &lt;!&ndash; 검색창 &ndash;&gt;-->
-<!--            <div class="input-group p-2" style="max-width:300px;">-->
-<!--                <input type="text" class="form-control" id="search_kw" th:value="${kw}" placeholder="Search" >-->
-<!--                <button class="btn btn-secondary" type="button" id="btn_search"><i class="bi bi-search"></i></button>-->
-<!--            </div>-->
-<!--            &lt;!&ndash; 검색 조건 드롭다운&ndash;&gt;-->
-<!--            <div class="dropdown">-->
-<!--                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdown-title" th:text="${option}"></button>-->
-<!--                <ul class="dropdown-menu">-->
-<!--                    <li><a class="dropdown-item" th:classappend="${option == 'title'} ? 'active' : ''" href="javascript:void(0)" th:data-sort="${'title'}">제목</a></li>-->
-<!--                    <li><a class="dropdown-item" th:classappend="${option == 'text'} ? 'active' : ''" href="javascript:void(0)" th:data-sort="${'text'}">내용</a></li>-->
-<!--                    <li><a class="dropdown-item" th:classappend="${option == 'user'} ? 'active' : ''" href="javascript:void(0)" th:data-sort="${'user'}">작성자</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--            &lt;!&ndash; 게시물 정렬 선택 &ndash;&gt;-->
-<!--            <div class="p-2">-->
-<!--                <div class="btn-group">-->
-<!--                    <a class="btn btn-secondary sort-link" th:classappend="${sort == 0} ? 'active' : ''" href="javascript:void(0)" th:data-sort="${0}"><i class="bi bi-calendar-week"></i></a>-->
-<!--                    <a class="btn btn-secondary sort-link" th:classappend="${sort == 1} ? 'active' : ''" href="javascript:void(0)" th:data-sort="${1}"><i class="bi bi-eye-fill"></i></a>-->
-<!--                    <a class="btn btn-secondary sort-link" th:classappend="${sort == 2} ? 'active' : ''" href="javascript:void(0)" th:data-sort="${2}"><i class="bi bi-hand-thumbs-up-fill"></i></a>-->
-<!--                </div>-->
-<!--            </div>-->
             <!-- 게시물 작성 버튼 -->
             <div class="p-2 ms-auto">
                 <a class="btn btn-warning me-2" th:href="@{/posts/write}">Write</a>

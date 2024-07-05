@@ -7,26 +7,29 @@ import java.time.LocalDateTime;
 
 @Getter
 public class LectureResponseDTO {
-    private int lecture_id;
+    private int id;
     private String title;
     private int price;
     private String introduction;
+    private String category;
     private Teacher teacher;
     private LocalDateTime regist;
 
     public LectureResponseDTO(Lecture backofficeLecture){
-        this.lecture_id = backofficeLecture.getLecture_id();
+        this.id = backofficeLecture.getId();
         this.title = backofficeLecture.getTitle();
         this.price = backofficeLecture.getPrice();
         this.introduction = backofficeLecture.getIntroduction();
+        this.category = backofficeLecture.getCategory();
         this.teacher = backofficeLecture.getTeacher();
         this.regist = backofficeLecture.getRegist();
     }
-    public LectureResponseDTO(int lecture_id, String title, int price, String introduction, Teacher teacher, LocalDateTime regist) {
-        this.lecture_id = lecture_id;
+    public LectureResponseDTO(int id, String title, int price, String introduction,String category, Teacher teacher, LocalDateTime regist) {
+        this.id = id;
         this.title = title;
         this.price = price;
         this.introduction = introduction;
+        this.category = category;
         this.teacher = teacher;
         this.regist = regist;
     }

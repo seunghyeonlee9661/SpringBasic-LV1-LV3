@@ -34,9 +34,8 @@ public class AuthFilter implements Filter {
         String url = httpServletRequest.getRequestURI();
 
         String[] paths = {"/posts","/books","/js","/css"};
-
         /* 경로에 포함되면 권한 확인 */
-        if (StringUtils.hasText(url) && (Arrays.stream(paths).anyMatch(url::startsWith) || url.equals("/backoffice") || url.equals("/backoffice/login") || url.equals("/backoffice/signup") || url.equals("/")) ) {
+        if (StringUtils.hasText(url) && (Arrays.stream(paths).anyMatch(url::startsWith) || url.equals("/backoffice") || url.equals("/backoffice/api/login") || url.equals("/backoffice/api/signup") || url.equals("/")) ) {
             chain.doFilter(request, response);
         }
         else {
@@ -46,21 +45,18 @@ public class AuthFilter implements Filter {
                     // JWT 토큰 substring
                     String token = jwtUtil.substringToken(tokenValue);
                     // 토큰 검증
-                    if (!jwtUtil.validateToken(token)) {
+                    if (!jwtUtil.validateToken(token,httpServletResponse)) {
                         throw new IllegalArgumentException("Token Error");
                     }
                     // 토큰에서 사용자 정보 가져오기
                     Claims info = jwtUtil.getUserInfoFromToken(token);
-                    User backofficeUser = userRepository.findByEmail(info.getSubject()).orElseThrow(() ->
-                            new NullPointerException("Not Found User")
-                    );
+                    User backofficeUser = userRepository.findByEmail(info.getSubject()).orElseThrow(() -> new NullPointerException("Not Found User"));
                     request.setAttribute("user", backofficeUser);
                     chain.doFilter(request, response); // 다음 Filter 로 이동
                 } else {
                     throw new IllegalArgumentException("Not Found Token");
                 }
             } catch (Exception e) {
-                // 예외 발생 시 로그인 페이지로 리다이렉트
                 httpServletResponse.sendRedirect("/backoffice");
             }
         }

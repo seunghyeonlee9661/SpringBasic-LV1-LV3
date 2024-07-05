@@ -11,11 +11,9 @@
         <!-- 로그인 폼 -->
         <form id="loginForm" class="form-signin w-100 m-auto needs-validation" method="Post" novalidate>
             <!-- 이메일 -->
-            <div class="mb-3 row">
-                <div class="col">
-                    <label for="login_email" class="form-label">이메일</label>
-                    <input type="email" id="login_email" name="login_email" class="form-control" required>
-                </div>
+            <div class="mb-3">
+                <label for="login_email" class="form-label">이메일</label>
+                <input type="email" id="login_email" name="login_email" class="form-control" required>
             </div>
             <!-- 비밀번호 -->
             <div class="mb-3">
@@ -51,7 +49,6 @@
                             <input type="email" id="signup_email" name="signup_email" class="form-control" required>
                         </div>
                     </div>
-                    <hr>
                     <!-- 비밀번호 -->
                     <div class="mb-3">
                         <label for="signup_password" class="form-label">비밀번호</label>
@@ -60,7 +57,6 @@
                             비밀번호는  최소 8자 이상, 15자 이하이며 알파벳 대소문자, 숫자, 특수문자로 구성되어야 합니다.
                         </div>
                     </div>
-                    <hr>
                     <!-- 부서 -->
                     <div class="mb-3">
                         <label for="signup_department" class="form-label">부서</label>
@@ -72,7 +68,7 @@
                         </select>
                     </div>
                     <!-- 권한 -->
-                    <div class="mb-3 row">
+                    <div class="mb-3">
                         <label for="signup_manager" class="form-label">권한</label>
                         <div class="form-check col-6">
                             <input class="form-check-input" type="radio" name="signup_role" id="signup_manager" value="MANAGER" required>
@@ -102,7 +98,6 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 <!-- Swiper 초기화 코드 -->
 <script>
-
     // 도서 추가 요청
     function signup() {
         // Bootstrap 입력 검사 기능
@@ -122,7 +117,7 @@
             }else{
                 // ajax 요청
                 $.ajax({
-                    url: '/backoffice/signup',
+                    url: '/backoffice/api/signup',
                     type: 'POST',
                     contentType: "application/json",
                     data: JSON.stringify({
@@ -150,9 +145,13 @@
     function login() {
         let email = $('#login_email').val();
         let password = $('#login_password').val();
+        console.log("email:" + email);
+        console.log("password:" + password);
+
+        console.log
         // ajax 요청
         $.ajax({
-            url: '/backoffice/login',
+            url: '/backoffice/api/login',
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify({
@@ -160,28 +159,22 @@
                 'password': password
             }),
             success: function (response) {
-                alert(response);
+                alert(response.message);
                 location.href = '/backoffice/main';
             },
-            error: function (xhr, status, error) {
-               var errorMessage = xhr.responseText;
-                alert(errorMessage);
+            error: function (xhr) {
+                alert(xhr.responseJSON.error);
             }
         });
     }
 
     $(document).ready(function () {
-        if(Cookies.get('Authorization') != undefined){
+        let auth = Cookies.get('Authorization');
+        if(auth != undefined){
+            alert(auth);
             location.href = 'backoffice/main';
         }
     })
-
-    function logout() {
-        if(confirm("로그아웃 하시겠습니까?")){
-            Cookies.remove('Authorization', { path: '/' });
-            location.href = location.href;
-        }
-    }
 </script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>

@@ -21,24 +21,27 @@ import java.time.LocalDateTime;
 public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="lecture_id", nullable = false, columnDefinition = "int")
-    private int lecture_id;
+    @Column(name="id", nullable = false, columnDefinition = "int")
+    private int id;
 
-    @Column(name="name", nullable = false, columnDefinition = "varchar(100)")
+    @Column(name="title", nullable = false, columnDefinition = "varchar(100)")
     private String title;
 
-    @Column(name="year", nullable = false, columnDefinition = "int")
+    @Column(name="price", nullable = false, columnDefinition = "int")
     private int price;
 
-    @Column(name="company", nullable = false, columnDefinition = "varchar(20)")
+    @Column(name="introduction", nullable = false, columnDefinition = "varchar(20)")
     private String introduction;
+
+    @Column(name="category", nullable = false, columnDefinition = "varchar(20)")
+    private String category;
 
     @ManyToOne
     @JoinColumn(name="teacher_id", nullable = false)
     private Teacher teacher;
 
     @CreationTimestamp
-    @Column(name="loanDate")
+    @Column(name="regist")
     private LocalDateTime regist;
 
 
@@ -50,7 +53,6 @@ public class Lecture {
         this.title = requestDto.getTitle();
         this.price = requestDto.getPrice();
         this.introduction = requestDto.getIntroduction();
-        this.teacher = requestDto.getTeacher();
-        this.regist = requestDto.getRegist();
+        this.category = requestDto.getCategory();
     }
 }
