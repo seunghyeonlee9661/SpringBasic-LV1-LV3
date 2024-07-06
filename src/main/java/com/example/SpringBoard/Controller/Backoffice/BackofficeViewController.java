@@ -44,6 +44,7 @@ public class BackofficeViewController {
     public String lecture(Model model,@PathVariable("id") int id) {
         model.addAttribute("menu","backoffice");
         model.addAttribute("lecture",backofficeService.getLecture(id));
+        model.addAttribute("teachers",backofficeService.getTeachers());
         return "backoffice/lecture";
     }
 

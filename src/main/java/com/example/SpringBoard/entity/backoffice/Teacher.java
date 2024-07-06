@@ -30,7 +30,7 @@ public class Teacher {
     @Column(name="year", nullable = false, columnDefinition = "int")
     private int year;
 
-    @Column(name="company", nullable = false, columnDefinition = "varchar(20)")
+    @Column(name="company", nullable = false, columnDefinition = "varchar(50)")
     private String company;
 
     @Column(name="phone", nullable = false, columnDefinition = "varchar(20)")

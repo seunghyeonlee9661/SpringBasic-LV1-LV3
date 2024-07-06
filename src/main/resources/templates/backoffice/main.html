@@ -257,7 +257,7 @@
         }
     }
 
-    // 도서 추가 요청
+    // 강사 추가 요청
     function addTeacher() {
         // Bootstrap 입력 검사 기능
         var form = document.getElementById('addTeacherForm');
@@ -317,7 +317,7 @@
             $.ajax({
                 url: '/backoffice/api/addLecture',
                 type: 'POST',
-                contentType: "application/json",
+                dataType: 'json',
                 data: JSON.stringify({
                     'title': title,
                     'price': price,
@@ -337,14 +337,6 @@
         }
         // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
         form.classList.add('was-validated');
-    }
-
-    function maxLengthCheck(object) {
-        if (object.value.length > object.maxLength) {
-            object.value = object.value.slice(0, object.maxLength); // 최대 길이를 초과한 부분을 잘라냅니다.
-        } else if (!/^\d+$/.test(object.value)) {
-            object.value = object.value.replace(/[^\d]/g, ''); // 숫자 이외의 입력을 제거합니다.
-        }
     }
 
     // 페이지네이션 버튼 기능

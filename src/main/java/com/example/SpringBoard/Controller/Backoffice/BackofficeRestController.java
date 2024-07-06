@@ -5,11 +5,14 @@ import com.example.SpringBoard.DTO.backoffice.LectureRequestDTO;
 import com.example.SpringBoard.DTO.backoffice.LoginRequestDTO;
 import com.example.SpringBoard.DTO.backoffice.SignupRequestDTO;
 import com.example.SpringBoard.DTO.backoffice.TeacherRequestDTO;
+import com.example.SpringBoard.entity.backoffice.Teacher;
 import com.example.SpringBoard.service.BackofficeService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -43,21 +46,27 @@ public class BackofficeRestController {
     }
 
     /* 강의 추가 */
-    @PostMapping("/lecture/{id}")
-    public ResponseEntity<String> addLecture(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
+    @PostMapping("/lecture")
+    public ResponseEntity<String> addLecture(@RequestBody LectureRequestDTO lectureRequestDTO) {
         return backofficeService.create(lectureRequestDTO);
     }
 
-    /* 강의 추가 */
-    @PostMapping("/lecture/{id}/delete/")
+    /* 강의 삭제 */
+    @PostMapping("/lecture/{id}/delete")
     public ResponseEntity<String> deleteLecture(@PathVariable("id") Integer id) {
         return backofficeService.deleteLecture(id);
     }
 
+    /* 강의 수정 */
+    @PostMapping("/lecture/{id}/edit")
+    public ResponseEntity<String> editLecture(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
+        return backofficeService.edit(id,lectureRequestDTO);
+    }
 
-    /* 강의 추가 */
-    @PostMapping("/teacher/{id}")
-    public ResponseEntity<String> addTeacher(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
+
+    /* 강사 추가 */
+    @PostMapping("/teacher")
+    public ResponseEntity<String> addTeacher(@RequestBody LectureRequestDTO lectureRequestDTO) {
         return backofficeService.create(lectureRequestDTO);
     }
 
@@ -65,6 +74,12 @@ public class BackofficeRestController {
     @PostMapping("/teacher/{id}/delete")
     public ResponseEntity<String> deleteTeacher(@PathVariable("id") Integer id) {
         return backofficeService.deleteTeacher(id);
+    }
+
+    /* 강의 수정 */
+    @PostMapping("/teacher/{id}/edit")
+    public ResponseEntity<String> editTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO,@PathVariable("id") Integer id) {
+        return backofficeService.edit(id,teacherRequestDTO);
     }
 
 }
