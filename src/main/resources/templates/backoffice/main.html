@@ -6,7 +6,7 @@
 <style>
     .menu-container {
         width: 100%;
-        height: 100%; /* Set the height of the menu container */
+        height: 600px; /* Set the height of the menu container */
         border: 1px solid #ccc;
         overflow-y: auto; /* Enable vertical scrolling */
     }
@@ -40,7 +40,7 @@
 <div class="d-flex py-4 bg-body-tertiary main">
     <div class="container my-5">
 
-        <div class="row" style="height:100%">
+        <div class="row" style="height:600px">
             <div class="col-3">
                 <div class="menu-container">
                     <ul class="vertical-menu">
@@ -50,22 +50,35 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-9">
+            <div class="col-9" style="height:600px">
                 <!-- 메뉴 항목 -->
                 <div class="hstack gap-0">
-                    <div class="p-2 ms-auto">
+                    <div class="form-check form-check-inline m-1">
+                        <input class="form-check-input category" type="radio" name="radioSpring" id="radioSpring" th:data-category="${category == 'Spring' ? '' : 'Spring'}" th:checked="${category == 'Spring'}">
+                        <label class="form-check-label" for="radioSpring">Spring</label>
+                    </div>
+                    <div class="form-check form-check-inline m-1">
+                        <input class="form-check-input category" type="radio" name="radioReact" id="radioReact" th:data-category="${category == 'React' ? '' : 'React'}" th:checked="${category == 'React'}">
+                        <label class="form-check-label" for="radioSpring">React</label>
+                    </div>
+                    <div class="form-check form-check-inline m-1">
+                        <input class="form-check-input category" type="radio" name="radioNode" id="radioNode" th:data-category="${category == 'Node' ? '' : 'Node'}" th:checked="${category == 'Node'}">
+                        <label class="form-check-label" for="radioNode">Node</label>
+                    </div>
+
+                    <div class="p-1 ms-auto">
                         <span class="badge" th:classappend="${user.role.name()} == 'MANAGER' ? 'text-bg-success' : 'text-bg-warning'" th:text="${user.role}"></span>
                     </div>
-                    <div class="p-2">
-                        <a class="btn btn-secondary me-2" th:classappend="${user.role.name()} == 'MANAGER' ? '' : 'disabled'" data-bs-toggle="modal" data-bs-target="#addTeacherModal"><i class="bi bi-plus"></i>Teacher</a>
+                    <div class="p-1 ">
+                        <a class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#addTeacherModal"><i class="bi bi-plus"></i><i class="bi bi-file-earmark-person"></i></a>
                     </div>
-                    <div class="p-2">
-                        <a class="btn btn-secondary me-2" th:classappend="${user.role.name()} == 'MANAGER' ? '' : 'disabled'"  data-bs-toggle="modal" data-bs-target="#addLectureModal"><i class="bi bi-plus"></i>Lecture</a>
+                    <div class="p-1 ">
+                        <a class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#addLectureModal"><i class="bi bi-plus"></i><i class="bi bi-easel3-fill"></i></a>
                     </div>
-                    <div class="p-2">
+                    <div class="p-1 ">
                         <a class="btn btn-secondary me-2" onclick="logout()"><i class="bi bi-box-arrow-left"></i></a>
                     </div>
-                    <div class="p-2">
+                    <div class="p-1 ">
                         <a class="btn btn-secondary me-2" th:href="@{/books/edit}"><i class="bi bi-gear-fill"></i></a>
                     </div>
                 </div>
@@ -73,10 +86,11 @@
                 <table class="table" style="table-layout: fixed">
                     <thead>
                     <tr>
-                        <th style="width:40%">제목</th>
-                        <th style="width:20%">가격</th>
+                        <th style="width:25%">제목</th>
+                        <th style="width:10%">가격</th>
                         <th style="width:20%">강사</th>
-                        <th style="width:20%">등록일</th>
+                        <th style="width:10%">카테고리</th>
+                        <th style="width:15%">등록일</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,10 +98,32 @@
                             <td th:text="${lecture.title}"></td>
                             <td th:text="${lecture.price}"></td>
                             <td th:text="${lecture.teacher.name}"></td>
-                            <td th:text="${lecture.title}"></td>
+                            <td th:text="${lecture.category}"></td>
+                            <td th:text="${#temporals.format(lecture.regist, 'yyyy-MM-dd')}"></td>
                         </tr>
                     </tbody>
                 </table>
+                <!-- 페이지네이션 -->
+                <nav th:if="${!paging.isEmpty()}" aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                            <a class="page-link"  href="javascript:void(0)" th:data-page="${paging.number-1}" >
+                                <span>Previous</span>
+                            </a>
+                        </li>
+                        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                            th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                            th:classappend="${page == paging.number} ? 'active'"
+                            class="page-item">
+                            <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                            <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
+                                <span>Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -203,6 +239,12 @@
     </div>
 </div>
 
+<!-- 페이지네이션 -->
+<form th:action="@{/backoffice/main}" method="get" id="searchForm">
+    <input type="hidden" id="page" name="page" th:value="${paging.number}">
+    <input type="hidden" id="category" name="category" th:value="${category}">
+</form>
+
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
@@ -304,6 +346,25 @@
             object.value = object.value.replace(/[^\d]/g, ''); // 숫자 이외의 입력을 제거합니다.
         }
     }
+
+    // 페이지네이션 버튼 기능
+    const page_elements = document.getElementsByClassName("page-link");
+        Array.from(page_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            document.getElementById('page').value = this.dataset.page;
+            document.getElementById('searchForm').submit();
+        });
+    });
+
+    // 카테고리 조회 기능
+    const category_elements = document.getElementsByClassName("category");
+    Array.from(category_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            document.getElementById('category').value = this.dataset.category ? this.dataset.category : '';
+            document.getElementById('page').value = '0';
+            document.getElementById('searchForm').submit();
+        });
+    });
 </script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>

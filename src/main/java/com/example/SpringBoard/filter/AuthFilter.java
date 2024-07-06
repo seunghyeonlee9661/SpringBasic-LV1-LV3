@@ -2,6 +2,7 @@ package com.example.SpringBoard.filter;
 import com.example.SpringBoard.config.JwtUtil;
 import com.example.SpringBoard.entity.backoffice.User;
 import com.example.SpringBoard.repository.backoffice.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j(topic = "AuthFilter")
 @Component
@@ -50,14 +53,18 @@ public class AuthFilter implements Filter {
                     }
                     // 토큰에서 사용자 정보 가져오기
                     Claims info = jwtUtil.getUserInfoFromToken(token);
-                    User backofficeUser = userRepository.findByEmail(info.getSubject()).orElseThrow(() -> new NullPointerException("Not Found User"));
-                    request.setAttribute("user", backofficeUser);
+                    User user = userRepository.findByEmail(info.getSubject()).orElseThrow(() -> new NullPointerException("Not Found User"));
+                    request.setAttribute("user", user);
                     chain.doFilter(request, response); // 다음 Filter 로 이동
                 } else {
                     throw new IllegalArgumentException("Not Found Token");
                 }
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 httpServletResponse.sendRedirect("/backoffice");
+            } catch (Exception e) {
+                // 그 외의 예외 발생 시 처리
+                httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                e.printStackTrace();
             }
         }
 

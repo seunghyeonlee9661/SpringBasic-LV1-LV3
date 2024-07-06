@@ -30,7 +30,7 @@ public class Lecture {
     @Column(name="price", nullable = false, columnDefinition = "int")
     private int price;
 
-    @Column(name="introduction", nullable = false, columnDefinition = "varchar(20)")
+    @Column(name="introduction", nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
     @Column(name="category", nullable = false, columnDefinition = "varchar(20)")

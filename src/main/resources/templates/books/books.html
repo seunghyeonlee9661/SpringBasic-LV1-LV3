@@ -42,8 +42,6 @@
             <tbody>
             <tr th:each="book : ${paging}">
                 <td th:text="${book.id}"></td>
-
-
                 <td ><span class="badge" th:classappend="${book.loanable}? 'text-bg-success' : 'text-bg-danger'" th:text="${book.loanable}? '가능' : '불가'"></span> </td>
                 <td ><a th:href="@{|/books/detail/${book.id}|}" th:text="${book.title}"></a></td>
                 <td th:text="${book.author}"></td>

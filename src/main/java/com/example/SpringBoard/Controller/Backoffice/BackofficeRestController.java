@@ -42,4 +42,19 @@ public class BackofficeRestController {
         return backofficeService.create(lectureRequestDTO);
     }
 
+    /* 강의 추가 */
+    @PostMapping("/lecture/{id}")
+    public ResponseEntity<String> lecture(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
+        return backofficeService.create(lectureRequestDTO);
+    }
+
+
+
+    /* 강의 추가 */
+    @PostMapping("/teacher/{id}")
+    public ResponseEntity<String> teacher(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
+        return backofficeService.create(lectureRequestDTO);
+    }
+
+
 }

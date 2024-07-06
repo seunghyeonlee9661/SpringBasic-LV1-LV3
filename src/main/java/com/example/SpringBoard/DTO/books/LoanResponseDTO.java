@@ -19,28 +19,16 @@ public class LoanResponseDTO {
     private final LocalDateTime loanDate;
     private final LocalDateTime returnDate;
 
-    public LoanResponseDTO(int id, Book book, String bookahthor, Member booksMember, String membername, String memberphone, LocalDateTime loanDate, LocalDateTime returnDate) {
-        this.id = id;
-        this.bookid = book.getId();
-        this.bookTitle = book.getTitle();
-        this.bookahthor = bookahthor;
-        this.memberid = booksMember.getId();
-        this.membername = membername;
-        this.memberphone = memberphone;
-        this.loanDate = loanDate;
-        this.returnDate = returnDate;
-    }
-
-    public LoanResponseDTO(Loan booksLoan) {
-        this.id = booksLoan.getId();
-        this.bookid = booksLoan.getBook().getId();
-        this.bookTitle = booksLoan.getBook().getTitle();
-        this.memberid = booksLoan.getMember().getId();
-        this.loanDate = booksLoan.getLoanDate();
-        this.returnDate = booksLoan.getReturnDate();
-        this.bookahthor = booksLoan.getBook().getAuthor();
-        this.membername = booksLoan.getMember().getName();
-        this.memberphone = booksLoan.getMember().getPhoneNumber();
+    public LoanResponseDTO(Loan loan) {
+        this.id = loan.getId();
+        this.bookid = loan.getBook().getId();
+        this.bookTitle = loan.getBook().getTitle();
+        this.memberid = loan.getMember().getId();
+        this.loanDate = loan.getLoanDate();
+        this.returnDate = loan.getReturnDate();
+        this.bookahthor = loan.getBook().getAuthor();
+        this.membername = loan.getMember().getName();
+        this.memberphone = loan.getMember().getPhoneNumber();
     }
 
 

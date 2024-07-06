@@ -20,7 +20,7 @@
                 <p class="p-2 blog-post-meta" th:text="${#temporals.format(book.registDate, 'yyyy-MM-dd HH:mm')}"></p>
             </div>
             <!-- 현재 대출 가능 상태에 따라 대출과 반납 버튼을 결정 -->
-            <a class="btn btn-warning me-2" th:data-uri="${book.loanable}?@{|/books/detail/${book.id}/booksLoan|}:@{|/books/detail/${book.id}/return|}" th:text="${book.loanable}?'대출하기':'반납하기'" onclick="checkID(this);"></a>
+            <a class="btn btn-warning me-2" th:data-uri="${book.loanable}?@{|/books/detail/${book.id}/loan|}:@{|/books/detail/${book.id}/return|}" th:text="${book.loanable}?'대출하기':'반납하기'" onclick="checkID(this);"></a>
         </div>
     </div>
 </div>
@@ -38,12 +38,12 @@
         var dueDate = new Date();
         dueDate.setDate(dueDate.getDate() + 7);
 
-        var booksMember = prompt("주민등록번호를 입력해주세요");
+        var member = prompt("주민등록번호를 입력해주세요");
         $.ajax({
             url: e.dataset.uri, // 요기에
             type : 'POST',
             contentType: "application/json",
-            data: JSON.stringify({'booksMember': booksMember }),
+            data: JSON.stringify({'member': member }),
             success: function(response) {
                 // 응답 결과 처리
                 if (response.result === 'success') {

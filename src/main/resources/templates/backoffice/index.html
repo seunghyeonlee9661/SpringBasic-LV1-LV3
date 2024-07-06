@@ -6,6 +6,8 @@
 <body>
 <!--  상단바 공간  -->
 <header th:replace="layout :: nav"></header>
+
+<!-- 내용-->
 <div class="d-flex py-4 bg-body-tertiary main">
     <div class="container my-5">
         <!-- 로그인 폼 -->
@@ -31,7 +33,6 @@
         </form>
     </div>
 </div>
-
 <!-- 가입 모달 -->
 <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -83,14 +84,12 @@
                             </label>
                         </div>
                     </div>
-                    <!-- 주소 -->
                 </form>
                 <button class="btn btn-danger" style="width:100%" onclick="signup()">Add</button>
             </div>
         </div>
     </div>
 </div>
-
 <!-- 목록-->
 <div class="b-example-divider"></div>
 <!-- footer -->
@@ -171,7 +170,6 @@
     $(document).ready(function () {
         let auth = Cookies.get('Authorization');
         if(auth != undefined){
-            alert(auth);
             location.href = 'backoffice/main';
         }
     })

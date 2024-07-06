@@ -31,10 +31,11 @@ public class BackofficeViewController {
 
     /* 로그인 후 페이지 */
     @GetMapping("/main")
-    public String board(Model model, HttpServletRequest req,@RequestParam(value="page", defaultValue="0") int page) {
+    public String board(Model model, HttpServletRequest req,@RequestParam(value="page", defaultValue="0") int page,@RequestParam(value="category", defaultValue="") String category) {
         model.addAttribute("menu","backoffice");
         model.addAttribute("user",(User) req.getAttribute("user"));
-        model.addAttribute("paging",backofficeService.getLectures(page));
+        model.addAttribute("paging",backofficeService.getLectures(page,category));
+        model.addAttribute("category",category);
         model.addAttribute("teachers",backofficeService.getTeachers());
         return "backoffice/main";
     }

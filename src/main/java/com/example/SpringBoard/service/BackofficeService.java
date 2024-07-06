@@ -44,9 +44,9 @@ public class BackofficeService {
     }
 
     /* 페이지에 해당하는 도서 목록 불러오기 */
-    public Page<Lecture> getLectures(int page) {// DB 조회
+    public Page<Lecture> getLectures(int page, String category) {// DB 조회
         Pageable pageable = PageRequest.of(page, 10);
-        return lectureRepository.findAll(pageable);
+        return (category.isEmpty()) ? lectureRepository.findAll(pageable) : lectureRepository.findByCategory(category,pageable);
     }
 
     /* 페이지에 해당하는 도서 목록 불러오기 */
