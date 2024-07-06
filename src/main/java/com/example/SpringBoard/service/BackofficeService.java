@@ -58,7 +58,6 @@ public class BackofficeService {
         return lectureRepository.findByTeacherId(id);
     }
 
-
     /* 강사 목록 불러오기 */
     public List<Teacher> getTeachers() {// DB 조회
         return teacherRepository.findAll();
@@ -136,6 +135,41 @@ public class BackofficeService {
         }
     }
 
+    /* 강사 삭제 */
+    public ResponseEntity<String> deleteTeacher(int id){
+        try {
+            Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
+            if(optionalTeacher.isPresent()){
+                teacherRepository.delete(optionalTeacher.get());
+                return ResponseEntity.ok("강사가 삭제되었습니다.");
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("강사가 존재하지 않습니다.");
+            }
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /* 강의 삭제 */
+    public ResponseEntity<String> deleteLecture(int id){
+        try {
+            Optional<Lecture> optionalLecture = lectureRepository.findById(id);
+            if(optionalLecture.isPresent()){
+                lectureRepository.delete(optionalLecture.get());
+                return ResponseEntity.ok("강의가 삭제되었습니다.");
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("강의가 존재하지 않습니다.");
+            }
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
 }

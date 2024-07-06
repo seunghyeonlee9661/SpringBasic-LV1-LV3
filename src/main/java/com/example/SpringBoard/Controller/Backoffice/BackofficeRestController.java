@@ -44,16 +44,27 @@ public class BackofficeRestController {
 
     /* 강의 추가 */
     @PostMapping("/lecture/{id}")
-    public ResponseEntity<String> lecture(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
+    public ResponseEntity<String> addLecture(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
         return backofficeService.create(lectureRequestDTO);
+    }
+
+    /* 강의 추가 */
+    @PostMapping("/lecture/{id}/delete/")
+    public ResponseEntity<String> deleteLecture(@PathVariable("id") Integer id) {
+        return backofficeService.deleteLecture(id);
     }
 
 
     /* 강의 추가 */
     @PostMapping("/teacher/{id}")
-    public ResponseEntity<String> teacher(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
+    public ResponseEntity<String> addTeacher(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
         return backofficeService.create(lectureRequestDTO);
     }
 
+    /* 강사 삭제 */
+    @PostMapping("/teacher/{id}/delete")
+    public ResponseEntity<String> deleteTeacher(@PathVariable("id") Integer id) {
+        return backofficeService.deleteTeacher(id);
+    }
 
 }

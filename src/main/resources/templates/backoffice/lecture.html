@@ -11,7 +11,15 @@
         <div class="col">
             <!-- 뒤로가기 버튼-->
             <a type="button" th:href="@{/backoffice/main}" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill me-2"></i>List</a>
-            <h1 class="p-2 display-5 link-body-emphasis mb-1" th:text="${lecture.title}"></h1>
+            <div class="hstack gap-3">
+                <h1 class="p-2 display-5 link-body-emphasis mb-1" th:text="${lecture.title}"></h1>
+                <div class="p-1 ">
+                    <a class="btn btn-secondary me-2" th:data-uri="@{|/backoffice/api/lecture/${lecture.id}/edit|}" onclick="checkRole()"><i class="bi bi-pencil-square"></i></a>
+                </div>
+                <div class="p-1 ">
+                    <a class="btn btn-secondary me-2" th:data-uri="@{|/backoffice/api/lecture/${lecture.id}/delete|}" onclick="checkRole()"><i class="bi bi-trash3"></i></a>
+                </div>
+            </div>
             <hr>
             <div class="hstack gap-3">
                 <p class="p-2 blog-post-meta" th:text="${lecture.price}"></p>
@@ -30,6 +38,31 @@
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
 <script th:inline="javascript">
+    function checkRole(){
+        const token = Cookies.get('Authorization'); // JWT가 저장된 쿠키의 이름을 넣으세요
+        if (token) {
+            try {
+                const decoded = jwt_decode(token);
+                console.log(decoded);
+                console.log(decoded.auth);
+                if(decoded.auth === "MANAGER"){
+                    deleteLecture();
+                }else{
+                    alert('MANAGER 권한이 필요합니다.');
+                }
+            } catch (error) {
+                alert('JWT decoding Error');
+                location.href = '/backoffice';
+            }
+        } else {
+            alert('로그인이 필요합니다.');
+            location.href = '/backoffice';
+        }
+    }
+
+    function deleteLecture(){
+        console.log("DELETE!");
+    }
 </script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>
