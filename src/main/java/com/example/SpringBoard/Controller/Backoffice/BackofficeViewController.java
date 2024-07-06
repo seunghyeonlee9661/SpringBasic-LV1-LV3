@@ -39,4 +39,20 @@ public class BackofficeViewController {
         model.addAttribute("teachers",backofficeService.getTeachers());
         return "backoffice/main";
     }
+    /* 강의 페이지 */
+    @GetMapping("/lecture/{id}")
+    public String lecture(Model model,@PathVariable("id") int id) {
+        model.addAttribute("menu","backoffice");
+        model.addAttribute("lecture",backofficeService.getLecture(id));
+        return "backoffice/lecture";
+    }
+
+    /* 강사 페이지 */
+    @GetMapping("/teacher/{id}")
+    public String teacher(Model model,@PathVariable("id") int id) {
+        model.addAttribute("menu","backoffice");
+        model.addAttribute("teacher",backofficeService.getTeacher(id));
+        model.addAttribute("lectures",backofficeService.getLecturesByTeacherId(id));
+        return "backoffice/teacher";
+    }
 }

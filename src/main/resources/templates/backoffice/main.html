@@ -45,7 +45,7 @@
                 <div class="menu-container">
                     <ul class="vertical-menu">
                         <li th:each="teacher : ${teachers}">
-                            <a th:text="${teacher.name}"> </a>
+                            <a th:href="@{|/backoffice/teacher/${teacher.id}|}" th:text="${teacher.name}"></a>
                         </li>
                     </ul>
                 </div>
@@ -95,7 +95,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="lecture : ${paging}">
-                            <td th:text="${lecture.title}"></td>
+                            <td ><a th:href="@{|/backoffice/lecture/${lecture.id}|}" th:text="${lecture.title}"></a></td>
                             <td th:text="${lecture.price}"></td>
                             <td th:text="${lecture.teacher.name}"></td>
                             <td th:text="${lecture.category}"></td>

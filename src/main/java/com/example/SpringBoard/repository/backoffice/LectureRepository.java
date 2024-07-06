@@ -10,5 +10,7 @@ import java.util.List;
 public interface LectureRepository extends JpaRepository<Lecture, Integer> {
     Page<Lecture> findAll(Pageable pageable);
     Page<Lecture> findByCategory(String category,Pageable pageable);
+    List<Lecture> findByTeacherId(int id);
+
 
 }

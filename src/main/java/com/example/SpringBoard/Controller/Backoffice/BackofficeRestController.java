@@ -49,7 +49,6 @@ public class BackofficeRestController {
     }
 
 
-
     /* 강의 추가 */
     @PostMapping("/teacher/{id}")
     public ResponseEntity<String> teacher(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {

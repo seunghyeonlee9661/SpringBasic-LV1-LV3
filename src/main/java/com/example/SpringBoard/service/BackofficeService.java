@@ -43,18 +43,32 @@ public class BackofficeService {
         this.jwtUtil = jwtUtil;
     }
 
-    /* 페이지에 해당하는 도서 목록 불러오기 */
+    /* 강의 목록 불러오기 */
     public Page<Lecture> getLectures(int page, String category) {// DB 조회
         Pageable pageable = PageRequest.of(page, 10);
         return (category.isEmpty()) ? lectureRepository.findAll(pageable) : lectureRepository.findByCategory(category,pageable);
     }
+    /* 페이지에 해당하는 도서 목록 불러오기 */
+    public Lecture getLecture(int id) {// DB 조회
+        return lectureRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No Lecture"));
+    }
 
     /* 페이지에 해당하는 도서 목록 불러오기 */
+    public List<Lecture> getLecturesByTeacherId(int id) {// DB 조회
+        return lectureRepository.findByTeacherId(id);
+    }
+
+
+    /* 강사 목록 불러오기 */
     public List<Teacher> getTeachers() {// DB 조회
         return teacherRepository.findAll();
     }
+    /* 페이지에 해당하는 도서 목록 불러오기 */
+    public Teacher getTeacher(int id) {// DB 조회
+        return teacherRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No Teacher"));
+    }
 
-    /* 관리자 추가 */
+    /* 사용자 추가 */
     public ResponseEntity<String> create(SignupRequestDTO signupRequestDTO){
         try {
             if (userRepository.findByEmail(signupRequestDTO.getEmail()).isPresent()) throw new IllegalArgumentException("중복된 Email 입니다.");

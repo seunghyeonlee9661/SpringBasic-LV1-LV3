@@ -1,4 +1,4 @@
-package com.example.SpringBoard.Controller;
+package com.example.SpringBoard.Controller.Books;
 
 import com.example.SpringBoard.DTO.books.MemberRequestDTO;
 import com.example.SpringBoard.DTO.books.MemberResponseDTO;

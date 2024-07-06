@@ -1,4 +1,4 @@
-package com.example.SpringBoard.Controller;
+package com.example.SpringBoard.Controller.Post;
 
 import com.example.SpringBoard.entity.posts.Post;
 import com.example.SpringBoard.form.PostWriteForm;

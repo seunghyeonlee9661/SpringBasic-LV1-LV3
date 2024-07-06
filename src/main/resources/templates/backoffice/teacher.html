@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout :: head">
+    <!--  헤드 공간  -->
+</head>
+<style>
+    .menu-container {
+       width: 100%;
+       height: auto; /* Set the height of the menu container */
+       border: 1px solid #ccc;
+       overflow-x: auto; /* Enable horizontal scrolling */
+       white-space: nowrap; /* Prevent line break for horizontal scrolling */
+   }
+
+   .horizontal-menu {
+       list-style-type: none;
+       width:100%;
+       padding: 0;
+       margin: 0;
+       display: flex; /* Use flexbox to create a horizontal layout */
+   }
+
+   .horizontal-menu li {
+       background-color: #f1f1f1;
+       margin-right: 1px; /* Adjust margin for horizontal spacing */
+       display: inline-block; /* Ensure items are displayed inline */
+       width: 200px; /* Set a fixed width for each item */
+       white-space: nowrap; /* Prevent line breaks */
+       overflow: hidden; /* Hide overflow */
+       text-overflow: ellipsis; /* Add ellipsis for overflow text */
+       flex-shrink: 0; /* Prevent items from shrinking */
+   }
+
+   .lecture-link {
+       display: block; /* Make the link block level to contain the title and category */
+       text-decoration: none; /* Remove underline from the link */
+       color: black; /* Set the default color */
+       padding: 8px 16px; /* Add some padding */
+       height: 60px; /* Set a fixed height for the link */
+       box-sizing: border-box; /* Include padding in the height */
+   }
+
+   .lecture-title {
+       display: block; /* Make the title a block element */
+       font-weight: bold; /* Make the title bold */
+       margin-bottom: 4px; /* Add some space between title and category */
+       overflow: hidden; /* Hide overflow */
+       text-overflow: ellipsis; /* Add ellipsis for overflow text */
+       white-space: nowrap; /* Prevent line breaks */
+   }
+
+   .lecture-category {
+       display: block; /* Make the category a block element */
+       font-size: 0.9em; /* Make the category text a bit smaller */
+       color: gray; /* Set a different color for the category */
+       overflow: hidden; /* Hide overflow */
+       text-overflow: ellipsis; /* Add ellipsis for overflow text */
+       white-space: nowrap; /* Prevent line breaks */
+   }
+
+   .lecture-link:hover .lecture-title,
+   .lecture-link:hover .lecture-category {
+       color: white; /* Change title and category color on hover */
+   }
+
+   .lecture-link:hover {
+       background-color: #555; /* Change background color on hover */
+   }
+
+</style>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+<div class="d-flex py-4 bg-body-tertiary main" style="position:relative;">
+    <div class="container my-5">
+        <div class="col">
+            <!-- 뒤로가기 버튼-->
+            <a type="button" th:href="@{/backoffice/main}" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill me-2"></i>List</a>
+            <h1 class="p-2 display-5 link-body-emphasis mb-1" th:text="${teacher.name}"></h1>
+            <hr>
+            <div class="hstack gap-3">
+                <p class="p-2 blog-post-meta" th:text="${teacher.year}"></p>
+                <p class="p-2 blog-post-meta" th:text="${teacher.company}"></p>
+                <p class="p-2 blog-post-meta" th:text="${teacher.phone}"></p>
+            </div>
+            <p class="p-2 blog-post-meta" th:text="${teacher.introduction}"></p>
+        </div>
+        <div class="menu-container">
+            <ul class="horizontal-menu">
+                <li th:each="lecture : ${lectures}">
+                    <a th:href="@{|/backoffice/lecture/${lecture.id}|}" class="lecture-link">
+                        <span class="lecture-title" th:text="${lecture.title}"></span>
+                        <span class="lecture-category" th:text="${lecture.category}"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- 목록-->
+<div class="b-example-divider"></div>
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+<script th:inline="javascript">
+    //
+</script>
+<!--common script -->
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>
