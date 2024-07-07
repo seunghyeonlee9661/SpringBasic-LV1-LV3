@@ -2,6 +2,9 @@ package com.example.SpringBoard.DTO.backoffice;
 import com.example.SpringBoard.entity.backoffice.Teacher;
 import lombok.Getter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 public class TeacherResponseDTO {
     private int id;
@@ -10,22 +13,15 @@ public class TeacherResponseDTO {
     private String company;
     private String phone;
     private String introduction;
+    private List<LectureResponseDTO> lectures;
 
-    public TeacherResponseDTO(Teacher backofficeTeacher){
-        this.id = backofficeTeacher.getId();
-        this.name = backofficeTeacher.getName();
-        this.year = backofficeTeacher.getYear();
-        this.company = backofficeTeacher.getCompany();
-        this.phone = backofficeTeacher.getPhone();
-        this.introduction = backofficeTeacher.getIntroduction();
-    }
-
-    public TeacherResponseDTO(int id, String name, int year, String company, String phone, String introduction) {
-        this.id = id;
-        this.name = name;
-        this.year = year;
-        this.company = company;
-        this.phone = phone;
-        this.introduction = introduction;
+    public TeacherResponseDTO(Teacher teacher){
+        this.id = teacher.getId();
+        this.name = teacher.getName();
+        this.year = teacher.getYear();
+        this.company = teacher.getCompany();
+        this.phone = teacher.getPhone();
+        this.introduction = teacher.getIntroduction();
+        this.lectures = teacher.getLectures().stream().map(LectureResponseDTO::new).collect(Collectors.toList());
     }
 }

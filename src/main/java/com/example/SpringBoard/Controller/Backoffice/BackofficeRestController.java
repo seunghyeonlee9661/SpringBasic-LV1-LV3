@@ -51,8 +51,8 @@ public class BackofficeRestController {
     }
 
     /* 강의 내용 불러오기 */
-    @GetMapping("/lecture/{id}")
-    public LectureResponseDTO getLecture(@PathVariable("id") int id) {
+    @GetMapping("/lecture")
+    public LectureResponseDTO getLecture(@RequestParam("id") int id) {
         return new LectureResponseDTO(backofficeService.getLecture(id));
     }
 
@@ -63,14 +63,14 @@ public class BackofficeRestController {
     }
 
     /* 강의 삭제 */
-    @DeleteMapping("/lecture/{id}")
-    public ResponseEntity<String> deleteLecture(@PathVariable("id") Integer id) {
+    @DeleteMapping("/lecture")
+    public ResponseEntity<String> deleteLecture(@RequestParam("id") int id) {
         return backofficeService.deleteLecture(id);
     }
 
     /* 강의 수정 */
-    @PutMapping("/lecture/{id}")
-    public ResponseEntity<String> editLecture(@RequestBody LectureRequestDTO lectureRequestDTO,@PathVariable("id") Integer id) {
+    @PutMapping("/lecture")
+    public ResponseEntity<String> editLecture(@RequestBody LectureRequestDTO lectureRequestDTO,@RequestParam("id") int id) {
         return backofficeService.edit(id,lectureRequestDTO);
     }
 
@@ -84,8 +84,8 @@ public class BackofficeRestController {
     }
 
     /* 강사 목록 불러오기 */
-    @GetMapping("/teacher/{id}")
-    public TeacherResponseDTO getTeacher(@PathVariable("id") int id) {
+    @GetMapping("/teacher")
+    public TeacherResponseDTO getTeacher(@RequestParam("id") int id) {
         return new TeacherResponseDTO(backofficeService.getTeacher(id));
     }
 
@@ -96,14 +96,14 @@ public class BackofficeRestController {
     }
 
     /* 강사 삭제 */
-    @DeleteMapping("/teacher/{id}")
-    public ResponseEntity<String> deleteTeacher(@PathVariable("id") Integer id) {
+    @DeleteMapping("/teacher")
+    public ResponseEntity<String> deleteTeacher(@RequestParam("id") int id) {
         return backofficeService.deleteTeacher(id);
     }
 
     /* 강의 수정 */
-    @PutMapping("/teacher/{id}")
-    public ResponseEntity<String> editTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO,@PathVariable("id") Integer id) {
+    @PutMapping("/teacher")
+    public ResponseEntity<String> editTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO,@RequestParam("id") int id) {
         return backofficeService.edit(id,teacherRequestDTO);
     }
 

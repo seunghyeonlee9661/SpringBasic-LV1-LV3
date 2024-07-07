@@ -77,34 +77,28 @@
             <!-- 뒤로가기 버튼-->
             <a type="button" th:href="@{/backoffice/main}" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill me-2"></i>List</a>
             <div class="hstack gap-3">
-                <h1 class="p-2 display-5 link-body-emphasis mb-1" th:text="${teacher.name}"></h1>
+                <h1 id="teacher-name" class="p-2 display-5 link-body-emphasis mb-1"></h1>
                 <span class="badge text-bg-primary">Teacher</span>
-                <div class="p-1 ">
+                <div class="p-1">
                     <a class="btn btn-secondary me-2" onclick="callEditModal()"><i class="bi bi-pencil-square"></i></a>
                 </div>
-                <div class="p-1 ">
-                    <a class="btn btn-secondary me-2" onclick="deleteTeacher()"><i class="bi bi-trash3"></i></a>
+                <div class="p-1">
+                    <a class="btn btn-secondary me-2" th:id="${id}" th:onclick="deleteTeacher(this.getAttribute('id'));"><i class="bi bi-trash3"></i></a>
                 </div>
             </div>
             <hr>
             <div class="hstack gap-0">
                 <p class="p-2 blog-post-meta m-0">연차 : </p>
-                <p class="p-2 blog-post-meta m-0" th:text="${teacher.year}"></p>
+                <p id="teacher-year" class="p-2 blog-post-meta m-0"></p>
                 <p class="p-2 blog-post-meta m-0">회사 : </p>
-                <p class="p-2 blog-post-meta m-0" th:text="${teacher.company}"></p>
+                <p id="teacher-company" class="p-2 blog-post-meta m-0"></p>
                 <p class="p-2 blog-post-meta m-0">전화번호 : </p>
-                <p class="p-2 blog-post-meta m-0" th:text="${teacher.phone}"></p>
+                <p id="teacher-phone" class="p-2 blog-post-meta m-0"></p>
             </div>
-            <p class="p-2 blog-post-meta" th:text="${teacher.introduction}"></p>
+            <p id="teacher-introduction" class="p-2 blog-post-meta"></p>
         </div>
         <div class="menu-container">
-            <ul class="horizontal-menu">
-                <li th:each="lecture : ${lectures}">
-                    <a th:href="@{|/backoffice/lecture/${lecture.id}|}" class="lecture-link">
-                        <span class="lecture-title" th:text="${lecture.title}"></span>
-                        <span class="lecture-category" th:text="${lecture.category}"></span>
-                    </a>
-                </li>
+            <ul class="horizontal-menu" id="lecture-list">
             </ul>
         </div>
     </div>
@@ -115,48 +109,48 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Teacher</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editTeacherForm" class="needs-validation" method="POST" novalidate>
+                <form id="editTeacherForm" class="needs-validation" novalidate>
                     <!-- 이름 -->
                     <div class="mb-3">
                         <label for="editTeacher_name" class="form-label">이름</label>
-                        <input type="text" id="editTeacher_name" name="editTeacher_name" class="form-control" required th:value="${teacher.name}">
+                        <input type="text" id="editTeacher_name" name="editTeacher_name" class="form-control" required>
                     </div>
                     <!-- 경력 -->
                     <div class="mb-3">
                         <label for="editTeacher_year" class="form-label">경력</label>
-                        <input type="text" id="editTeacher_year" name="editTeacher_year" class="form-control" maxlength="3" oninput="maxLengthCheck(this)" required th:value="${teacher.year}">
+                        <input type="text" id="editTeacher_year" name="editTeacher_year" class="form-control" maxlength="3" oninput="maxLengthCheck(this)" required>
                     </div>
                     <!-- 회사 -->
                     <div class="mb-3">
                         <label for="editTeacher_company" class="form-label">회사</label>
-                        <input type="text" id="editTeacher_company" name="editTeacher_company" class="form-control" required th:value="${teacher.company}">
+                        <input type="text" id="editTeacher_company" name="editTeacher_company" class="form-control" required>
                     </div>
                     <!-- 전화번호 -->
                     <div class="mb-3">
                         <label class="form-label">Phone</label>
                         <div class="row">
                             <div class="col">
-                                <input type="text" id="editTeacher_phone1" name="editTeacher_phone1" class="form-control" maxlength="3" oninput="maxLengthCheck(this)" required th:value="${teacher.phone.substring(0, 3)}">
+                                <input type="text" id="editTeacher_phone1" name="editTeacher_phone1" class="form-control" maxlength="3" oninput="maxLengthCheck(this)" required>
                             </div>
                             <div class="col">
-                                <input type="text" id="editTeacher_phone2" name="editTeacher_phone2" class="form-control" maxlength="4" oninput="maxLengthCheck(this)" required th:value="${teacher.phone.substring(3, 7)}">
+                                <input type="text" id="editTeacher_phone2" name="editTeacher_phone2" class="form-control" maxlength="4" oninput="maxLengthCheck(this)" required>
                             </div>
                             <div class="col">
-                                <input type="text" id="editTeacher_phone3" name="editTeacher_phone3" class="form-control" maxlength="4" oninput="maxLengthCheck(this)" required th:value="${teacher.phone.substring(7, 11)}">
+                                <input type="text" id="editTeacher_phone3" name="editTeacher_phone3" class="form-control" maxlength="4" oninput="maxLengthCheck(this)" required>
                             </div>
                         </div>
                     </div>
                     <!-- 소개 -->
                     <div class="mb-3">
                         <label for="editTeacher_introduction" class="form-label">소개</label>
-                        <textarea id="editTeacher_introduction" name="editTeacher_introduction" class="form-control" required th:text="${teacher.introduction}"></textarea>
+                        <textarea id="editTeacher_introduction" name="editTeacher_introduction" class="form-control" required></textarea>
                     </div>
                     <!-- 수정 버튼 -->
-                    <button type="button" class="btn btn-danger" style="width:100%" onclick="editTeacher()">Edit</button>
+                    <button type="button" class="btn btn-primary" style="width:100%" th:id="${id}" th:onclick="editTeacher(this.getAttribute('id'));">수정</button>
                 </form>
             </div>
         </div>
@@ -170,73 +164,21 @@
 <div class="b-example-divider"></div>
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
+
+<script src="/js/backoffice.js" type="text/javascript"></script>
 <script th:inline="javascript">
-     function deleteTeacher() {
-         if (checkRole()) {
-             if(confirm('삭제하시겠습니까?')){
-                 $.ajax({
-                     url: '/backoffice/api/teacher/[[${teacher.id}]]/delete',
-                     type: 'POST',
-                     contentType: "application/json",
-                     success: function (response) {
-                         alert('강사가 삭제되었습니다.');
-                         window.location.href = '/backoffice/main';
-                     },
-                     error: function (xhr, status) {
-                         alert(xhr + " : " + status);
-                     }
-                 });
-             }
-         }
-     }
-
-     function callEditModal() {
-         if (checkRole()) {
-             let myModal = new bootstrap.Modal(document.getElementById('editModal'), {
-                 keyboard: false
-             });
-             myModal.show();
-         }
-     }
-
-    function editTeacher() {
-        var form = document.getElementById('editTeacherForm');
-        // 폼 유효성 검사
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else { // 유효성 검사를 통과한 경우에만 AJAX 요청을 보냄
-            let name = $('#editTeacher_name').val();
-            let year = $('#editTeacher_year').val();
-            let company = $('#editTeacher_company').val();
-            let phone = $('#editTeacher_phone1').val() + $('#editTeacher_phone2').val() + $('#editTeacher_phone3').val();
-            let introduction = $('#editTeacher_introduction').val();
-
-            // ajax 요청
-            $.ajax({
-                url: '/backoffice/api/teacher/[[${teacher.id}]]/edit',
-                type: 'POST',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    'name': name,
-                    'year': year,
-                    'company': company,
-                    'phone': phone,
-                    'introduction': introduction
-                }),
-                success: function (response) {
-                    alert('강사가 수정되었습니다.');
-                    location.href = location.href;
-                },
-                error: function (xhr, status, error) {
-                   var errorMessage = xhr.responseText;
-                    alert(errorMessage);
-                }
+    $(document).ready(function() {
+        getTeacher("[[${id}]]");
+    });
+    function callEditModal() {
+        if (checkRole()) {
+            let myModal = new bootstrap.Modal(document.getElementById('editModal'), {
+                keyboard: false
             });
+            myModal.show();
         }
-        // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
-        form.classList.add('was-validated');
     }
+
 </script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>

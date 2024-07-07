@@ -13,6 +13,7 @@ public class LectureResponseDTO {
     private String introduction;
     private String category;
     private String teachername;
+    private int teacherid;
     private LocalDateTime regist;
 
     public LectureResponseDTO(Lecture lecture){
@@ -22,6 +23,7 @@ public class LectureResponseDTO {
         this.introduction = lecture.getIntroduction();
         this.category = lecture.getCategory();
         this.teachername = lecture.getTeacher().getName();
+        this.teacherid = lecture.getTeacher().getId();
         this.regist = lecture.getRegist();
     }
 }

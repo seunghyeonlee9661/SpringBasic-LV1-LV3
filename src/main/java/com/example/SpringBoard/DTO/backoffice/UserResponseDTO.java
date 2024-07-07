@@ -14,10 +14,4 @@ public class UserResponseDTO {
         this.department = user.getDepartment();
         this.role = user.getRole();
     }
-
-    public UserResponseDTO(String email, String department, Role role) {
-        this.email = email;
-        this.department = department;
-        this.role = role;
-    }
 }

@@ -22,7 +22,6 @@ public class BackofficeViewController {
         return "backoffice/index";
     }
 
-
     /* 로그인 후 페이지 */
     @GetMapping("/main")
     public String board(Model model, HttpServletRequest req,@RequestParam(value="page", defaultValue="0") int page,@RequestParam(value="category", defaultValue="") String category) {
@@ -36,8 +35,6 @@ public class BackofficeViewController {
     @GetMapping("/lecture/{id}")
     public String lecture(Model model,@PathVariable("id") int id) {
         model.addAttribute("menu","backoffice");
-        model.addAttribute("lecture",backofficeService.getLecture(id));
-        model.addAttribute("teachers",backofficeService.getTeachers());
         return "backoffice/lecture";
     }
 
@@ -45,8 +42,6 @@ public class BackofficeViewController {
     @GetMapping("/teacher/{id}")
     public String teacher(Model model,@PathVariable("id") int id) {
         model.addAttribute("menu","backoffice");
-        model.addAttribute("teacher",backofficeService.getTeacher(id));
-        model.addAttribute("lectures",backofficeService.getLecturesByTeacherId(id));
         return "backoffice/teacher";
     }
 }

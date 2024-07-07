@@ -77,7 +77,7 @@ public class BackofficeService {
     /* 강의 목록 불러오기 */
     public Page<LectureResponseDTO> getLectures(int page, String category) {// DB 조회
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Lecture> lectures = (category.isEmpty()) ? lectureRepository.findAll(pageable) : lectureRepository.findByCategory(category, pageable);
+        Page<Lecture> lectures = (category.isEmpty()) ? lectureRepository.findAll(pageable) : lectureRepository.findByCategoryOrderByRegistDesc(category, pageable);
         return lectures.map(LectureResponseDTO::new);
     }
 
@@ -114,29 +114,15 @@ public class BackofficeService {
         }
     }
 
-
-
-
-
-    /* 페이지에 해당하는 도서 목록 불러오기 */
+    /* 강사 정보 불러오기 */
     public Teacher getTeacher(int id) {// DB 조회
         return teacherRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No Teacher"));
     }
-
-
-    /* 페이지에 해당하는 도서 목록 불러오기 */
+    
+    /* 강의 정보 불러오기 */
     public Lecture getLecture(int id) {// DB 조회
         return lectureRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No Lecture"));
     }
-
-    /* 페이지에 해당하는 도서 목록 불러오기 */
-    public List<Lecture> getLecturesByTeacherId(int id) {// DB 조회
-        return lectureRepository.findByTeacherId(id);
-    }
-
-
-
-
 
     /* 강사 수정 */
     public ResponseEntity<String> edit(int id, TeacherRequestDTO teacherRequestDTO) {

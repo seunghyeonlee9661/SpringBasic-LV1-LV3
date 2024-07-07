@@ -94,47 +94,8 @@
 <div class="b-example-divider"></div>
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 <!-- Swiper 초기화 코드 -->
 <script>
-    function signup() {
-        let form = document.getElementById('signupForm');
-        if (checkValidity(form)) {
-            let data = {
-                'email' : $('#signup_email').val(),
-                'password' : $('#signup_password').val(),
-                'role' : $(":input:radio[name=signup_role]:checked").val(),
-                'department' : $('#signup_department').val()
-            }
-            let successCallback = function(response) {
-                alert(response);
-                location.href = location.href;
-            }
-            let errorCallback = function(response) {
-                alert(response);
-            }
-            signupRequest(data, successCallback, errorCallback);
-        }
-    }
-
-    function login() {
-        let form = document.getElementById('loginForm');
-        if (checkValidity(form)) {
-            let data = {
-                'email' : $('#login_email').val(),
-                'password' : $('#login_password').val()
-            };
-            let successCallback = function(response) {
-                alert(response);
-                location.href = 'backoffice/main';
-            }
-            let errorCallback = function(response) {
-                alert(response);
-            }
-            loginRequest(data, successCallback, errorCallback);
-        }
-    }
-
     $(document).ready(function() {
         let auth = Cookies.get('Authorization');
         if (auth != undefined) {
