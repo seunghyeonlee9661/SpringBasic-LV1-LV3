@@ -9,7 +9,7 @@
 
 <div class="d-flex align-items-center py-4 bg-body-tertiary main">
     <div class="form-signin w-100 m-auto" style="max-width: 330px;">
-        <form th:object="${postWriteForm}" method="post">
+        <form th:object="${postWriteForm}" method="POST">
             <div th:replace="~{form_errors :: formErrorsFragment}"></div>
             <div class="mb-3">
                 <input type="text" th:field="*{title}" class="form-control" placeholder="Title">

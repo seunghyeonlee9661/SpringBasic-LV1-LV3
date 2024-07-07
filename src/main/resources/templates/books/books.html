@@ -42,8 +42,6 @@
             <tbody>
             <tr th:each="book : ${paging}">
                 <td th:text="${book.id}"></td>
-
-
                 <td ><span class="badge" th:classappend="${book.loanable}? 'text-bg-success' : 'text-bg-danger'" th:text="${book.loanable}? '가능' : '불가'"></span> </td>
                 <td ><a th:href="@{|/books/detail/${book.id}|}" th:text="${book.title}"></a></td>
                 <td th:text="${book.author}"></td>
@@ -83,7 +81,7 @@
 
 <!-- 대출 목록 조회 모달 -->
 <div class="modal fade" id="loanModal" tabindex="-1" aria-labelledby="loanModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 80vw;">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="loanModalLabel">Modal title</h1>
@@ -198,7 +196,7 @@
                         tableBody.append(row);
                     });
                 } else { // 데이터가 하나도 없을 경우
-                    let row = `<tr><td colspan="5">No loans found.</td></tr>`;
+                    let row = `<tr><td colspan="5">No booksLoans found.</td></tr>`;
                     tableBody.append(row);
                 }
             },

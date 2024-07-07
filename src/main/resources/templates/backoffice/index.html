@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout :: head">
+    <!--  헤드 공간  -->
+</head>
+<body>
+<!--  상단바 공간  -->
+<header th:replace="layout :: nav"></header>
+
+<!-- 내용-->
+<div class="d-flex py-4 bg-body-tertiary main">
+    <div class="container my-5">
+        <!-- 로그인 폼 -->
+        <form id="loginForm" class="form-signin w-100 m-auto needs-validation" method="Post" novalidate>
+            <!-- 이메일 -->
+            <div class="mb-3">
+                <label for="login_email" class="form-label">이메일</label>
+                <input type="email" id="login_email" name="login_email" class="form-control" required>
+            </div>
+            <!-- 비밀번호 -->
+            <div class="mb-3">
+                <label for="login_password" class="form-label">비밀번호</label>
+                <input type="password" id="login_password" name="login_password" class="form-control" required>
+            </div>
+            <div class="row">
+                <div class="col p-2">
+                    <button class="btn btn-danger" style="width:100%" onclick="login()" type="button">Login</button>
+                </div>
+                <div class="col p-2">
+                    <a class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#signupModal" style="width:100%">Signup</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 가입 모달 -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="signupModalLabel">Signup</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm" class="needs-validation" method="POST" novalidate>
+                    <!-- 이메일 -->
+                    <div class="mb-3 row">
+                        <label for="signup_Email" class="form-label">이메일</label>
+                        <div class="col">
+                            <input type="email" id="signup_email" name="signup_email" class="form-control" required>
+                        </div>
+                    </div>
+                    <!-- 비밀번호 -->
+                    <div class="mb-3">
+                        <label for="signup_password" class="form-label">비밀번호</label>
+                        <input type="password" id="signup_password" name="signup_password" class="form-control" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$" required>
+                        <div class="invalid-feedback">
+                            비밀번호는  최소 8자 이상, 15자 이하이며 알파벳 대소문자, 숫자, 특수문자로 구성되어야 합니다.
+                        </div>
+                    </div>
+                    <!-- 부서 -->
+                    <div class="mb-3">
+                        <label for="signup_department" class="form-label">부서</label>
+                        <select id="signup_department" name="signup_department" class="form-control" required>
+                            <option value="">...</option>
+                            <option value="curriculum">커리큘럼</option>
+                            <option value="marketing">마케팅</option>
+                            <option value="development">개발 </option>
+                        </select>
+                    </div>
+                    <!-- 권한 -->
+                    <div class="mb-3">
+                        <label for="signup_manager" class="form-label">권한</label>
+                        <div class="form-check col-6">
+                            <input class="form-check-input" type="radio" name="signup_role" id="signup_manager" value="MANAGER" required>
+                            <label class="form-check-label" for="signup_manager">
+                                MANAGER
+                            </label>
+                        </div>
+                        <div class="form-check col-6">
+                            <input class="form-check-input" type="radio" name="signup_role" id="signup_staff" value="STAFF " required>
+                            <label class="form-check-label" for="signup_staff">
+                                STAFF
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <button class="btn btn-danger" style="width:100%" onclick="signup()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 목록-->
+<div class="b-example-divider"></div>
+<!-- footer -->
+<div th:replace="layout :: footer"></div>
+<!-- Swiper 초기화 코드 -->
+<script>
+    $(document).ready(function() {
+        let auth = Cookies.get('Authorization');
+        if (auth != undefined) {
+            location.href = 'backoffice/main';
+        }
+    })
+</script>
+<script src="/js/backoffice.js" type="text/javascript"></script>
+<th:block th:replace="layout :: scripts"></th:block>
+</body>
+
+</html>

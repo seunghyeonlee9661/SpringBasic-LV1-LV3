@@ -9,7 +9,7 @@
 
 <div class="d-flex align-items-center py-4 bg-body-tertiary main">
     <div class="form-signin w-100 m-auto" style="max-width:600px">
-        <form id="bookCreateForm" class="needs-validation" method="post" novalidate>
+        <form id="bookCreateForm" class="needs-validation" method="POST" novalidate>
             <h4>Sign up</h4>
             <!-- 주민등록번호 -->
             <div class="mb-3 row">
@@ -122,15 +122,6 @@
         event.preventDefault();
         addBook();
     });
-
-    function maxLengthCheck(object) {
-        if (object.value.length > object.maxLength) {
-            object.value = object.value.slice(0, object.maxLength); // 최대 길이를 초과한 부분을 잘라냅니다.
-        } else if (!/^\d+$/.test(object.value)) {
-            object.value = object.value.replace(/[^\d]/g, ''); // 숫자 이외의 입력을 제거합니다.
-        }
-    }
-
 </script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>
