@@ -370,3 +370,7 @@ function getFormattedDate(dateString) {
     const day = ('0' + date.getDate()).slice(-2);
     return year + "-" + month + "-" + day;
 }
+
+function goBack() {
+    window.history.back();
+}

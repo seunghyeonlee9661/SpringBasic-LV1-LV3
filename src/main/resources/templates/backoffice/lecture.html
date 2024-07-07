@@ -10,7 +10,9 @@
     <div class="container my-5">
         <div class="col">
             <!-- 뒤로가기 버튼-->
-            <a id="backButton" type="button" th:href="@{/backoffice/main}" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill me-2"></i>List</a>
+            <button id="backButton" class="btn btn-secondary" style="font-size: 18px; position:absolute; top:2%; left:1%" onclick="goBack()">
+                <i class="bi bi-arrow-left-circle-fill me-2"></i> Back
+            </button>
             <div class="hstack gap-3">
                 <h1 id="lectureTitle" class="p-2 display-5 link-body-emphasis mb-1"></h1>
                 <span class="badge text-bg-info">Lecture</span>
