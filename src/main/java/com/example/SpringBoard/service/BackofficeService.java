@@ -74,17 +74,55 @@ public class BackofficeService {
         return teacherRepository.findAll();
     }
 
-    /* 페이지에 해당하는 도서 목록 불러오기 */
-    public Teacher getTeacher(int id) {// DB 조회
-        return teacherRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No Teacher"));
-    }
-
     /* 강의 목록 불러오기 */
     public Page<LectureResponseDTO> getLectures(int page, String category) {// DB 조회
         Pageable pageable = PageRequest.of(page, 10);
         Page<Lecture> lectures = (category.isEmpty()) ? lectureRepository.findAll(pageable) : lectureRepository.findByCategory(category, pageable);
         return lectures.map(LectureResponseDTO::new);
     }
+
+    /* 강사 추가 */
+    public ResponseEntity<String> create(TeacherRequestDTO teacherRequestDTO){
+        try {
+            teacherRepository.save(new Teacher(teacherRequestDTO));
+            return ResponseEntity.ok("강사가 추가되었습니다.");
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /* 강의 추가 */
+    public ResponseEntity<String> create(LectureRequestDTO lectureRequestDTO){
+        try {
+            Optional<Teacher> optionalTeacher = teacherRepository.findById(lectureRequestDTO.getTeacher_id());
+            if(optionalTeacher.isPresent()){
+                Lecture lecture = new Lecture(lectureRequestDTO);
+                lecture.setTeacher(optionalTeacher.get());
+                lectureRepository.save(lecture);
+                return ResponseEntity.ok("강의가 추가되었습니다.");
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("강사가 존재하지 않습니다.");
+            }
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+
+
+
+    /* 페이지에 해당하는 도서 목록 불러오기 */
+    public Teacher getTeacher(int id) {// DB 조회
+        return teacherRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No Teacher"));
+    }
+
 
     /* 페이지에 해당하는 도서 목록 불러오기 */
     public Lecture getLecture(int id) {// DB 조회
@@ -99,18 +137,6 @@ public class BackofficeService {
 
 
 
-    /* 강사 추가 */
-    public ResponseEntity<String> create(TeacherRequestDTO teacherRequestDTO){
-        try {
-            teacherRepository.save(new Teacher(teacherRequestDTO));
-            return ResponseEntity.ok("강사가 추가되었습니다.");
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
     /* 강사 수정 */
     public ResponseEntity<String> edit(int id, TeacherRequestDTO teacherRequestDTO) {
@@ -135,28 +161,7 @@ public class BackofficeService {
         }
     }
 
-    /* 강의 추가 */
-    public ResponseEntity<String> create(LectureRequestDTO lectureRequestDTO){
-        try {
-            Optional<Teacher> optionalTeacher = teacherRepository.findById(lectureRequestDTO.getTeacher_id());
-            if(optionalTeacher.isPresent()){
-                Teacher teacher = optionalTeacher.get();
-                System.out.println(teacher);
-                Lecture lecture = new Lecture(lectureRequestDTO);
-                lecture.setTeacher(teacher);
-                System.out.println(lecture);
-                lectureRepository.save(lecture);
-                return ResponseEntity.ok("강의가 추가되었습니다.");
-            }else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("강사가 존재하지 않습니다.");
-            }
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
     /* 강의 수정 */
     public ResponseEntity<String> edit(int id, LectureRequestDTO lectureRequestDTO){

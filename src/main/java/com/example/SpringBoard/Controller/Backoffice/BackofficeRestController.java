@@ -91,8 +91,8 @@ public class BackofficeRestController {
 
     /* 강사 추가 */
     @PostMapping("/teacher")
-    public ResponseEntity<String> addTeacher(@RequestBody LectureRequestDTO lectureRequestDTO) {
-        return backofficeService.create(lectureRequestDTO);
+    public ResponseEntity<String> addTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO) {
+        return backofficeService.create(teacherRequestDTO);
     }
 
     /* 강사 삭제 */

@@ -68,9 +68,19 @@ function teachersRequest(data, successCallback,errorCallback) {
   Request('/backoffice/api/teachers', 'GET', data,successCallback,errorCallback);
 }
 
-// 강의 요청
+// 강의 목록 요청
 function lecturesRequest(data, successCallback,errorCallback) {
   Request_GET('/backoffice/api/lectures', 'GET', data,successCallback,errorCallback);
+}
+
+// 강사 추가 요청
+function addTeacherRequest(data, successCallback,errorCallback) {
+  Request('/backoffice/api/teacher', 'POST', data,successCallback,errorCallback);
+}
+
+// 강의 추가 요청
+function addLectureRequest(data, successCallback,errorCallback) {
+  Request('/backoffice/api/lecture', 'POST', data,successCallback,errorCallback);
 }
 
 function setPagination(paging) {

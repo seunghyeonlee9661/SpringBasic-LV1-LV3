@@ -78,9 +78,6 @@
                     <div class="p-1 ">
                         <a class="btn btn-secondary me-2" onclick="logout()"><i class="bi bi-box-arrow-left"></i></a>
                     </div>
-                    <div class="p-1 ">
-                        <a class="btn btn-secondary me-2" th:href="@{/books/edit}"><i class="bi bi-gear-fill"></i></a>
-                    </div>
                 </div>
                 <!-- 게시글 목록 -->
                 <table class="table" style="table-layout: fixed">
@@ -234,23 +231,30 @@
         getLectures();
     });
 
-    function getTeachers(){
+    function getTeachers() {
         let successCallback = function(response) {
-          var html = '';
-          for (var i = 0; i < response.length; i++) {
-            var teacher = response[i];
-            html += '<li><a href="/backoffice/teacher/' + teacher.id + '">' + teacher.name + '</a></li>';
-          }
-          $('.vertical-menu').html(html);
+            var html = '';
+            for (var i = 0; i < response.length; i++) {
+                var teacher = response[i];
+                html += '<li><a href="/backoffice/teacher/' + teacher.id + '">' + teacher.name + '</a></li>';
+            }
+            $('.vertical-menu').html(html);
+
+            var selectHtml = '<option value="">...</option>';
+            for (var i = 0; i < response.length; i++) {
+                var teacher = response[i];
+                selectHtml += '<option value="' + teacher.id + '">' + teacher.name + '</option>';
+            }
+            $('#addLecture_teacher').html(selectHtml);
         };
         let errorCallback = function(error) {
-          alert('강사 목록을 불러오는 중 오류가 발생했습니다.');
-          console.error(error);
+            alert('강사 목록을 불러오는 중 오류가 발생했습니다.');
+            console.error(error);
         }
         teachersRequest(null, successCallback, errorCallback);
     }
 
-    function getLectures(page,category){
+    function getLectures(page, category) {
         let data = {
             page: "[[${page}]]",
             category: "[[${category}]]"
@@ -276,10 +280,6 @@
         };
         lecturesRequest(data, successCallback, errorCallback);
     }
-
-
-
-
     // 카테고리 조회 기능
     const category_elements = document.getElementsByClassName("category");
     Array.from(category_elements).forEach(function(element) {
@@ -289,6 +289,49 @@
             document.getElementById('searchForm').submit();
         });
     });
+
+
+    function addTeacher() {
+        let form = document.getElementById('addTeacherForm');
+        if (checkValidity(form)) {
+            let data = {
+                'name': $('#addTeacher_name').val(),
+                'year': $('#addTeacher_year').val(),
+                'company': $('#addTeacher_company').val(),
+                'phone': $('#addTeacher_phone1').val() + $('#addTeacher_phone2').val() + $('#addTeacher_phone3').val(),
+                'introduction': $('#addTeacher_introduction').val()
+            };
+            let successCallback = function(response) {
+                alert('강사가 추가되었습니다.');
+                location.href = location.href;
+            };
+            let errorCallback = function(response) {
+                alert(response);
+            };
+            addTeacherRequest(data, successCallback, errorCallback);
+        }
+    }
+
+    function addLecture() {
+        let form = document.getElementById('addLectureForm');
+        if (checkValidity(form)) {
+            let data = {
+                'title': $('#addLecture_title').val(),
+                'price': $('#addLecture_price').val(),
+                'introduction': $('#addLecture_introduction').val(),
+                'category': $('#addLecture_category').val(),
+                'teacher_id': $('#addLecture_teacher').val()
+            };
+            let successCallback = function(response) {
+                alert('강의가 추가되었습니다.');
+                location.href = location.href;
+            };
+            let errorCallback = function(response) {
+                alert(response);
+            };
+            addLectureRequest(data, successCallback, errorCallback);
+        }
+    }
 </script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>
