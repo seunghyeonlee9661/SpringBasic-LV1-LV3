@@ -97,84 +97,52 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 <!-- Swiper 초기화 코드 -->
 <script>
-    // 도서 추가 요청
     function signup() {
-        // Bootstrap 입력 검사 기능
-        var form = document.getElementById('signupForm');
-        // 폼 유효성 검사
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else { // 유효성 검사를 통과한 경우에만 AJAX 요청을 보냄
-            let email = $('#signup_email').val();
-            let password = $('#signup_password').val();
-            let role = $(":input:radio[name=signup_role]:checked").val();
-            let department =$('#signup_department').val();
-
-            if(department == "marketing" && role == "MANAGER"){
-                alert("마케팅 부서는 관리자 권한을 받을 수 없습니다.");
-            }else{
-                // ajax 요청
-                $.ajax({
-                    url: '/backoffice/api/signup',
-                    type: 'POST',
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        'email': email,
-                        'password': password,
-                        'role': role,
-                        'department': department
-                    }),
-                    success: function (response) {
-                        alert('회원가입이 완료되었습니다.');
-                        location.href = location.href;
-                    },
-                    error: function (xhr, status, error) {
-                       var errorMessage = xhr.responseText;
-                        alert(errorMessage);
-                    }
-                });
+        let form = document.getElementById('signupForm');
+        if (checkValidity(form)) {
+            let data = {
+                'email' : $('#signup_email').val(),
+                'password' : $('#signup_password').val(),
+                'role' : $(":input:radio[name=signup_role]:checked").val(),
+                'department' : $('#signup_department').val()
             }
+            let successCallback = function(response) {
+                alert(response);
+                location.href = location.href;
+            }
+            let errorCallback = function(response) {
+                alert(response);
+            }
+            signupRequest(data, successCallback, errorCallback);
         }
-        // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
-        form.classList.add('was-validated');
     }
 
-    // 도서 추가 요청
     function login() {
-        let email = $('#login_email').val();
-        let password = $('#login_password').val();
-        console.log("email:" + email);
-        console.log("password:" + password);
-
-        console.log
-        // ajax 요청
-        $.ajax({
-            url: '/backoffice/api/login',
-            type: 'POST',
-            contentType: "application/json",
-            data: JSON.stringify({
-                'email': email,
-                'password': password
-            }),
-            success: function (response) {
-                alert(response.message);
-                location.href = '/backoffice/main';
-            },
-            error: function (xhr) {
-                alert(xhr.responseJSON.error);
+        let form = document.getElementById('loginForm');
+        if (checkValidity(form)) {
+            let data = {
+                'email' : $('#login_email').val(),
+                'password' : $('#login_password').val()
+            };
+            let successCallback = function(response) {
+                alert(response);
+                location.href = 'backoffice/main';
             }
-        });
+            let errorCallback = function(response) {
+                alert(response);
+            }
+            loginRequest(data, successCallback, errorCallback);
+        }
     }
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         let auth = Cookies.get('Authorization');
-        if(auth != undefined){
+        if (auth != undefined) {
             location.href = 'backoffice/main';
         }
     })
 </script>
-<!--common script -->
+<script src="/js/backoffice.js" type="text/javascript"></script>
 <th:block th:replace="layout :: scripts"></th:block>
 </body>
 

@@ -12,25 +12,16 @@ public class LectureResponseDTO {
     private int price;
     private String introduction;
     private String category;
-    private Teacher teacher;
+    private String teachername;
     private LocalDateTime regist;
 
-    public LectureResponseDTO(Lecture backofficeLecture){
-        this.id = backofficeLecture.getId();
-        this.title = backofficeLecture.getTitle();
-        this.price = backofficeLecture.getPrice();
-        this.introduction = backofficeLecture.getIntroduction();
-        this.category = backofficeLecture.getCategory();
-        this.teacher = backofficeLecture.getTeacher();
-        this.regist = backofficeLecture.getRegist();
-    }
-    public LectureResponseDTO(int id, String title, int price, String introduction,String category, Teacher teacher, LocalDateTime regist) {
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.introduction = introduction;
-        this.category = category;
-        this.teacher = teacher;
-        this.regist = regist;
+    public LectureResponseDTO(Lecture lecture){
+        this.id = lecture.getId();
+        this.title = lecture.getTitle();
+        this.price = lecture.getPrice();
+        this.introduction = lecture.getIntroduction();
+        this.category = lecture.getCategory();
+        this.teachername = lecture.getTeacher().getName();
+        this.regist = lecture.getRegist();
     }
 }

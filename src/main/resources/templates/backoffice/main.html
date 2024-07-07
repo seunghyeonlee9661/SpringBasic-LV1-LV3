@@ -94,34 +94,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="lecture : ${paging}">
-                            <td ><a th:href="@{|/backoffice/lecture/${lecture.id}|}" th:text="${lecture.title}"></a></td>
-                            <td th:text="${lecture.price}"></td>
-                            <td th:text="${lecture.teacher.name}"></td>
-                            <td th:text="${lecture.category}"></td>
-                            <td th:text="${#temporals.format(lecture.regist, 'yyyy-MM-dd')}"></td>
-                        </tr>
+                    <!-- 아이템 목록 들어가는 곳-->
                     </tbody>
                 </table>
-                <!-- 페이지네이션 -->
-                <nav th:if="${!paging.isEmpty()}" aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                            <a class="page-link"  href="javascript:void(0)" th:data-page="${paging.number-1}" >
-                                <span>Previous</span>
-                            </a>
-                        </li>
-                        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                            th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                            th:classappend="${page == paging.number} ? 'active'"
-                            class="page-item">
-                            <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
-                        </li>
-                        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                            <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
-                                <span>Next</span>
-                            </a>
-                        </li>
+                <div class="pagination"></div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center" id="pagination">
+
                     </ul>
                 </nav>
             </div>
@@ -184,7 +163,6 @@
         </div>
     </div>
 </div>
-
 <!-- 강의 추가 모달 -->
 <div class="modal fade" id="addLectureModal" tabindex="-1" aria-labelledby="addLectureModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -241,112 +219,66 @@
 
 <!-- 페이지네이션 -->
 <form th:action="@{/backoffice/main}" method="get" id="searchForm">
-    <input type="hidden" id="page" name="page" th:value="${paging.number}">
+    <input type="hidden" id="page" name="page" th:value="${page}">
     <input type="hidden" id="category" name="category" th:value="${category}">
 </form>
 
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+<script src="/js/backoffice.js" type="text/javascript"></script>
 <!-- Swiper 초기화 코드 -->
 <script>
-    function logout() {
-        if(confirm("로그아웃 하시겠습니까?")){
-            Cookies.remove('Authorization', { path: '/' });
-            location.href = location.href;
-        }
-    }
-
-    // 강사 추가 요청
-    function addTeacher() {
-        // Bootstrap 입력 검사 기능
-        var form = document.getElementById('addTeacherForm');
-        // 폼 유효성 검사
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else { // 유효성 검사를 통과한 경우에만 AJAX 요청을 보냄
-            let name = $('#addTeacher_name').val();
-            let year = $('#addTeacher_year').val();
-            let company = $('#addTeacher_company').val();
-            let phone = $('#addTeacher_phone1').val() + $('#addTeacher_phone2').val() + $('#addTeacher_phone3').val();
-            let introduction = $('#addTeacher_introduction').val();
-
-            // ajax 요청
-            $.ajax({
-                url: '/backoffice/api/addTeacher',
-                type: 'POST',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    'name': name,
-                    'year': year,
-                    'company': company,
-                    'phone': phone,
-                    'introduction': introduction
-                }),
-                success: function (response) {
-                    alert('강사가 추가되었습니다.');
-                    location.href = location.href;
-                },
-                error: function (xhr, status, error) {
-                   var errorMessage = xhr.responseText;
-                    alert(errorMessage);
-                }
-            });
-        }
-        // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
-        form.classList.add('was-validated');
-    }
-
-        // 도서 추가 요청
-    function addLecture() {
-        // Bootstrap 입력 검사 기능
-        var form = document.getElementById('addLectureForm');
-        // 폼 유효성 검사
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else { // 유효성 검사를 통과한 경우에만 AJAX 요청을 보냄
-            let title = $('#addLecture_title').val();
-            let price = $('#addLecture_price').val();
-            let introduction = $('#addLecture_introduction').val();
-            let category = $('#addLecture_category').val();
-            let teacher_id = $('#addLecture_teacher').val();
-
-            // ajax 요청
-            $.ajax({
-                url: '/backoffice/api/addLecture',
-                type: 'POST',
-                dataType: 'json',
-                data: JSON.stringify({
-                    'title': title,
-                    'price': price,
-                    'introduction': introduction,
-                    'category': category,
-                    'teacher_id': teacher_id
-                }),
-                success: function (response) {
-                    alert('강의가 추가되었습니다.');
-                    location.href = location.href;
-                },
-                error: function (xhr, status, error) {
-                   var errorMessage = xhr.responseText;
-                    alert(errorMessage);
-                }
-            });
-        }
-        // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
-        form.classList.add('was-validated');
-    }
-
-    // 페이지네이션 버튼 기능
-    const page_elements = document.getElementsByClassName("page-link");
-        Array.from(page_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            document.getElementById('page').value = this.dataset.page;
-            document.getElementById('searchForm').submit();
-        });
+    $(document).ready(function() {
+        getTeachers();
+        getLectures();
     });
+
+    function getTeachers(){
+        let successCallback = function(response) {
+          var html = '';
+          for (var i = 0; i < response.length; i++) {
+            var teacher = response[i];
+            html += '<li><a href="/backoffice/teacher/' + teacher.id + '">' + teacher.name + '</a></li>';
+          }
+          $('.vertical-menu').html(html);
+        };
+        let errorCallback = function(error) {
+          alert('강사 목록을 불러오는 중 오류가 발생했습니다.');
+          console.error(error);
+        }
+        teachersRequest(null, successCallback, errorCallback);
+    }
+
+    function getLectures(page,category){
+        let data = {
+            page: "[[${page}]]",
+            category: "[[${category}]]"
+        };
+        let successCallback = function(response) {
+            var html = '';
+            for (var i = 0; i < response.content.length; i++) {
+                var lecture = response.content[i];
+                html += '<tr>';
+                html += '<td><a href="/backoffice/lecture/' + lecture.id + '">' + lecture.title + '</a></td>';
+                html += '<td>' + lecture.price + '</td>';
+                html += '<td>' + lecture.teachername + '</td>';
+                html += '<td>' + lecture.category + '</td>';
+                html += '<td>' + lecture.regist + '</td>';
+                html += '</tr>';
+            }
+            document.querySelector('tbody').innerHTML = html;
+            setPagination(response);
+        };
+        let errorCallback = function(error) {
+            alert('강의 목록을 불러오는 중 오류가 발생했습니다.');
+            console.error(error);
+        };
+        lecturesRequest(data, successCallback, errorCallback);
+    }
+
+
+
 
     // 카테고리 조회 기능
     const category_elements = document.getElementsByClassName("category");
