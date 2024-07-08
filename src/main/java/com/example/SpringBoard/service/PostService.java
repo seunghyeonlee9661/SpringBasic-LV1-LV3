@@ -77,12 +77,15 @@ public class PostService {
             Optional<Post> optionalPost = postRepository.findById(id);
             if(optionalPost.isPresent()){
                 Post post = optionalPost.get();
-                post.setTitle(postRequestDTO.getTitle());
-                post.setText(postRequestDTO.getText());
-                post.setWriter(postRequestDTO.getWriter());
-                post.setPassword(postRequestDTO.getPassword());
-                postRepository.save(post);
-                return ResponseEntity.ok("게시물이 수정되었습니다.");
+                if(post.getPassword().equals(postRequestDTO.getPassword())){
+                    post.setTitle(postRequestDTO.getTitle());
+                    post.setText(postRequestDTO.getText());
+                    post.setWriter(postRequestDTO.getWriter());
+                    postRepository.save(post);
+                    return ResponseEntity.ok("게시물이 수정되었습니다.");
+                }else{
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("암호가 올바르지 않습니다.");
+                }
             }else{
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시물이 존재하지 않습니다.");
             }

@@ -42,21 +42,7 @@ function getPost(id) {
         });
 }
 
-function checkEdit(id){
-    var input = prompt("Password");
-    Request('/posts/api/password', 'POST', {
-          id: id,
-          input: input,
-        })
-        .then(function(response) {
-            location.href = '/posts/edit/' + id;
-        })
-        .catch(function(error) {
-            alert('암호가 올바르지 않습니다.');
-        });
-
-}
-
+// 게시물 삭제
 function deletePost(id){
     var input = prompt("Password");
     Request('/posts/api/password', 'POST', {
@@ -82,7 +68,7 @@ function deletePost(id){
     });
 }
 
-// 강의 추가
+// 게시물 추가
 function addPost() {
     let form = document.getElementById('postForm');
     if (checkValidity(form)) {
@@ -102,34 +88,34 @@ function addPost() {
     }
 }
 
-// 강의 추가
+// 게시판 수정
 function editPost(id) {
     let form = document.getElementById('postForm');
     if (checkValidity(form)) {
+        var input = prompt("Password");
         Request('/posts/api/post?id='+id, 'PUT', {
-                'title': $('#title').val(),
-                'writer': $('#writer').val(),
-                'password': $('#password').val(),
-                'text': $('#text').val()
-            })
-            .then(function(response) {
-                alert('게시물이 수정되었습니다.');
-                location.href = '/posts/detail/' + id;
-            })
-            .catch(function(response) {
-                alert(response);
-            });
+           'title': $('#title').val(),
+           'writer': $('#writer').val(),
+           'password': input,
+           'text': $('#text').val()
+       })
+       .then(function(response) {
+           alert('게시물이 수정되었습니다.');
+           location.href = '/posts/detail/' + id;
+       })
+       .catch(function(error) {
+           alert(error.responseText);
+       });
     }
 }
 
-// 강사 목록 불러오기
+// 게시판 수정 전 정보
 function getEditPost(id){
     Request('/posts/api/post', 'GET', {
           id: id,
         })
         .then(function(response) {
             $('#title').val(response.title);
-            $('#password').val(response.password);
             $('#writer').val(response.writer);
             $('#text').val(response.text);
         })

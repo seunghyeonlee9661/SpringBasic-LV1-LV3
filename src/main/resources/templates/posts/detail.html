@@ -20,7 +20,7 @@
                 <p id="text" style="width:100%; white-space: normal;"></p>
             </div>
             <hr>
-            <a class="btn btn-warning me-2" th:id="${id}" th:onclick="checkEdit(this.getAttribute('id'));">Edit</a>
+            <a class="btn btn-warning me-2" th:href="@{'/posts/edit/' + ${id}}">Edit</a>
             <a class="btn btn-warning me-2"  th:id="${id}" th:onclick="deletePost(this.getAttribute('id'));" >Delete</a>
         </div>
     </div>
