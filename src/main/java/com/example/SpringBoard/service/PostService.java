@@ -1,5 +1,11 @@
 package com.example.SpringBoard.service;
 
+import com.example.SpringBoard.DTO.backoffice.LectureResponseDTO;
+import com.example.SpringBoard.DTO.backoffice.TeacherRequestDTO;
+import com.example.SpringBoard.DTO.posts.PostRequestDTO;
+import com.example.SpringBoard.DTO.posts.PostResponseDTO;
+import com.example.SpringBoard.entity.backoffice.Lecture;
+import com.example.SpringBoard.entity.backoffice.Teacher;
 import com.example.SpringBoard.entity.posts.Post;
 import com.example.SpringBoard.exceptions.DataNotFoundException;
 import com.example.SpringBoard.repository.posts.PostRepository;
@@ -8,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,41 +31,81 @@ public class PostService {
     private final PasswordEncoder passwordEncoder;
 
     /* 게시물 생성 */
-    public Post create(String title, String writer, String password, String text){
-        Post post = new Post();
-        post.setTitle(title);
-        post.setWriter(writer);
-        post.setPassword(password);
-        post.setText(text);
-        this.postRepository.save(post);
-        return post;
-    }
+    public ResponseEntity<String> create(PostRequestDTO postRequestDTO){
+        try {
+            Post post = postRepository.save(new Post(postRequestDTO));
+            return ResponseEntity.ok(String.valueOf(post.getId()));
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 
-    /* 게시물 목록 페이지 */
-    public Page<Post> getPage(int page){
-        Pageable pageable = PageRequest.of(page, 10,Sort.by("date").descending());
-        return this.postRepository.findAll(pageable);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     /* 게시물 상세 내용 */
     public Post getPost(Integer id) {
-        Optional<Post> post = this.postRepository.findById(id);
-        if (post.isPresent()) {
-            return post.get();
-        } else {
-            throw new DataNotFoundException("post not found");
-        }
+        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
+    }
+
+    /* 게시물 목록 페이지 */
+    public Page<PostResponseDTO> getPosts(int page){
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.postRepository.findAll(pageable).map(PostResponseDTO::new);
     }
 
     /* 게시물 삭제 */
-    public void delete(Post post) {
-        this.postRepository.delete(post);
+    public ResponseEntity<String> delete(int id) {
+        try {
+            Optional<Post> optionalPost = postRepository.findById(id);
+            if(optionalPost.isPresent()){
+                postRepository.delete(optionalPost.get());
+                return ResponseEntity.ok("게시물이 삭제되었습니다.");
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시물이 존재하지 않습니다.");
+            }
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     /* 게시물 수정 */
-    public void edit(Post post, String title, String text){
-        post.setTitle(title);
-        post.setText(text);
-        this.postRepository.save(post);
+    public ResponseEntity<String> edit(int id, PostRequestDTO postRequestDTO){
+        try {
+            Optional<Post> optionalPost = postRepository.findById(id);
+            if(optionalPost.isPresent()){
+                Post post = optionalPost.get();
+                post.setTitle(postRequestDTO.getTitle());
+                post.setText(postRequestDTO.getText());
+                post.setWriter(postRequestDTO.getWriter());
+                post.setPassword(postRequestDTO.getPassword());
+                postRepository.save(post);
+                return ResponseEntity.ok("게시물이 수정되었습니다.");
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시물이 존재하지 않습니다.");
+            }
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /* 게시물 목록 페이지 */
+    public ResponseEntity<String> checkPassword(int id,String password){
+        try {
+            Optional<Post> optionalPost = postRepository.findById(id);
+            if(optionalPost.isPresent() && optionalPost.get().getPassword().equals(password)){
+                return ResponseEntity.ok("비밀번호 확인 완료");
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("비밀번호가 올바르지 않습니다.");
+            }
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

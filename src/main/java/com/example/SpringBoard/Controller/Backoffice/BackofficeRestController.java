@@ -2,9 +2,6 @@ package com.example.SpringBoard.Controller.Backoffice;
 
 
 import com.example.SpringBoard.DTO.backoffice.*;
-import com.example.SpringBoard.DTO.books.LoanResponseDTO;
-import com.example.SpringBoard.entity.backoffice.Lecture;
-import com.example.SpringBoard.entity.backoffice.Teacher;
 import com.example.SpringBoard.entity.backoffice.User;
 import com.example.SpringBoard.service.BackofficeService;
 import jakarta.servlet.http.HttpServletRequest;

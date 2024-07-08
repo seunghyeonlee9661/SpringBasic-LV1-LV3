@@ -11,35 +11,30 @@
         <div class="col">
             <a type="button" th:href="@{/posts}" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill"></i></a>
             <div class="hstack gap-3">
-                <h1 class="p-2 display-5 link-body-emphasis mb-1" th:text="${post.title}"></h1><br>
-                <p class="p-2 blog-post-meta" th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}"></p>
+                <h1 class="p-2 display-5 link-body-emphasis mb-1" id="title"></h1><br>
+                <p class="p-2 blog-post-meta" id="date"></p>
             </div>
-            <h4 th:text="${post.writer}"></h4>
+            <h4 id="writer"></h4>
             <hr>
             <div style="width:100%; word-break:break-all;">
-                <p th:text="${post.text}" style="width:100%; white-space: normal;"></p>
+                <p id="text" style="width:100%; white-space: normal;"></p>
             </div>
             <hr>
-            <a class="btn btn-warning me-2" th:data-uri="@{|/posts/edit/${post.id}|}" onclick="checkPassword(this);">Edit</a>
-            <a class="btn btn-warning me-2 delete" th:data-uri="@{|/posts/delete/${post.id}|}"  onclick="checkPassword(this);">Delete</a>
+            <a class="btn btn-warning me-2" th:id="${id}" th:onclick="checkEdit(this.getAttribute('id'));">Edit</a>
+            <a class="btn btn-warning me-2"  th:id="${id}" th:onclick="deletePost(this.getAttribute('id'));" >Delete</a>
         </div>
     </div>
 </div>
 
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
-
+<script src="/js/posts.js" type="text/javascript"></script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>
 <script type='text/javascript'>
-    function checkPassword(e){
-        var input = prompt("Password");
-        if(input == [[${post.password}]]){
-            location.href = e.dataset.uri;
-        }else{
-            alert("잘못된 비밀번호입니다.")
-        }
-    }
+    $(document).ready(function() {
+        getPost("[[${id}]]");
+    });
 </script>
 </body>
 
