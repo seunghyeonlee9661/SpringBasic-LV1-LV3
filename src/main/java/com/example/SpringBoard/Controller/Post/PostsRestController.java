@@ -1,19 +1,11 @@
 package com.example.SpringBoard.Controller.Post;
 
-import com.example.SpringBoard.DTO.backoffice.LectureRequestDTO;
-import com.example.SpringBoard.DTO.backoffice.LoginRequestDTO;
 import com.example.SpringBoard.DTO.posts.PostRequestDTO;
 import com.example.SpringBoard.DTO.posts.PostResponseDTO;
-import com.example.SpringBoard.entity.posts.Post;
-import com.example.SpringBoard.form.PostWriteForm;
 import com.example.SpringBoard.service.PostService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/* 로깅 필터 */
 @Slf4j(topic = "LoggingFilter")
 @Component
 @Order(1)

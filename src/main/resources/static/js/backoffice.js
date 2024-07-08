@@ -1,3 +1,5 @@
+//_______________사용자__________________________
+
 // 회원가입
 function signup() {
     let form = document.getElementById('signupForm');
@@ -43,6 +45,7 @@ function logoutRequest() {
   }
 }
 
+//_______________강사_______________________
 // 강사 추가
 function addTeacher() {
     let form = document.getElementById('addTeacherForm');
@@ -63,29 +66,6 @@ function addTeacher() {
             });
     }
 }
-
-// 강의 추가
-function addLecture() {
-    let form = document.getElementById('addLectureForm');
-    if (checkValidity(form)) {
-        Request('/backoffice/api/lecture', 'POST', {
-                'title': $('#addLecture_title').val(),
-                'price': $('#addLecture_price').val(),
-                'introduction': $('#addLecture_introduction').val(),
-                'category': $('#addLecture_category').val(),
-                'teacher_id': $('#addLecture_teacher').val()
-            })
-            .then(function(response) {
-                alert('강의가 추가되었습니다.');
-                location.href = location.href;
-            })
-            .catch(function(response) {
-
-                alert(response);
-            });
-    }
-}
-
 // 강사 목록 불러오기
 function getTeachers() {
     Request('/backoffice/api/teachers', 'GET', null)
@@ -109,35 +89,7 @@ function getTeachers() {
             console.error(error);
         });
 }
-
-// 강의 목록 불러오기
-function getLectures(page,category) {
-    Request('/backoffice/api/lectures', 'GET', {
-            page: page,
-            category: category
-        })
-        .then(function(response) {
-            var html = '';
-            for (var i = 0; i < response.content.length; i++) {
-                var lecture = response.content[i];
-                html += '<tr>';
-                html += '<td><a href="/backoffice/lecture/' + lecture.id + '">' + lecture.title + '</a></td>';
-                html += '<td>' + lecture.price + '</td>';
-                html += '<td>' + lecture.teachername + '</td>';
-                html += '<td>' + lecture.category + '</td>';
-                html += '<td>' + getFormattedDate(lecture.regist) + '</td>';
-                html += '</tr>';
-            }
-            document.querySelector('tbody').innerHTML = html;
-            setPagination(response);
-        })
-        .catch(function(response) {
-            alert('강의 목록을 불러오는 중 오류가 발생했습니다.');
-            console.error(error);
-        });
-}
-
-// 강사 목록 불러오기
+// 강사 정보 불러오기
 function getTeacher(id) {
     Request('/backoffice/api/teacher', 'GET', {
           id: id,
@@ -178,7 +130,6 @@ function getTeacher(id) {
             console.error(error);
         });
 }
-
 // 강사 정보 삭제
 function deleteTeacher(id) {
     if (checkRole()) {
@@ -195,7 +146,6 @@ function deleteTeacher(id) {
         }
     }
 }
-
 // 강사 정보 수정
 function editTeacher(id) {
     let form = document.getElementById('editTeacherForm');
@@ -217,7 +167,54 @@ function editTeacher(id) {
             });
     }
 }
+//_______________강의_______________________
+// 강의 추가
+function addLecture() {
+    let form = document.getElementById('addLectureForm');
+    if (checkValidity(form)) {
+        Request('/backoffice/api/lecture', 'POST', {
+                'title': $('#addLecture_title').val(),
+                'price': $('#addLecture_price').val(),
+                'introduction': $('#addLecture_introduction').val(),
+                'category': $('#addLecture_category').val(),
+                'teacher_id': $('#addLecture_teacher').val()
+            })
+            .then(function(response) {
+                alert('강의가 추가되었습니다.');
+                location.href = location.href;
+            })
+            .catch(function(response) {
 
+                alert(response);
+            });
+    }
+}
+// 강의 목록 불러오기
+function getLectures(page,category) {
+    Request('/backoffice/api/lectures', 'GET', {
+            page: page,
+            category: category
+        })
+        .then(function(response) {
+            var html = '';
+            for (var i = 0; i < response.content.length; i++) {
+                var lecture = response.content[i];
+                html += '<tr>';
+                html += '<td><a href="/backoffice/lecture/' + lecture.id + '">' + lecture.title + '</a></td>';
+                html += '<td>' + lecture.price + '</td>';
+                html += '<td>' + lecture.teachername + '</td>';
+                html += '<td>' + lecture.category + '</td>';
+                html += '<td>' + getFormattedDate(lecture.regist) + '</td>';
+                html += '</tr>';
+            }
+            document.querySelector('tbody').innerHTML = html;
+            setPagination(response);
+        })
+        .catch(function(response) {
+            alert('강의 목록을 불러오는 중 오류가 발생했습니다.');
+            console.error(error);
+        });
+}
 // 강의 목록 불러오기
 function getLecture(id) {
     Request('/backoffice/api/lecture', 'GET', {
@@ -263,7 +260,6 @@ function getTeacherList(id) {
             console.error(response);
         });
 }
-
 // 강의 삭제
 function deleteLecture(id) {
     if (checkRole()) {
@@ -280,7 +276,6 @@ function deleteLecture(id) {
       }
     }
 }
-
 // 강의 수정
 function editLecture(id) {
     let form = document.getElementById('editLectureForm');
@@ -302,7 +297,9 @@ function editLecture(id) {
             });
     }
 }
+//_______________강사__________________________
 
+// 사용자 권한 확인
 function checkRole(){
      const token = Cookies.get('Authorization'); // JWT가 저장된 쿠키의 이름을 넣으세요
      if (token) {
