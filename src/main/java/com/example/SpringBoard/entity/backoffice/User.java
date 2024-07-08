@@ -28,7 +28,7 @@ public class User {
     @Column(name="password", nullable = false, columnDefinition = "varchar(255)")
     private String password;
 
-    @Column(name="department", nullable = false, columnDefinition = "varchar(10)")
+    @Column(name="department", nullable = false, columnDefinition = "varchar(20)")
     private String department;
 
     @Column(name="role", nullable = false)

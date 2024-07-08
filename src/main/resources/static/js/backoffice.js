@@ -4,19 +4,24 @@
 function signup() {
     let form = document.getElementById('signupForm');
     if (checkValidity(form)) {
-        Request('/backoffice/api/signup', 'POST', {
-                'email': $('#signup_email').val(),
-                'password': $('#signup_password').val(),
-                'role': $(":input:radio[name=signup_role]:checked").val(),
-                'department': $('#signup_department').val()
-            })
-            .then(function(response) {
-                alert(response);
-                location.href = location.href;
-            })
-            .catch(function(response) {
-                alert(response);
-            });
+        if($(":input:radio[name=signup_role]:checked").val() == "MANAGER" && $('#signup_department').val() == "marketing"){
+            alert("마케팅 부서는 MANAGER 권한이 불가능합니다.")
+        }else{
+            Request('/backoffice/api/signup', 'POST', {
+                    'email': $('#signup_email').val(),
+                    'password': $('#signup_password').val(),
+                    'role': $(":input:radio[name=signup_role]:checked").val(),
+                    'department': $('#signup_department').val()
+                })
+                .then(function(response) {
+                    alert(response);
+                    location.href = location.href;
+                })
+                .catch(function(error) {
+                    alert(error);
+                });
+        }
+
     }
 }
 
@@ -32,8 +37,8 @@ function login() {
                 alert(response);
                 location.href = 'backoffice/main';
             })
-            .catch(function(response) {
-                alert(response);
+            .catch(function(error) {
+                alert(error.responseText);
             });
     }
 }
@@ -61,8 +66,8 @@ function addTeacher() {
                 alert('강사가 추가되었습니다.');
                 location.href = location.href;
             })
-            .catch(function(response) {
-                alert(response);
+            .catch(function(error) {
+                alert(error.responseText);
             });
     }
 }
@@ -84,10 +89,9 @@ function getTeachers() {
             }
             $('#addLecture_teacher').html(selectHtml);
         })
-        .catch(function(response) {
-            alert('강사 목록을 불러오는 중 오류가 발생했습니다.');
-            console.error(error);
-        });
+       .catch(function(error) {
+           alert(error);
+       });
 }
 // 강사 정보 불러오기
 function getTeacher(id) {
@@ -125,9 +129,8 @@ function getTeacher(id) {
                 lectureList.append(lectureItem);
             });
         })
-        .catch(function(response) {
-            alert('강사 정보를 불러오는 중 오류가 발생했습니다.');
-            console.error(error);
+        .catch(function(error) {
+            alert(error);
         });
 }
 // 강사 정보 삭제
@@ -140,8 +143,7 @@ function deleteTeacher(id) {
                     window.location.href = '/backoffice/main';
                 })
                 .catch(function(error) {
-                    alert('강사 정보를 삭제하는 중 오류가 발생했습니다.');
-                    console.error(error);
+                    alert(error.responseText);
                 });
         }
     }
@@ -162,8 +164,7 @@ function editTeacher(id) {
                 location.href = location.href;
             })
             .catch(function(error) {
-              alert('강사 정보를 삭제하는 중 오류가 발생했습니다.');
-              console.error(error);
+                alert(error.responseText);
             });
     }
 }
@@ -183,9 +184,8 @@ function addLecture() {
                 alert('강의가 추가되었습니다.');
                 location.href = location.href;
             })
-            .catch(function(response) {
-
-                alert(response);
+            .catch(function(error) {
+                alert(error.responseText);
             });
     }
 }
@@ -212,7 +212,7 @@ function getLectures(page,category) {
         })
         .catch(function(response) {
             alert('강의 목록을 불러오는 중 오류가 발생했습니다.');
-            console.error(error);
+            console.log(error);
         });
 }
 // 강의 목록 불러오기
@@ -236,7 +236,7 @@ function getLecture(id) {
         })
         .catch(function(response) {
             alert('강의 정보를 불러오는 중 오류가 발생했습니다.');
-            console.error(error);
+            console.log(error);
         });
 }
 // 강의 수정을 위한 강사 목록 불러오기
@@ -257,7 +257,7 @@ function getTeacherList(id) {
         })
         .catch(function(response) {
             alert('강사 목록을 불러오는 중 오류가 발생했습니다.');
-            console.error(response);
+            console.log(response);
         });
 }
 // 강의 삭제
@@ -270,8 +270,7 @@ function deleteLecture(id) {
                   window.location.href = '/backoffice/main';
               })
               .catch(function(error) {
-                  alert('강의 정보를 삭제하는 중 오류가 발생했습니다.');
-                  console.error(error);
+                  alert(error.responseText);
               });
       }
     }
@@ -292,8 +291,7 @@ function editLecture(id) {
                 location.href = location.href;
             })
             .catch(function(error) {
-              alert('강의 정보를 삭제하는 중 오류가 발생했습니다.');
-              console.error(error);
+                alert(error.responseText);
             });
     }
 }

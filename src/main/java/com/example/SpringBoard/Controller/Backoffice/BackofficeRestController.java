@@ -98,7 +98,7 @@ public class BackofficeRestController {
         return backofficeService.deleteTeacher(id);
     }
 
-    /* 강의 수정 */
+    /* 강사 수정 */
     @PutMapping("/teacher")
     public ResponseEntity<String> editTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO,@RequestParam("id") int id) {
         return backofficeService.edit(id,teacherRequestDTO);
