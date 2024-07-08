@@ -10,6 +10,7 @@ function checkValidity(form) {
   return true;
 }
 
+// ajax로 요청 보내는 함수
 function Request(url, type, data) {
   var ajaxOptions = {
     url: url,
