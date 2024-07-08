@@ -9,7 +9,6 @@ import com.example.SpringBoard.DTO.books.LoanResponseDTO;
 import com.example.SpringBoard.entity.books.Book;
 import com.example.SpringBoard.entity.books.Loan;
 import com.example.SpringBoard.entity.books.Member;
-import com.example.SpringBoard.form.PostWriteForm;
 import com.example.SpringBoard.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -70,7 +69,7 @@ public class BooksController {
 
     /* 회원 등록 페이지 */
     @GetMapping("/signup")
-    public String signup(Model model, PostWriteForm postWriteForm) {
+    public String signup(Model model) {
         model.addAttribute("menu","books");
         return "books/signup";
     }

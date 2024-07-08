@@ -2,9 +2,6 @@ package com.example.SpringBoard.Controller.Backoffice;
 
 
 import com.example.SpringBoard.DTO.backoffice.*;
-import com.example.SpringBoard.DTO.books.LoanResponseDTO;
-import com.example.SpringBoard.entity.backoffice.Lecture;
-import com.example.SpringBoard.entity.backoffice.Teacher;
 import com.example.SpringBoard.entity.backoffice.User;
 import com.example.SpringBoard.service.BackofficeService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -101,7 +98,7 @@ public class BackofficeRestController {
         return backofficeService.deleteTeacher(id);
     }
 
-    /* 강의 수정 */
+    /* 강사 수정 */
     @PutMapping("/teacher")
     public ResponseEntity<String> editTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO,@RequestParam("id") int id) {
         return backofficeService.edit(id,teacherRequestDTO);
