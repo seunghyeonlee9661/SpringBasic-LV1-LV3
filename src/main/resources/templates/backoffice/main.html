@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="p-1 ms-auto">
-                        <span class="badge" th:classappend="${user.role.name()} == 'MANAGER' ? 'text-bg-success' : 'text-bg-warning'" th:text="${user.role}"></span>
+                        <span class="badge" th:classappend="${user.userRole.name()} == 'MANAGER' ? 'text-bg-success' : 'text-bg-warning'" th:text="${user.userRole}"></span>
                     </div>
                     <div class="p-1 ">
                         <a class="btn btn-secondary p-1 me-2" data-bs-toggle="modal" data-bs-target="#addTeacherModal"><i class="bi bi-plus"></i><i class="bi bi-file-earmark-person"></i></a>
