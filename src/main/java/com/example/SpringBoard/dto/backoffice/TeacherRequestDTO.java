@@ -1,9 +1,8 @@
-package com.example.SpringBoard.DTO.backoffice;
+package com.example.SpringBoard.dto.backoffice;
 import lombok.Getter;
 
 @Getter
 public class TeacherRequestDTO {
-    private int id;
     private String name;
     private int year;
     private String company;

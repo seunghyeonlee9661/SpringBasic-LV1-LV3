@@ -1,4 +1,4 @@
-package com.example.SpringBoard.DTO.books;
+package com.example.SpringBoard.dto.books;
 
 import com.example.SpringBoard.entity.books.Member;
 import lombok.Getter;

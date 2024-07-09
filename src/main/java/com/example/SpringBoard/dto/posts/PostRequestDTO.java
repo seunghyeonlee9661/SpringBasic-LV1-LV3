@@ -1,4 +1,4 @@
-package com.example.SpringBoard.DTO.posts;
+package com.example.SpringBoard.dto.posts;
 
 import lombok.Getter;
 

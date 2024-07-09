@@ -1,6 +1,6 @@
 package com.example.SpringBoard.entity.books;
 
-import com.example.SpringBoard.DTO.books.LoanRequestDTO;
+import com.example.SpringBoard.dto.books.LoanRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.example.SpringBoard.Controller.Backoffice;
+package com.example.SpringBoard.controller.backoffice;
 
 import com.example.SpringBoard.entity.backoffice.User;
 import com.example.SpringBoard.service.BackofficeService;

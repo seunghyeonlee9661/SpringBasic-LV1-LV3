@@ -1,8 +1,5 @@
-package com.example.SpringBoard.DTO.backoffice;
-import com.example.SpringBoard.entity.backoffice.Teacher;
+package com.example.SpringBoard.dto.backoffice;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 public class LectureRequestDTO {

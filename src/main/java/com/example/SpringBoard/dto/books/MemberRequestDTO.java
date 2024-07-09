@@ -1,4 +1,4 @@
-package com.example.SpringBoard.DTO.books;
+package com.example.SpringBoard.dto.books;
 
 import lombok.Getter;
 

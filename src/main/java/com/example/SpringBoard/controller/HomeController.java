@@ -1,4 +1,4 @@
-package com.example.SpringBoard.Controller;
+package com.example.SpringBoard.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

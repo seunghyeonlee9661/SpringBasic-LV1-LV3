@@ -1,4 +1,4 @@
-package com.example.SpringBoard.DTO.backoffice;
+package com.example.SpringBoard.dto.backoffice;
 import lombok.Getter;
 
 @Getter

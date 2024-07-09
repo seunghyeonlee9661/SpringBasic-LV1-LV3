@@ -1,19 +1,13 @@
 package com.example.SpringBoard.service;
 
-import com.example.SpringBoard.DTO.backoffice.LectureResponseDTO;
-import com.example.SpringBoard.DTO.backoffice.TeacherRequestDTO;
-import com.example.SpringBoard.DTO.posts.PostRequestDTO;
-import com.example.SpringBoard.DTO.posts.PostResponseDTO;
-import com.example.SpringBoard.entity.backoffice.Lecture;
-import com.example.SpringBoard.entity.backoffice.Teacher;
+import com.example.SpringBoard.dto.posts.PostRequestDTO;
+import com.example.SpringBoard.dto.posts.PostResponseDTO;
 import com.example.SpringBoard.entity.posts.Post;
-import com.example.SpringBoard.exceptions.DataNotFoundException;
 import com.example.SpringBoard.repository.posts.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,11 +1,10 @@
 package com.example.SpringBoard.entity.backoffice;
 
-import com.example.SpringBoard.DTO.backoffice.LectureRequestDTO;
+import com.example.SpringBoard.dto.backoffice.LectureRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -14,10 +13,8 @@ import java.time.LocalDateTime;
  */
 
 @Getter
-@Setter
-@AllArgsConstructor
-@Builder
 @Entity
+@NoArgsConstructor
 public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,15 +41,19 @@ public class Lecture {
     @Column(name="regist")
     private LocalDateTime regist;
 
-
-
-    public Lecture() {
-    }
-
-    public Lecture(LectureRequestDTO requestDto) {
+    public Lecture(LectureRequestDTO requestDto, Teacher teacher) {
         this.title = requestDto.getTitle();
         this.price = requestDto.getPrice();
         this.introduction = requestDto.getIntroduction();
         this.category = requestDto.getCategory();
+        this.teacher = teacher;
+    }
+
+    public void update(LectureRequestDTO requestDto, Teacher teacher) {
+        this.title = requestDto.getTitle();
+        this.price = requestDto.getPrice();
+        this.introduction = requestDto.getIntroduction();
+        this.category = requestDto.getCategory();
+        this.teacher = teacher;
     }
 }

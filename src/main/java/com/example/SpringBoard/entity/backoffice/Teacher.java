@@ -1,23 +1,18 @@
 package com.example.SpringBoard.entity.backoffice;
 
-import com.example.SpringBoard.DTO.backoffice.TeacherRequestDTO;
+import com.example.SpringBoard.dto.backoffice.LectureRequestDTO;
+import com.example.SpringBoard.dto.backoffice.TeacherRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 /*
 이노베이션 캠프 LV-3 : 관리자 Entity
  */
-
 @Getter
-@Setter
-@AllArgsConstructor
-@Builder
 @Entity
+@NoArgsConstructor
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,13 +35,16 @@ public class Teacher {
     private String introduction;
 
     @OneToMany(mappedBy = "teacher", orphanRemoval = true, cascade = CascadeType.REMOVE)
-    @Builder.Default
     private List<Lecture> lectures = new ArrayList<>();
 
-    public Teacher() {
-    }
-
     public Teacher(TeacherRequestDTO requestDto) {
+        this.name = requestDto.getName();
+        this.year = requestDto.getYear();
+        this.company = requestDto.getCompany();
+        this.phone = requestDto.getPhone();
+        this.introduction = requestDto.getIntroduction();
+    }
+    public void update(TeacherRequestDTO requestDto) {
         this.name = requestDto.getName();
         this.year = requestDto.getYear();
         this.company = requestDto.getCompany();

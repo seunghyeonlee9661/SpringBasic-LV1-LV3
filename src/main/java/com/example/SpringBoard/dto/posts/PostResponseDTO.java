@@ -1,4 +1,4 @@
-package com.example.SpringBoard.DTO.posts;
+package com.example.SpringBoard.dto.posts;
 
 import com.example.SpringBoard.entity.posts.Post;
 import lombok.Getter;

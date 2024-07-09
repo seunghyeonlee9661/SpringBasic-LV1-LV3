@@ -1,8 +1,7 @@
-package com.example.SpringBoard.DTO.backoffice;
+package com.example.SpringBoard.dto.backoffice;
 
 import com.example.SpringBoard.Enum.backoffice.Role;
 import com.example.SpringBoard.entity.backoffice.User;
-import jakarta.persistence.*;
 
 public class UserResponseDTO {
     private String email;

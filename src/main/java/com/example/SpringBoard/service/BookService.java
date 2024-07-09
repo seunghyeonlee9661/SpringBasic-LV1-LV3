@@ -1,9 +1,9 @@
 package com.example.SpringBoard.service;
-import com.example.SpringBoard.DTO.books.MemberRequestDTO;
-import com.example.SpringBoard.DTO.books.MemberResponseDTO;
-import com.example.SpringBoard.DTO.books.BookRequestDTO;
-import com.example.SpringBoard.DTO.books.BookResponseDTO;
-import com.example.SpringBoard.DTO.books.LoanRequestDTO;
+import com.example.SpringBoard.dto.books.MemberRequestDTO;
+import com.example.SpringBoard.dto.books.MemberResponseDTO;
+import com.example.SpringBoard.dto.books.BookRequestDTO;
+import com.example.SpringBoard.dto.books.BookResponseDTO;
+import com.example.SpringBoard.dto.books.LoanRequestDTO;
 import com.example.SpringBoard.entity.books.Book;
 import com.example.SpringBoard.entity.books.Loan;
 import com.example.SpringBoard.entity.books.Member;

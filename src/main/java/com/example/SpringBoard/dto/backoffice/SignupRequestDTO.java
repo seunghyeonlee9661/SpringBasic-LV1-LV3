@@ -1,4 +1,4 @@
-package com.example.SpringBoard.DTO.backoffice;
+package com.example.SpringBoard.dto.backoffice;
 import com.example.SpringBoard.Enum.backoffice.Role;
 import lombok.Getter;
 

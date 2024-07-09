@@ -1,6 +1,6 @@
 package com.example.SpringBoard.entity.posts;
 
-import com.example.SpringBoard.DTO.posts.PostRequestDTO;
+import com.example.SpringBoard.dto.posts.PostRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,7 +38,8 @@ public class Post {
     @Column(name="date")
     private LocalDateTime date;
 
-    public Post() {
+    public Post(){
+
     }
 
     public Post(PostRequestDTO postRequestDTO){
