@@ -40,14 +40,17 @@ public class BackofficeService {
         this.jwtUtil = jwtUtil;
     }
     /*----------------------회원정보--------------------------------*/
+
     /* 로그인 */
-    public ResponseEntity<String> findUser(LoginRequestDTO loginRequestDTO, HttpServletResponse res) {
+    public ResponseEntity<String> login(LoginRequestDTO loginRequestDTO, HttpServletResponse res) {
         try {
-            User backofficeUser = userRepository.findByEmail(loginRequestDTO.getEmail()).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
-            if (!passwordEncoder.matches(loginRequestDTO.getPassword(), backofficeUser.getPassword())) {
+            User user = userRepository.findByEmail(loginRequestDTO.getEmail()).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
+            if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치하지 않습니다.");
             }
-            String token = jwtUtil.createToken(backofficeUser.getEmail(), backofficeUser.getRole());
+            /* 사용자 이메일, 사용자 역할 기반으로 토큰 생성 */
+            String token = jwtUtil.createToken(user.getEmail(),user.getRole());
+            /* 쿠키에 토큰 저장 */
             jwtUtil.addJwtToCookie(token, res);
             return ResponseEntity.ok().body("로그인 성공");
         } catch (Exception e) {

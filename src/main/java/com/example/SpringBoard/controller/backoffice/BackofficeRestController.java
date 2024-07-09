@@ -29,8 +29,8 @@ public class BackofficeRestController {
 
     /* 로그인 */
     @PostMapping("/login")
-    public ResponseEntity<String> findUser(@RequestBody LoginRequestDTO loginRequestDTO, HttpServletResponse response) {
-        return backofficeService.findUser(loginRequestDTO,response);
+    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequestDTO, HttpServletResponse response) {
+        return backofficeService.login(loginRequestDTO,response);
     }
 
     /* 사용자 정보 불러오기 */

@@ -1,4 +1,4 @@
-package com.example.SpringBoard.controller.post;
+package com.example.SpringBoard.controller.posts;
 
 import com.example.SpringBoard.service.PostService;
 import lombok.RequiredArgsConstructor;

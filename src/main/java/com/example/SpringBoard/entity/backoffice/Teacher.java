@@ -1,6 +1,5 @@
 package com.example.SpringBoard.entity.backoffice;
 
-import com.example.SpringBoard.dto.backoffice.LectureRequestDTO;
 import com.example.SpringBoard.dto.backoffice.TeacherRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
