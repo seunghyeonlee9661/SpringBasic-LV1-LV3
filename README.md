@@ -36,6 +36,17 @@ Spring 기초 학습 및 팀 프로젝트 진행. 기초적인 게시판 제작�
   - 강사와 강의 정보 조회
 - [프로젝트 Notion 링크](https://leather-pixie-4bc.notion.site/Spring-LV3-7e5de2ef007e4d1bb7c44536e351929c)
 
+
+### 피드백 (7월 10일)
+
+<details>
+  <summary><b>포토스팟 콜렉션</b></summary>
+  <div markdown="1">
+    <ul>      
+    </ul>
+  </div>
+</details>
+
 ### LV4 & LV5 (2024년 7월 12일 ~ 7월 18일)
 - [GitLink](https://github.com/seunghyeonlee9661/Sparta)
 
