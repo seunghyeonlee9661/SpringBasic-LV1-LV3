@@ -1,6 +1,7 @@
 package com.example.SpringBoard.lv1.entity;
 
-import com.example.SpringBoard.lv1.dto.PostRequestDTO;
+import com.example.SpringBoard.lv1.dto.PostCreateRequestDTO;
+import com.example.SpringBoard.lv1.dto.PostUpdateRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -36,16 +37,16 @@ public class Post {
     @Column(name="date")
     private LocalDateTime date;
 
-    public Post(PostRequestDTO postRequestDTO){
-        this.title = postRequestDTO.getTitle();
-        this.writer = postRequestDTO.getWriter();
-        this.password = postRequestDTO.getPassword();
-        this.text = postRequestDTO.getText();
+    public Post(PostCreateRequestDTO postCreateRequestDTO){
+        this.title = postCreateRequestDTO.getTitle();
+        this.writer = postCreateRequestDTO.getWriter();
+        this.password = postCreateRequestDTO.getPassword();
+        this.text = postCreateRequestDTO.getText();
     }
 
-    public void update(PostRequestDTO postRequestDTO){
-        this.title = postRequestDTO.getTitle();
-        this.writer = postRequestDTO.getWriter();
-        this.text = postRequestDTO.getText();
+    public void update(PostUpdateRequestDTO postUpdateRequestDTO){
+        this.title = postUpdateRequestDTO.getTitle();
+        this.writer = postUpdateRequestDTO.getWriter();
+        this.text = postUpdateRequestDTO.getText();
     }
 }

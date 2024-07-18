@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.*;
 /*
 이노베이션 캠프 LV-1 : 익명 게시판
  */
-
-@RequiredArgsConstructor
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/posts")
 public class PostsViewController {
     private final PostService postService;

@@ -1,14 +1,14 @@
 package com.example.SpringBoard.lv1.controller;
 
-import com.example.SpringBoard.lv1.dto.PostRequestDTO;
+import com.example.SpringBoard.lv1.dto.PostCreateRequestDTO;
+import com.example.SpringBoard.lv1.dto.PostDeleteRequestDTO;
 import com.example.SpringBoard.lv1.dto.PostResponseDTO;
+import com.example.SpringBoard.lv1.dto.PostUpdateRequestDTO;
 import com.example.SpringBoard.lv1.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /*
 이노베이션 캠프 LV-1 : 익명 게시판
@@ -16,45 +16,38 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @org.springframework.web.bind.annotation.RestController
-@RequestMapping("/posts/api")
+@RequestMapping("/api")
 public class PostsRestController {
     private final PostService postService;
 
     /*게시물 작성 */
     @PostMapping("/post")
-    public ResponseEntity<String> createPost(@RequestBody PostRequestDTO postRequestDTO) {
-        return postService.create(postRequestDTO);
+    public ResponseEntity<String> createPost(@RequestBody PostCreateRequestDTO postCreateRequestDTO) {
+        return postService.create(postCreateRequestDTO);
     }
 
-    /*게시물 상세보기 */
+    /* 게시물 상세보기 */
+    @GetMapping("/post/{id}")
+    public ResponseEntity<PostResponseDTO> findPost(@PathVariable("id") int id) {
+        return postService.getPost(id);
+    }
+
+    /*게시물 목록보기 */
     @GetMapping("/post")
-    public PostResponseDTO findPost(@RequestParam("id") int id) {
-        return new PostResponseDTO(postService.getPost(id));
-    }
-
-    /*게시물 상세보기 */
-    @GetMapping("/posts")
-    public Page<PostResponseDTO> findPosts(@RequestParam(value="page", defaultValue="0") int page) {
-        return postService.getPosts(page);
+    public  ResponseEntity<Page<PostResponseDTO>> findPosts(@RequestParam(value="page", defaultValue="0") int page) {
+        return postService.getPostList(page);
     }
 
     /* 게시물 삭제 */
     @DeleteMapping("/post")
-    public ResponseEntity<String> removePost(@RequestParam("id") int id) {
-        return postService.delete(id);
+    public ResponseEntity<String> removePost(@RequestBody PostDeleteRequestDTO postDeleteRequestDTO) {
+        return postService.delete(postDeleteRequestDTO);
     }
 
     /*게시물 수정 페이지 */
     @PutMapping("/post")
-    public  ResponseEntity<String> updatePost(@RequestBody PostRequestDTO postRequestDTO, @RequestParam("id") int id) {
-        return postService.edit(id,postRequestDTO);
+    public  ResponseEntity<String> updatePost(@RequestBody PostUpdateRequestDTO postUpdateRequestDTO) {
+        return postService.edit(postUpdateRequestDTO);
     }
-
-    /*게시물 작성 */
-    @PostMapping("/password")
-    public ResponseEntity<String> checkPost(@RequestBody Map<String,String> param) {
-        return postService.checkPassword(Integer.parseInt(param.get("id")),param.get("input"));
-    }
-
 }
 
