@@ -38,7 +38,7 @@ public class AuthFilter implements Filter {
         String url = httpServletRequest.getRequestURI();
 
         // 인증이 필요 없는 경로 목록
-        String[] paths = {"/posts", "/api/post","/books", "/api/book", "/js", "/css"};
+        String[] paths = {"/posts", "/api/post","/books", "/api/book","/api/member","/api/loan", "/js", "/css"};
 
         // 특정 경로에 대한 요청은 권한 확인 없이 통과
         if (StringUtils.hasText(url) && (Arrays.stream(paths).anyMatch(url::startsWith)

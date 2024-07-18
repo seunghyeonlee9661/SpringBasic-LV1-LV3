@@ -10,76 +10,33 @@
     <div class="container my-5">
         <div class="col">
             <!-- 뒤로가기 버튼-->
-            <a type="button" th:href="@{/books}" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%"><i class="bi bi-backspace-fill"></i></a>
-            <h1 class="p-2 display-5 link-body-emphasis mb-1" th:text="${book.title}"></h1>
+            <a type="button" href="/books" class="btn" style="font-size: 18px; position:absolute; top:2%; left:1%">
+                <i class="bi bi-backspace-fill"></i>
+            </a>
+            <h1 class="p-2 display-5 link-body-emphasis mb-1" id="bookTitle"></h1>
             <hr>
             <div class="hstack gap-3">
-                <p class="p-2 blog-post-meta" th:text="${book.author}"></p>
-                <p class="p-2 blog-post-meta" th:text="${book.language}"></p>
-                <p class="p-2 blog-post-meta" th:text="${book.publisher}"></p>
-                <p class="p-2 blog-post-meta" th:text="${#temporals.format(book.registDate, 'yyyy-MM-dd HH:mm')}"></p>
+                <p class="p-2 blog-post-meta" id="bookAuthor"></p>
+                <p class="p-2 blog-post-meta" id="bookLanguage"></p>
+                <p class="p-2 blog-post-meta" id="bookPublisher"></p>
+                <p class="p-2 blog-post-meta" id="bookRegistDate"></p>
             </div>
-            <!-- 현재 대출 가능 상태에 따라 대출과 반납 버튼을 결정 -->
-            <a class="btn btn-warning me-2" th:data-uri="${book.loanable}?@{|/books/detail/${book.id}/loan|}:@{|/books/detail/${book.id}/return|}" th:text="${book.loanable}?'대출하기':'반납하기'" onclick="checkID(this);"></a>
+            <!-- 대출과 반납 버튼 -->
+            <a class="btn btn-warning me-2" id="loanButton" onclick="checkID(this);"></a>
         </div>
     </div>
 </div>
-
 
 <!-- 목록-->
 <div class="b-example-divider"></div>
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
+<script src="/js/books.js" type="text/javascript"></script>
 <script th:inline="javascript">
-    var loanable = [[${book.loanable}]];
-
-    // 주민등록번호를 입력받아 처리 과정을 진행
-    function checkID(e){
-        var dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() + 7);
-
-        var member = prompt("주민등록번호를 입력해주세요");
-        $.ajax({
-            url: e.dataset.uri, // 요기에
-            type : 'POST',
-            contentType: "application/json",
-            data: JSON.stringify({'member': member }),
-            success: function(response) {
-                // 응답 결과 처리
-                if (response.result === 'success') {
-                    if(loanable){
-                        alert('도서가 대출되었습니다. 반납일 : ' + formatDate(dueDate));
-                    }else{
-                        alert('도서가 반납되었습니다.');
-                    }
-                    location.href = location.href;
-                } else {
-                    alert('Error: ' + response.result);
-                }
-            },
-            error: function(xhr, status, error) {
-                // AJAX 요청이 실패했을 때 처리
-                alert('AJAX request failed: ' + error);
-            }
-        });
-    }
-
-     // 날짜를 원하는 형식으로 포맷팅하는 함수
-    function formatDate(date) {
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-
-        // 월, 일이 한 자리 숫자인 경우 앞에 0을 붙여줍니다.
-        if (month < 10) {
-            month = '0' + month;
-        }
-        if (day < 10) {
-            day = '0' + day;
-        }
-
-        return year + '-' + month + '-' + day;
-    }
+    $(document).ready(function() {
+        book_id = /*[[${id}]]*/ null;
+        getBook();
+    });
 </script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>

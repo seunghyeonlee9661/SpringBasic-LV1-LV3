@@ -1,10 +1,7 @@
 package com.example.SpringBoard.lv2.entity;
 import com.example.SpringBoard.lv2.dto.MemberRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +11,8 @@ import java.util.List;
  */
 
 @Getter
-@Setter
-@AllArgsConstructor
-@Builder
 @Entity
+@NoArgsConstructor
 public class Member {
     @Id
     @Column(name="id", nullable = false, columnDefinition = "varchar(50)")
@@ -36,11 +31,8 @@ public class Member {
     private String address;
 
     @OneToMany(mappedBy = "member", orphanRemoval = true, cascade = CascadeType.ALL)
-    @Builder.Default
     private List<Loan> loans = new ArrayList<>();
 
-    public Member() {
-    }
 
     public Member(MemberRequestDTO requestDto) {
         this.id = requestDto.getId();
@@ -48,6 +40,5 @@ public class Member {
         this.gender = requestDto.getGender();
         this.phoneNumber = requestDto.getPhoneNumber();
         this.address = requestDto.getAddress();
-
     }
 }

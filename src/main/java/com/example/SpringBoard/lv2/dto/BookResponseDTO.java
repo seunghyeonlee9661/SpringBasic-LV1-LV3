@@ -1,6 +1,7 @@
 package com.example.SpringBoard.lv2.dto;
 
 import com.example.SpringBoard.lv2.entity.Book;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -13,22 +14,15 @@ public class BookResponseDTO {
     private final String language;
     private final String publisher;
     private final LocalDateTime registDate;
+    private boolean loanable;
 
-    public BookResponseDTO(Book book){
+    public BookResponseDTO(Book book, boolean loanable){
         this.id = book.getId();
         this.title = book.getTitle();
         this.author = book.getAuthor();
         this.language = book.getLanguage();
         this.publisher = book.getPublisher();
         this.registDate = book.getRegistDate();
-    }
-
-    public BookResponseDTO(int id, String title, String author, String language, String publisher, LocalDateTime registDate) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.language = language;
-        this.publisher = publisher;
-        this.registDate = registDate;
+        this.loanable = loanable;
     }
 }

@@ -2,11 +2,10 @@ package com.example.SpringBoard.lv2.entity;
 
 import com.example.SpringBoard.lv2.dto.LoanRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /*
@@ -14,10 +13,8 @@ import java.time.LocalDateTime;
  */
 
 @Getter
-@Setter
-@AllArgsConstructor
-@Builder
 @Entity
+@NoArgsConstructor
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,14 +36,12 @@ public class Loan {
     @Column(name="returnDate")
     private LocalDateTime returnDate;
 
-    public Loan() {
+    public Loan(Book book, Member member) {
+        this.book = book;
+        this.member = member;
     }
 
-    public Loan(LoanRequestDTO requestDto) {
-        this.id = requestDto.getId();
-        this.book = requestDto.getBook();
-        this.member = requestDto.getMember();
-        this.loanDate = requestDto.getLoanDate();
-        this.returnDate = requestDto.getReturnDate();
+    public void updateReturnDate(){
+        returnDate = LocalDateTime.now();
     }
 }

@@ -72,57 +72,7 @@
 <div class="b-example-divider"></div>
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
-<script>
-    // 회원 추가 요청
-    function addMember() {
-        // Bootstrap 입력 검사 기능
-        var form = document.getElementById('bookCreateForm');
-
-        // 폼 유효성 검사
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else { // 유효성 검사를 통과한 경우에만 AJAX 요청을 보냄
-            let id = $('#id1').val() + $('#id2').val();
-            let name = $('#name').val();
-            let gender = $(":input:radio[name=gender]:checked").val();
-            let phoneNumber = $('#phone1').val() + $('#phone2').val() + $('#phone3').val();
-            let address = $('#address').val();
-
-            $.ajax({
-                url: '[[@{/books/signup}]]', // 요기에
-                type : 'POST',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    'id': id,
-                    'name': name,
-                    'gender': gender,
-                    'phoneNumber': phoneNumber,
-                    'address': address,
-                }),
-                success: function (response) {
-                    alert('사용자가 추가되었습니다.');
-                    window.location.href = '[[@{/books}]]';
-                },
-                error: function (xhr, status) {
-                    if (xhr.status === 409) {
-                        alert('중복된 회원이 있습니다: ' + xhr.responseText);
-                    } else {
-                        alert('오류가 발생했습니다: ' + xhr.responseText);
-                    }
-                }
-            });
-        }
-        // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
-        form.classList.add('was-validated');
-    }
-
-    // 폼 제출을 막고 addBook() 함수가 실행되도록 설정
-    document.getElementById('bookCreateForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        addBook();
-    });
-</script>
+<script src="/js/books.js" type="text/javascript"></script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>
 </body>

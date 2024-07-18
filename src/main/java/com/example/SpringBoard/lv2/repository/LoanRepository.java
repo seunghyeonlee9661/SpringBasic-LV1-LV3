@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Integer> {
-    List<Loan> findByMemberIdOrderByLoanDateAsc(String memberId);
+    List<Loan> findAllByMemberIdOrderByLoanDateAsc(String memberId);
     List<Loan> findAllByOrderByLoanDateAsc();
     Optional<Loan> findTopByMemberIdOrderByReturnDateDesc(String memberId);
     Optional<Loan> findTopByMemberIdOrderByLoanDateDesc(String memberId);

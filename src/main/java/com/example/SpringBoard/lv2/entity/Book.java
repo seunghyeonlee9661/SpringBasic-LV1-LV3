@@ -2,10 +2,7 @@ package com.example.SpringBoard.lv2.entity;
 
 import com.example.SpringBoard.lv2.dto.BookRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -17,10 +14,8 @@ import java.util.List;
  */
 
 @Getter
-@Setter
-@AllArgsConstructor
-@Builder
 @Entity
+@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,20 +39,12 @@ public class Book {
     private LocalDateTime registDate;
 
     @OneToMany(mappedBy = "book", orphanRemoval = true, cascade = CascadeType.ALL)
-    @Builder.Default
     private List<Loan> loans = new ArrayList<>();
-
-    @Transient
-    private boolean loanable;
-
-    public Book() {
-    }
 
     public Book(BookRequestDTO requestDto) {
         this.title = requestDto.getTitle();
         this.author = requestDto.getAuthor();
         this.language = requestDto.getLanguage();
         this.publisher = requestDto.getPublisher();
-        this.registDate = requestDto.getRegistDate();
     }
 }
