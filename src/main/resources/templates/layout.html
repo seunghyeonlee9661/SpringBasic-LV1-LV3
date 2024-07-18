@@ -35,7 +35,7 @@
                 <li><a th:href="@{/books}" class="nav-link px-2" th:classappend="${menu} == 'books' ? 'text-secondary' : 'text-white'">LV2</a></li>
                 <li><a th:href="@{/backoffice/main}" class="nav-link px-2" th:classappend="${menu} == 'backoffice' ? 'text-secondary' : 'text-white'">LV3</a></li>
             </ul>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" userRole="search">
                 <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
             </form>
 

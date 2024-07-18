@@ -45,51 +45,7 @@
 <div class="b-example-divider"></div>
 <!-- footer -->
 <div th:replace="layout :: footer"></div>
-<script>
-    // 도서 추가 요청
-    function addBook() {
-        // Bootstrap 입력 검사 기능
-        var form = document.getElementById('bookCreateForm');
-        // 폼 유효성 검사
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else { // 유효성 검사를 통과한 경우에만 AJAX 요청을 보냄
-            let title = $('#title').val();
-            let author = $('#author').val();
-            let language = $('#language').val();
-            let publisher = $('#publisher').val();
-
-            // ajax 요청
-            $.ajax({
-                url: '/books/add',
-                type: 'POST',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    'title': title,
-                    'author': author,
-                    'language': language,
-                    'publisher': publisher,
-                }),
-                success: function (response) {
-                    alert('도서가 추가되었습니다.');
-                    window.location.href = '/books/detail/' + response.id;
-                },
-                error: function (xhr, status) {
-                    alert(xhr + " : " + status);
-                }
-            });
-        }
-        // 유효성 검사가 완료된 후 폼에 'was-validated' 클래스를 추가하여 부트스트랩의 시각적 피드백을 활성화
-        form.classList.add('was-validated');
-    }
-
-    // 폼 제출을 막고 addBook() 함수가 실행되도록 설정
-    document.getElementById('bookCreateForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        addBook();
-    });
-</script>
+<script src="/js/books.js" type="text/javascript"></script>
 <!--common script -->
 <th:block th:replace="layout :: scripts"></th:block>
 </body>
