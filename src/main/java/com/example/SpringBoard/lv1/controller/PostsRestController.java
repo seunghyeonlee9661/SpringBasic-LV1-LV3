@@ -5,6 +5,7 @@ import com.example.SpringBoard.lv1.dto.PostDeleteRequestDTO;
 import com.example.SpringBoard.lv1.dto.PostResponseDTO;
 import com.example.SpringBoard.lv1.dto.PostUpdateRequestDTO;
 import com.example.SpringBoard.lv1.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class PostsRestController {
 
     /*게시물 작성 */
     @PostMapping("/post")
-    public ResponseEntity<String> createPost(@RequestBody PostCreateRequestDTO postCreateRequestDTO) {
+    public ResponseEntity<String> createPost(@RequestBody @Valid PostCreateRequestDTO postCreateRequestDTO) {
         return postService.create(postCreateRequestDTO);
     }
 
@@ -40,13 +41,13 @@ public class PostsRestController {
 
     /* 게시물 삭제 */
     @DeleteMapping("/post")
-    public ResponseEntity<String> removePost(@RequestBody PostDeleteRequestDTO postDeleteRequestDTO) {
+    public ResponseEntity<String> removePost(@RequestBody @Valid PostDeleteRequestDTO postDeleteRequestDTO) {
         return postService.delete(postDeleteRequestDTO);
     }
 
     /*게시물 수정 페이지 */
     @PutMapping("/post")
-    public  ResponseEntity<String> updatePost(@RequestBody PostUpdateRequestDTO postUpdateRequestDTO) {
+    public  ResponseEntity<String> updatePost(@RequestBody @Valid PostUpdateRequestDTO postUpdateRequestDTO) {
         return postService.edit(postUpdateRequestDTO);
     }
 }

@@ -42,37 +42,41 @@ public class AuthFilter implements Filter {
 
         // 특정 경로에 대한 요청은 권한 확인 없이 통과
         if (StringUtils.hasText(url) && (Arrays.stream(paths).anyMatch(url::startsWith)
-                || url.equals("/backoffice")  // LV3 : 메인
-                || url.equals("/backoffice/api/login") // LV3 : 로그인 요청
-                || url.equals("/backoffice/api/signup")  // LV3 : 회원가입 요청
+                || url.equals("/backoffice")  // LV3 : 로그인 페이지
+                || url.equals("/api/login") // LV3 : 로그인 요청
+                || url.equals("/api/user")  // LV3 : 회원가입 요청
                 || url.equals("/"))){
             chain.doFilter(request, response);
         } else {
-            try {
-                // 요청에서 JWT 토큰 추출
-                String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
-                if (StringUtils.hasText(tokenValue)) { // 토큰이 존재하면 검증 시작
-                    // JWT 토큰에서 Bearer 제거
-                    String token = jwtUtil.substringToken(tokenValue);
-                    // 토큰 검증
+            String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
+            if (StringUtils.hasText(tokenValue)) { // 토큰이 존재하면 검증 시작
+                log.info("토큰 있음");
+                // JWT 토큰에서 Bearer 제거
+                String token = jwtUtil.substringToken(tokenValue);
+                // 토큰 검증
+                try {
                     if (!jwtUtil.validateToken(token, httpServletResponse)) {
-                        throw new IllegalArgumentException("Token Error");
+                        // 알림 메시지를 설정하고 로그인 페이지로 리다이렉트
+                        httpServletRequest.getSession().setAttribute("authError", "Invalid token.");
+                        httpServletResponse.sendRedirect("/backoffice");
+                        return;
                     }
                     // 토큰에서 사용자 정보 가져오기
                     Claims info = jwtUtil.getUserInfoFromToken(token);
                     User user = userRepository.findByEmail(info.getSubject()).orElseThrow(() -> new NullPointerException("Not Found User"));
                     request.setAttribute("user", user);
                     chain.doFilter(request, response); // 다음 필터로 이동
-                } else {
-                    throw new IllegalArgumentException("Not Found Token");
+                } catch (Exception e) {
+                    log.error("Authentication error: ", e);
+                    // 알림 메시지를 설정하고 로그인 페이지로 리다이렉트
+                    httpServletRequest.getSession().setAttribute("authError", "Authentication error.");
+                    httpServletResponse.sendRedirect("/backoffice");
                 }
-            } catch (IllegalArgumentException e) {
-                // 토큰이 없거나 유효하지 않은 경우 로그인 페이지로 리다이렉트
+            } else {
+                log.info("토큰 없음");
+                // 알림 메시지를 설정하고 로그인 페이지로 리다이렉트
+                httpServletRequest.getSession().setAttribute("authError", "Token is missing.");
                 httpServletResponse.sendRedirect("/backoffice");
-            } catch (Exception e) {
-                // 기타 예외 발생 시 서버 오류로 응답
-                httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                e.printStackTrace();
             }
         }
     }

@@ -4,24 +4,20 @@
 function signup() {
     let form = document.getElementById('signupForm');
     if (checkValidity(form)) {
-        if($(":input:radio[name=signup_role]:checked").val() == "MANAGER" && $('#signup_department').val() == "marketing"){
-            alert("마케팅 부서는 MANAGER 권한이 불가능합니다.")
-        }else{
-            Request('/backoffice/api/signup', 'POST', {
-                    'email': $('#signup_email').val(),
-                    'password': $('#signup_password').val(),
-                    'role': $(":input:radio[name=signup_role]:checked").val(),
-                    'department': $('#signup_department').val()
-                })
-                .then(function(response) {
-                    alert(response);
-                    location.href = location.href;
-                })
-                .catch(function(error) {
-                    alert(error);
-                });
-        }
-
+        Request('/api/user', 'POST', {
+            'email': $('#signup_email').val(),
+            'password': $('#signup_password').val(),
+            'userRole': $(":input:radio[name=signup_role]:checked").val(),
+            'department': $('#signup_department').val()
+        })
+        .then(function(response) {
+            alert(response);
+            location.href = location.href;
+        })
+        .catch(function(error) {
+            console.log(error)
+            alert(error.responseText);
+        });
     }
 }
 
@@ -29,7 +25,7 @@ function signup() {
 function login() {
     let form = document.getElementById('loginForm');
     if (checkValidity(form)) {
-        Request('/backoffice/api/login', 'POST', {
+        Request('/api/login', 'POST', {
                 'email': $('#login_email').val(),
                 'password': $('#login_password').val()
             })
@@ -55,7 +51,7 @@ function logoutRequest() {
 function addTeacher() {
     let form = document.getElementById('addTeacherForm');
     if (checkValidity(form)) {
-        Request('/backoffice/api/teacher', 'POST', {
+        Request('/api/teacher', 'POST', {
                 'name': $('#addTeacher_name').val(),
                 'year': $('#addTeacher_year').val(),
                 'company': $('#addTeacher_company').val(),
@@ -73,7 +69,7 @@ function addTeacher() {
 }
 // 강사 목록 불러오기
 function getTeachers() {
-    Request('/backoffice/api/teachers', 'GET', null)
+    Request('/api/teacher', 'GET', null)
         .then(function(response) {
             var html = '';
             for (var i = 0; i < response.length; i++) {
@@ -95,9 +91,7 @@ function getTeachers() {
 }
 // 강사 정보 불러오기
 function getTeacher(id) {
-    Request('/backoffice/api/teacher', 'GET', {
-          id: id,
-        })
+    Request(`/api/teacher/${id}`, 'GET',null)
         .then(function(response) {
             $('#teacher-name').text(response.name);
             $('#teacher-year').text(response.year);
@@ -137,7 +131,7 @@ function getTeacher(id) {
 function deleteTeacher(id) {
     if (checkRole()) {
         if (confirm('삭제하시겠습니까?')) {
-            Request('/backoffice/api/teacher?id=' + id, 'DELETE', null)
+            Request('/api/teacher?id=' + id, 'DELETE', null)
                 .then(function(response) {
                     alert('강사가 삭제되었습니다.');
                     window.location.href = '/backoffice/main';
@@ -152,7 +146,8 @@ function deleteTeacher(id) {
 function editTeacher(id) {
     let form = document.getElementById('editTeacherForm');
     if (checkValidity(form)) {
-        Request('/backoffice/api/teacher?id='+id, 'PUT', {
+        Request('/api/teacher', 'PUT', {
+                'id': id,
                 'name': $('#editTeacher_name').val(),
                 'year': $('#editTeacher_year').val(),
                 'company': $('#editTeacher_company').val(),
@@ -173,7 +168,7 @@ function editTeacher(id) {
 function addLecture() {
     let form = document.getElementById('addLectureForm');
     if (checkValidity(form)) {
-        Request('/backoffice/api/lecture', 'POST', {
+        Request('/api/lecture', 'POST', {
                 'title': $('#addLecture_title').val(),
                 'price': $('#addLecture_price').val(),
                 'introduction': $('#addLecture_introduction').val(),
@@ -191,7 +186,7 @@ function addLecture() {
 }
 // 강의 목록 불러오기
 function getLectures(page,category) {
-    Request('/backoffice/api/lectures', 'GET', {
+    Request('/api/lecture', 'GET', {
             page: page,
             category: category
         })
@@ -202,7 +197,7 @@ function getLectures(page,category) {
                 html += '<tr>';
                 html += '<td><a href="/backoffice/lecture/' + lecture.id + '">' + lecture.title + '</a></td>';
                 html += '<td>' + lecture.price + '</td>';
-                html += '<td>' + lecture.teachername + '</td>';
+                html += '<td>' + lecture.teacher.name + '</td>';
                 html += '<td>' + lecture.category + '</td>';
                 html += '<td>' + getFormattedDate(lecture.regist) + '</td>';
                 html += '</tr>';
@@ -217,7 +212,7 @@ function getLectures(page,category) {
 }
 // 강의 목록 불러오기
 function getLecture(id) {
-    Request('/backoffice/api/lecture', 'GET', {
+    Request(`/api/lecture/${id}`, 'GET', {
           id: id,
         })
         .then(function(response) {
@@ -241,7 +236,7 @@ function getLecture(id) {
 }
 // 강의 수정을 위한 강사 목록 불러오기
 function getTeacherList(id) {
-    Request('/backoffice/api/teachers', 'GET', null)
+    Request('/api/teacher', 'GET', null)
         .then(function(response) {
             var teacherSelect = $('#editLecture_teacher');
             teacherSelect.empty(); // 기존 옵션들을 모두 지움
@@ -264,7 +259,7 @@ function getTeacherList(id) {
 function deleteLecture(id) {
     if (checkRole()) {
       if (confirm('삭제하시겠습니까?')) {
-          Request('/backoffice/api/lecture?id=' + id, 'DELETE', null)
+          Request('/api/lecture?id=' + id, 'DELETE', null)
               .then(function(response) {
                   alert('강의가 삭제되었습니다.');
                   window.location.href = '/backoffice/main';
@@ -279,7 +274,8 @@ function deleteLecture(id) {
 function editLecture(id) {
     let form = document.getElementById('editLectureForm');
     if (checkValidity(form)) {
-        Request('/backoffice/api/lecture?id='+id, 'PUT', {
+        Request('/api/lecture', 'PUT', {
+                'id': id,
                 'title': $('#editLecture_title').val(),
                 'price': $('#editLecture_price').val(),
                 'introduction': $('#editLecture_introduction').val(),
@@ -299,22 +295,23 @@ function editLecture(id) {
 
 // 사용자 권한 확인
 function checkRole(){
-     const token = Cookies.get('Authorization'); // JWT가 저장된 쿠키의 이름을 넣으세요
-     if (token) {
-         try {
-             const decoded = jwt_decode(token);
-             if(decoded.auth === "MANAGER"){
-                 return true;
-             }else{
-                 alert('MANAGER 권한이 필요합니다.');
-                 return false;
-             }
-         } catch (error) {
-             alert('JWT decoding Error');
-             location.href = '/backoffice';
-         }
-     } else {
-         alert('로그인이 필요합니다.');
-         location.href = '/backoffice';
-     }
+    return true;
+//     const token = Cookies.get('Authorization'); // JWT가 저장된 쿠키의 이름을 넣으세요
+//     if (token) {
+//         try {
+//             const decoded = jwt_decode(token);
+//             if(decoded.auth === "MANAGER"){
+//                 return true;
+//             }else{
+//                 alert('MANAGER 권한이 필요합니다.');
+//                 return false;
+//             }
+//         } catch (error) {
+//             alert('JWT decoding Error');
+//             location.href = '/backoffice';
+//         }
+//     } else {
+//         alert('로그인이 필요합니다.');
+//         location.href = '/backoffice';
+//     }
  }

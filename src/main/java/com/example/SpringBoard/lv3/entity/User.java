@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name="backoffice_user")
 public class User {
 
     @Id

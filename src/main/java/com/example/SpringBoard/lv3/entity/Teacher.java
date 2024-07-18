@@ -1,6 +1,7 @@
 package com.example.SpringBoard.lv3.entity;
 
-import com.example.SpringBoard.lv3.dto.TeacherRequestDTO;
+import com.example.SpringBoard.lv3.dto.TeacherCreateRequestDTO;
+import com.example.SpringBoard.lv3.dto.TeacherUpdateRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,6 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name="backoffice_teacher")
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,14 +37,14 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Lecture> lectures = new ArrayList<>();
 
-    public Teacher(TeacherRequestDTO requestDto) {
+    public Teacher(TeacherCreateRequestDTO requestDto) {
         this.name = requestDto.getName();
         this.year = requestDto.getYear();
         this.company = requestDto.getCompany();
         this.phone = requestDto.getPhone();
         this.introduction = requestDto.getIntroduction();
     }
-    public void update(TeacherRequestDTO requestDto) {
+    public void update(TeacherUpdateRequestDTO requestDto) {
         this.name = requestDto.getName();
         this.year = requestDto.getYear();
         this.company = requestDto.getCompany();

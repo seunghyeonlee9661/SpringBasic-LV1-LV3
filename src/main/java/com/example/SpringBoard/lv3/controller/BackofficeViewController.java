@@ -19,7 +19,7 @@ public class BackofficeViewController {
     @GetMapping("")
     public String index(Model model) {
         model.addAttribute("menu","backoffice");
-        return "backoffice/index";
+        return "backoffice/login";
     }
 
     /* 로그인 후 페이지 */
