@@ -67,13 +67,13 @@ function setPagination(paging) {
 
 // Validation 확인하는 함수
 function checkValidity(form) {
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-    form.classList.add('was-validated');
-    return false;
-  }
-  form.classList.add('was-validated');
+//  if (form.checkValidity() === false) {
+//    event.preventDefault();
+//    event.stopPropagation();
+//    form.classList.add('was-validated');
+//    return false;
+//  }
+//  form.classList.add('was-validated');
   return true;
 }
 

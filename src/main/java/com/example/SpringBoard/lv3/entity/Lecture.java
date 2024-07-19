@@ -1,6 +1,7 @@
 package com.example.SpringBoard.lv3.entity;
 
 import com.example.SpringBoard.lv3.dto.LectureRequestDTO;
+import com.example.SpringBoard.lv3.dto.LectureUpdateRequestDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name="backoffice_lecture")
 public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +49,7 @@ public class Lecture {
         this.teacher = teacher;
     }
 
-    public void update(LectureRequestDTO requestDto, Teacher teacher) {
+    public void update(LectureUpdateRequestDTO requestDto, Teacher teacher) {
         this.title = requestDto.getTitle();
         this.price = requestDto.getPrice();
         this.introduction = requestDto.getIntroduction();

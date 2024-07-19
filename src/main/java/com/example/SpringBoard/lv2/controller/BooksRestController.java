@@ -2,6 +2,7 @@ package com.example.SpringBoard.lv2.controller;
 
 import com.example.SpringBoard.lv2.dto.*;
 import com.example.SpringBoard.lv2.service.BooksService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class BooksRestController {
     /* 도서 추가 */
     @ResponseBody
     @PostMapping("/book")
-    public ResponseEntity<Integer> add(@RequestBody BookRequestDTO bookRequestDTO) {
+    public ResponseEntity<Integer> add(@RequestBody @Valid BookRequestDTO bookRequestDTO) {
         return booksService.createBook(bookRequestDTO);
     }
 
@@ -51,7 +52,7 @@ public class BooksRestController {
     /* 회원 등록 */
     @ResponseBody
     @PostMapping("/member")
-    public ResponseEntity<String> signup(@RequestBody MemberRequestDTO memberRequestDTO) {
+    public ResponseEntity<String> signup(@RequestBody @Valid MemberRequestDTO memberRequestDTO) {
         return booksService.createMember(memberRequestDTO);
     }
 
@@ -59,7 +60,7 @@ public class BooksRestController {
 
     @ResponseBody
     @PostMapping("/loan")
-    public ResponseEntity<String> createLoan(@RequestBody LoanRequestDTO loanRequestDTO) {
+    public ResponseEntity<String> createLoan(@RequestBody @Valid LoanRequestDTO loanRequestDTO) {
        return booksService.createLoan(loanRequestDTO);
     }
 
@@ -73,7 +74,7 @@ public class BooksRestController {
     /* 대출 또는 반납 */
     @ResponseBody
     @PutMapping("/loan")
-    public ResponseEntity<String> loanBook(@RequestBody LoanRequestDTO loanRequestDTO) {
+    public ResponseEntity<String> loanBook(@RequestBody @Valid LoanRequestDTO loanRequestDTO) {
         return booksService.updateLoan(loanRequestDTO);
     }
 }
